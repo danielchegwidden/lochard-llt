@@ -1,0 +1,173 @@
+/* ========== ARCHITECTURE PAGE ========== */
+
+.arch-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ========== SECTION NAVIGATION ========== */
+
+.arch-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 8px;
+}
+
+.arch-nav-item {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--grey);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.arch-nav-item:hover {
+  background: #FAF8F7;
+  border-color: var(--line);
+}
+
+.arch-nav-item.active {
+  background: var(--crimson);
+  color: #fff;
+  border-color: var(--crimson);
+}
+
+/* ========== SECTION CONTENT ========== */
+
+.arch-content {
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.arch-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.arch-section h2 {
+  margin: 0 0 8px;
+  color: var(--crimson);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.arch-section h3 {
+  margin: 12px 0 8px;
+  color: var(--grey);
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.arch-section p {
+  margin: 0 0 12px;
+  color: var(--grey);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.arch-section ul {
+  margin: 0 0 12px;
+  padding-left: 24px;
+  color: var(--grey);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.arch-section li {
+  margin-bottom: 8px;
+}
+
+.arch-section code {
+  background: #F1ECEA;
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: 12px;
+  color: #6B4E00;
+}
+
+/* ========== DIAGRAMS ========== */
+
+.arch-diagram {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+
+.arch-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* SVG text styling */
+.arch-svg text {
+  font-family: inherit;
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 768px) {
+  .arch-nav {
+    flex-direction: column;
+  }
+
+  .arch-nav-item {
+    width: 100%;
+  }
+
+  .arch-diagram {
+    padding: 12px;
+    overflow-x: auto;
+  }
+
+  .arch-svg {
+    min-width: 100%;
+  }
+
+  .arch-section p,
+  .arch-section ul {
+    font-size: 13px;
+  }
+}
+
+/* ========== diagrams (components/arch/Diagram.tsx) ========== */
+.arch-fig { margin: 6px 0 4px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 12px 6px; }
+.arch-fig svg { width: 100%; height: auto; display: block; }
+.arch-fig figcaption { font-size: 12px; color: var(--muted); padding: 6px 4px 2px; }
+.arch-box-t { font-size: 13.5px; font-weight: 700; }
+.arch-box-t.sm { font-size: 12.5px; }
+.arch-box-l { font-size: 11.5px; opacity: .95; }
+.arch-link-t { font-size: 11px; fill: #7A7372; }
+.arch-frame-t { font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; }
+.arch-band { background: var(--pink); color: var(--crimson); font-weight: 700; border-radius: 10px; padding: 10px 14px; font-size: 13px; }
+.arch-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px 24px; }
+.arch-cols h3 { margin: 8px 0 4px; font-size: 14px; color: var(--grey); }
+.arch-cols ul { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.5; }
+.arch-cols li { margin: 3px 0; }
+.arch-callout { background: #FFF8E8; border: 1px solid #F3E2A8; border-radius: 10px; padding: 12px 14px; font-size: 13.5px; line-height: 1.5; }
+.arch-section h2 { color: var(--crimson); margin: 4px 0 6px; font-weight: 600; }
+.arch-section > p { max-width: 980px; line-height: 1.5; margin: 0 0 6px; }

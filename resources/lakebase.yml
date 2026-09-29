@@ -1,0 +1,43 @@
+# Lakebase Autoscaling (serverless Postgres) for the board portal: scorecard, comments, scores, workflow, audit.
+# The project auto-creates branch "production" + read/write endpoint "primary"; we add the app database and a
+# "dev" branch (copy-on-write from production) so schema migrations can be tested before they hit the board.
+resources:
+  postgres_projects:
+    board_portal:
+      project_id: lochard-board-portal
+      display_name: Lochard Board Portal
+      pg_version: 17
+      history_retention_duration: 604800s          # 7-day point-in-time restore window
+      default_endpoint_settings:
+        autoscaling_limit_min_cu: 0.5
+        autoscaling_limit_max_cu: 4
+        suspend_timeout_duration: 1800s
+      custom_tags:
+        - {key: project, value: lochard}
+        - {key: use_case, value: board_portal}
+      permissions:
+        - {service_principal_name: "${resources.apps.board_portal_app.service_principal_client_id}", level: CAN_USE}
+
+  postgres_branches:
+    board_portal_dev:
+      parent: ${resources.postgres_projects.board_portal.name}
+      branch_id: dev
+      source_branch: ${resources.postgres_projects.board_portal.name}/branches/production
+      no_expiry: true
+
+  postgres_databases:
+    board_portal_db:
+      parent: ${resources.postgres_projects.board_portal.name}/branches/production
+      database_id: board-portal
+      postgres_database: board_portal
+      role: ${resources.postgres_projects.board_portal.name}/branches/production/roles/daniel-chegwidden
+
+  postgres_roles:
+    etl_sync_role:
+      parent: ${resources.postgres_projects.board_portal.name}/branches/production
+      role_id: sp-lochard-etl
+      postgres_role: ${var.etl_sp}
+      identity_type: SERVICE_PRINCIPAL
+      auth_method: LAKEBASE_OAUTH_V1
+      attributes:
+        bypassrls: true

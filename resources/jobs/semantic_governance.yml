@@ -1,0 +1,38 @@
+# Applies the semantic layer (views + UC metric views) and governance (entitlements, UDFs, governed tags, ABAC
+# policies, grants) from git. Runs after the medallion pipelines; idempotent. Runs as the platform admin because
+# CREATE POLICY / governed-tag assignment need MANAGE + tag ASSIGN rights (use a governance SP in real prod).
+resources:
+  jobs:
+    lochard_semantic_governance:
+      name: lochard-semantic-and-governance
+      description: Deploys lochard_semantic views / metric views and lochard_governance ABAC from source control
+      run_as:
+        user_name: ${var.platform_admin}
+      environments:
+        - environment_key: py
+          spec:
+            environment_version: "4"
+      tasks:
+        - task_key: semantic_layer
+          environment_key: py
+          spark_python_task:
+            python_file: ../../src/common/run_sql_dir.py
+            parameters: [--dir, "${workspace.file_path}/src/semantic", --catalog, "${var.catalog}", --prefix, "${var.prefix}"]
+        - task_key: governance
+          depends_on: [{task_key: semantic_layer}]
+          environment_key: py
+          spark_python_task:
+            python_file: ../../src/common/run_sql_dir.py
+            parameters: [--dir, "${workspace.file_path}/src/governance", --catalog, "${var.catalog}", --prefix, "${var.prefix}",
+                         --var, "etl_sp=${var.etl_sp}", --var, "platform_admin=${var.platform_admin}"]
+        - task_key: platform_views
+          depends_on: [{task_key: governance}]
+          environment_key: py
+          spark_python_task:
+            python_file: ../../src/common/run_sql_dir.py
+            parameters: [--dir, "${workspace.file_path}/src/platform", --catalog, "${var.catalog}", --prefix, "${var.prefix}",
+                         --var, "workspace_id=${var.workspace_id}"]
+      email_notifications:
+        on_failure: ["${var.notification_email}"]
+      tags:
+        domain: governance

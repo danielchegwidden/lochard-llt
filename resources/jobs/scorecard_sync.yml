@@ -1,0 +1,25 @@
+# Lakebase board portal -> Delta gold (nightly + on period lock from the app).
+resources:
+  jobs:
+    lochard_scorecard_sync:
+      name: lochard-scorecard-sync
+      run_as:
+        service_principal_name: ${var.etl_sp}
+      description: Sync the board scorecard (statuses, board scores, comments) from Lakebase to lochard_gold
+      schedule:
+        quartz_cron_expression: "0 30 22 * * ?"
+        timezone_id: Australia/Melbourne
+        pause_status: UNPAUSED
+      environments:
+        - environment_key: sync
+          spec:
+            environment_version: "4"
+            dependencies: ["psycopg[binary]>=3.2", "databricks-sdk>=0.60", "pandas"]
+      tasks:
+        - task_key: sync
+          environment_key: sync
+          spark_python_task:
+            python_file: ../../src/sync/scorecard_to_delta.py
+            parameters: [--catalog, "${var.catalog}", --prefix, "${var.prefix}"]
+      tags:
+        domain: board

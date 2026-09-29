@@ -1,0 +1,75 @@
+# Medallion + supporting schemas. Every schema name starts with lochard_ (prefix variable).
+resources:
+  schemas:
+    landing:
+      catalog_name: ${var.catalog}
+      name: ${var.prefix}landing
+      comment: Raw source-system extracts (UC Volumes) – ERP, Maximo, HSE, AEMO nemweb, historian, documents
+      grants:
+        - principal: ${var.etl_sp}
+          privileges: [ALL_PRIVILEGES]
+        - principal: ${var.platform_admin}
+          privileges: [ALL_PRIVILEGES, MANAGE]
+    bronze:
+      catalog_name: ${var.catalog}
+      name: ${var.prefix}bronze
+      comment: Bronze – raw ingested streaming tables (Auto Loader) with file metadata
+      grants:
+        - principal: ${var.etl_sp}
+          privileges: [ALL_PRIVILEGES]
+        - principal: ${var.platform_admin}
+          privileges: [ALL_PRIVILEGES, MANAGE]
+    silver:
+      catalog_name: ${var.catalog}
+      name: ${var.prefix}silver
+      comment: Silver – cleaned, typed, de-duplicated, conformed; SCD2 dimensions; quarantine tables
+      grants:
+        - principal: ${var.etl_sp}
+          privileges: [ALL_PRIVILEGES]
+        - principal: ${var.platform_admin}
+          privileges: [ALL_PRIVILEGES, MANAGE]
+    gold:
+      catalog_name: ${var.catalog}
+      name: ${var.prefix}gold
+      comment: Gold – star-schema facts and dimensions for Finance, HSE, Maintenance, Market & Ops, Board
+      grants:
+        - principal: ${var.etl_sp}
+          privileges: [ALL_PRIVILEGES]
+        - principal: ${var.platform_admin}
+          privileges: [ALL_PRIVILEGES, MANAGE]
+    semantic:
+      catalog_name: ${var.catalog}
+      name: ${var.prefix}semantic
+      comment: Semantic – UC metric views, consumer views and trusted functions (dashboards, Genie, app, agents)
+      grants:
+        - principal: ${var.etl_sp}
+          privileges: [ALL_PRIVILEGES]
+        - principal: ${var.platform_admin}
+          privileges: [ALL_PRIVILEGES, MANAGE]
+    governance:
+      catalog_name: ${var.catalog}
+      name: ${var.prefix}governance
+      comment: Governance – mask / row-filter UDFs, entitlement tables, audit views
+      grants:
+        - principal: ${var.etl_sp}
+          privileges: [ALL_PRIVILEGES]
+        - principal: ${var.platform_admin}
+          privileges: [ALL_PRIVILEGES, MANAGE]
+    ai:
+      catalog_name: ${var.catalog}
+      name: ${var.prefix}ai
+      comment: AI – registered models, AI Gateway model services, inference tables, eval sets, parsed documents
+      grants:
+        - principal: ${var.etl_sp}
+          privileges: [ALL_PRIVILEGES]
+        - principal: ${var.platform_admin}
+          privileges: [ALL_PRIVILEGES, MANAGE]
+    platform:
+      catalog_name: ${var.catalog}
+      name: ${var.prefix}platform
+      comment: Platform – pipeline event logs, data-quality metrics, freshness SLAs, AI cost and audit views
+      grants:
+        - principal: ${var.etl_sp}
+          privileges: [ALL_PRIVILEGES]
+        - principal: ${var.platform_admin}
+          privileges: [ALL_PRIVILEGES, MANAGE]

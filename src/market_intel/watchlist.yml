@@ -1,0 +1,199 @@
+# Market intelligence watchlist: who and what the collector searches for, and the canonical names the enrichment
+# step maps mentions onto. Relationships are stated only where they are public; otherwise they are neutral.
+# entity_group values follow docs/market_intelligence.md.
+entities:
+  - name: Lochard Energy
+    group: Lochard
+    relationship: Lochard Energy (this company)
+    description: Owner and operator of the Iona underground gas storage facility near Port Campbell, Victoria; delivering the Heytesbury Underground Gas Storage (HUGS) project and planning a further Iona expansion.
+    website: https://www.lochardenergy.com.au
+    aliases: [Lochard, Iona Gas Storage, Iona gas plant, Iona UGS, Heytesbury Underground Gas Storage, HUGS]
+    queries: ['"Lochard Energy"', '"Iona" gas storage', '"Heytesbury" gas storage']
+
+  - name: AGL Energy
+    group: Customer
+    relationship: Iona storage customer (long-term storage agreement announced 2015); also operates the Newcastle Gas Storage Facility
+    description: Integrated energy retailer and generator on the east coast.
+    asx: AGL
+    website: https://www.agl.com.au
+    aliases: [AGL]
+    queries: ['"AGL" gas', '"AGL Energy"']
+  - name: Snowy Hydro
+    group: Customer
+    relationship: Iona storage customer (25-year storage agreement announced July 2024, service from 2028)
+    description: Commonwealth-owned generator and retailer; gas-fired peaking plants including Kurri Kurri and Tallawarra B.
+    website: https://www.snowyhydro.com.au
+    aliases: [Snowy]
+    queries: ['"Snowy Hydro" gas']
+  - name: EnergyAustralia
+    group: Customer
+    relationship: Victorian gas retailer and generator; owned Iona until 2015
+    description: East coast energy retailer and generator owned by CLP Group.
+    website: https://www.energyaustralia.com.au
+    aliases: [Energy Australia]
+    queries: ['"EnergyAustralia" gas']
+  - name: Origin Energy
+    group: Customer
+    relationship: East coast gas retailer, generator and producer; sold the Heytesbury reservoirs to Lochard in 2019
+    description: Integrated energy company; retail, generation and Australia Pacific LNG interest.
+    asx: ORG
+    website: https://www.originenergy.com.au
+    aliases: [Origin]
+    queries: ['"Origin Energy" gas']
+  - name: Alinta Energy
+    group: Customer
+    relationship: Gas retailer and generator in the east coast market
+    description: Retailer and generator with east coast and WA operations.
+    website: https://www.alintaenergy.com.au
+    aliases: [Alinta]
+    queries: ['"Alinta Energy" gas']
+
+  - name: APA Group
+    group: Competitor
+    relationship: Owns the South West Pipeline linking Iona to Melbourne and operates Dandenong LNG storage; pipeline expansions shape Iona's growth
+    description: Australia's largest gas transmission business (East Coast Gas Grid).
+    asx: APA
+    website: https://www.apa.com.au
+    aliases: [APA, Dandenong LNG, South West Pipeline]
+    queries: ['"APA Group" gas', '"South West Pipeline"', '"Dandenong LNG"']
+  - name: Squadron Energy
+    group: Competitor
+    relationship: Port Kembla Energy Terminal (LNG import), an alternative source of winter peak supply
+    description: Private energy company developing the Port Kembla LNG import terminal in NSW.
+    website: https://squadronenergy.com
+    aliases: [Port Kembla Energy Terminal, Port Kembla LNG]
+    queries: ['"Port Kembla" LNG', '"Squadron Energy"']
+  - name: Viva Energy
+    group: Competitor
+    relationship: Geelong LNG import terminal proposal, an alternative source of Victorian winter supply
+    description: Fuel refiner and retailer; proposed floating LNG import terminal at Corio Bay, Geelong.
+    asx: VEA
+    website: https://www.vivaenergy.com.au
+    aliases: [Viva, Geelong LNG, Geelong gas terminal]
+    queries: ['"Viva Energy" gas terminal', '"Geelong" LNG terminal']
+  - name: Vopak
+    group: Competitor
+    relationship: Victoria Energy Terminal (floating LNG import) proposal in Port Phillip
+    description: Global tank storage company proposing an LNG import terminal near Avalon.
+    website: https://www.vopak.com
+    aliases: [Vopak Victoria Energy Terminal, Victoria Energy Terminal]
+    queries: ['"Victoria Energy Terminal"', '"Vopak" LNG Victoria']
+  - name: GB Energy
+    group: Competitor
+    relationship: Golden Beach gas project in Gippsland, planned for conversion to gas storage
+    description: Developer of the Golden Beach offshore gas field and storage project, Gippsland Basin, Victoria.
+    website: https://gbenergy.com.au
+    aliases: [Golden Beach, Golden Beach Energy Storage]
+    queries: ['"Golden Beach" gas', '"GB Energy" gas']
+
+  - name: Beach Energy
+    group: Upstream supplier
+    relationship: Otway Basin gas producer supplying south-west Victoria
+    description: Oil and gas producer with Otway and Bass Basin operations.
+    asx: BPT
+    website: https://www.beachenergy.com.au
+    aliases: [Beach]
+    queries: ['"Beach Energy" Otway', '"Beach Energy" gas']
+  - name: Amplitude Energy
+    group: Upstream supplier
+    relationship: Otway Basin producer (East Coast Supply Project, Athena gas plant near Port Campbell); formerly Cooper Energy
+    description: Gas producer focused on south-east Australia (Otway and Gippsland basins).
+    asx: AEL
+    website: https://www.amplitude-energy.com.au
+    aliases: [Amplitude, Cooper Energy, Athena gas plant]
+    queries: ['"Amplitude Energy"']
+  - name: Esso Australia
+    group: Upstream supplier
+    relationship: Operator of the Gippsland Basin joint venture (Bass Strait), Victoria's largest but declining gas supply
+    description: ExxonMobil subsidiary operating the Gippsland Basin JV with Woodside.
+    website: https://www.exxonmobil.com.au
+    aliases: [ExxonMobil, Gippsland Basin Joint Venture, Bass Strait]
+    queries: ['"Esso" Gippsland gas', '"Bass Strait" gas']
+  - name: Woodside Energy
+    group: Upstream supplier
+    relationship: Gippsland Basin joint venture partner; LNG exporter
+    description: Australia's largest LNG producer.
+    asx: WDS
+    website: https://www.woodside.com
+    aliases: [Woodside]
+    queries: ['"Woodside" gas east coast']
+  - name: Santos
+    group: Upstream supplier
+    relationship: East coast gas producer (Cooper Basin, Narrabri, GLNG)
+    description: Oil and gas producer and LNG exporter.
+    asx: STO
+    website: https://www.santos.com
+    aliases: []
+    queries: ['"Santos" east coast gas']
+  - name: ConocoPhillips
+    group: Upstream supplier
+    relationship: Offshore Otway Basin exploration
+    description: International oil and gas producer exploring in the Otway Basin.
+    website: https://www.conocophillips.com.au
+    aliases: []
+    queries: ['"ConocoPhillips" Otway']
+
+  - name: AEMO
+    group: Regulator & market body
+    relationship: Operates the Victorian Declared Wholesale Gas Market (DWGM); publishes the GSOO and Victorian Gas Planning Report
+    description: Australian Energy Market Operator.
+    website: https://aemo.com.au
+    aliases: [Australian Energy Market Operator]
+    queries: ['"AEMO" gas', '"Gas Statement of Opportunities"', '"Victorian Gas Planning Report"']
+  - name: AER
+    group: Regulator & market body
+    relationship: Economic regulator; monitors wholesale gas markets and storage
+    description: Australian Energy Regulator.
+    website: https://www.aer.gov.au
+    aliases: [Australian Energy Regulator]
+    queries: ['"Australian Energy Regulator" gas']
+  - name: AEMC
+    group: Regulator & market body
+    relationship: Makes the National Gas Rules
+    description: Australian Energy Market Commission.
+    website: https://www.aemc.gov.au
+    aliases: [Australian Energy Market Commission]
+    queries: ['"AEMC" gas rule']
+  - name: ACCC
+    group: Regulator & market body
+    relationship: Runs the gas market inquiry and reviews mergers
+    description: Australian Competition and Consumer Commission.
+    website: https://www.accc.gov.au
+    aliases: [Australian Competition and Consumer Commission]
+    queries: ['"ACCC" gas inquiry']
+
+  - name: Victorian Government
+    group: Government & policy
+    relationship: State energy policy (Gas Substitution Roadmap, gas supply and storage policy, DEECA)
+    description: Government of Victoria, including the Department of Energy, Environment and Climate Action.
+    website: https://www.energy.vic.gov.au
+    aliases: [DEECA, Victorian Energy Minister, Gas Substitution Roadmap]
+    queries: ['Victoria government gas supply', '"Gas Substitution Roadmap"']
+  - name: Australian Government
+    group: Government & policy
+    relationship: National gas policy (Future Gas Strategy, gas reservation scheme, mandatory code of conduct)
+    description: Commonwealth Government, including DCCEEW.
+    website: https://www.dcceew.gov.au
+    aliases: [Commonwealth Government, DCCEEW, Federal Government]
+    queries: ['"gas reservation" scheme Australia', '"Future Gas Strategy"']
+
+topics:            # market-wide searches; items are mapped to entities by the enrichment step
+  - query: '"underground gas storage" Australia'
+  - query: '"gas storage" Victoria'
+  - query: 'east coast gas shortfall'
+  - query: 'Victoria gas supply winter'
+  - query: 'LNG import terminal Victoria'
+  - query: 'Victorian gas price DWGM'
+  - query: 'Otway Basin gas'
+  - query: 'Gippsland gas supply'
+  - query: 'hydrogen storage Victoria'
+  - query: 'carbon capture storage Otway'
+
+# Web research themes (a web-search agent looks for dated articles per theme and week, with publisher URLs)
+research_themes:
+  - Lochard Energy, the Iona gas storage facility near Port Campbell, the Heytesbury Underground Gas Storage (HUGS) project or Iona expansion
+  - Victorian and east coast Australian gas supply, winter peak demand, storage levels and shortfall warnings (AEMO, GSOO, Victorian Gas Planning Report)
+  - Gas retailers and generators that use gas storage – AGL, Origin Energy, EnergyAustralia, Snowy Hydro, Alinta – and their gas contracts, storage or peaking plans
+  - LNG import terminals and other gas storage or peaking projects in south-east Australia – Port Kembla, Viva Energy Geelong, Vopak, Golden Beach, APA pipeline and Dandenong LNG expansions
+  - Australian gas policy and regulation – gas reservation scheme, AER / AEMC / ACCC decisions, Victorian gas policy and approvals
+  - Otway and Gippsland basin gas production and exploration – Beach Energy, Amplitude Energy, Esso / Woodside, ConocoPhillips

@@ -1,0 +1,10 @@
+# Local / manual-deploy reference. When deployed with the bundle, resources/app.yml `config` supplies the command
+# and environment (resource ids interpolated per target).
+command: [python, -m, uvicorn, app:app, --host, 0.0.0.0, --port, "8000"]
+env:
+  - name: DATABRICKS_WAREHOUSE_ID
+    valueFrom: sql-warehouse
+  - name: ENDPOINT_NAME
+    value: projects/lochard-board-portal/branches/production/endpoints/primary
+  - name: LAKEBASE_DATABASE
+    value: board_portal

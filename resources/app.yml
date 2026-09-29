@@ -1,0 +1,58 @@
+# Lochard Board Portal – Databricks App (FastAPI + React) on Lakebase Autoscaling.
+# User authorization (OBO): SQL, Genie, AI Gateway and model serving calls run as the signed-in viewer, so Unity
+# Catalog ABAC masks / row filters apply. The app service principal only owns the Lakebase scorecard database.
+resources:
+  apps:
+    board_portal_app:
+      name: lochard-board-portal
+      description: Lochard Leadership Portal – leadership insights, market intelligence, board pack, agents, embedded dashboards
+      source_code_path: ../src/app
+      user_api_scopes: [sql, genie, ai-gateway, model-serving]
+      config:
+        command: [python, -m, uvicorn, app:app, --host, 0.0.0.0, --port, "8000"]
+        env:
+          - {name: DATABRICKS_WAREHOUSE_ID, value_from: sql-warehouse}
+          - {name: ENDPOINT_NAME, value: "projects/${resources.postgres_projects.board_portal.project_id}/branches/production/endpoints/primary"}
+          - {name: LAKEBASE_DATABASE, value: board_portal}
+          - {name: LOCHARD_CATALOG, value: "${var.catalog}"}
+          - {name: LOCHARD_SEMANTIC_SCHEMA, value: "${resources.schemas.semantic.name}"}
+          - {name: LOCHARD_GOVERNANCE_SCHEMA, value: "${resources.schemas.governance.name}"}
+          - {name: DATABRICKS_WORKSPACE_ID, value: "${var.workspace_id}"}
+          - {name: AI_GATEWAY_URL, value: "https://${var.workspace_id}.ai-gateway.cloud.databricks.com/mlflow/v1"}
+          - {name: LLM_ECONOMY_MODEL, value: "${resources.model_services.lochard_llm_economy.id}"}
+          - {name: LLM_STANDARD_MODEL, value: "${resources.model_services.lochard_assistant.id}"}
+          - {name: LLM_FALLBACK_ENDPOINT, value: "${var.economy_model}"}
+          - {name: DASHBOARD_FINANCE_ID, value: "${resources.dashboards.finance_function_details.id}"}
+          - {name: DASHBOARD_HSE_ID, value: "${resources.dashboards.hse_observations.id}"}
+          - {name: DASHBOARD_MAINTENANCE_ID, value: "${resources.dashboards.maintenance_dashboard.id}"}
+          - {name: DASHBOARD_OPS_ID, value: "${resources.dashboards.ops_vic_demand_edd.id}"}
+          - {name: GENIE_FINANCE_SPACE_ID, value: "${resources.genie_spaces.finance_genie.id}"}
+          - {name: GENIE_HSE_SPACE_ID, value: "${resources.genie_spaces.hse_genie.id}"}
+          - {name: GENIE_MAINTENANCE_SPACE_ID, value: "${resources.genie_spaces.maintenance_genie.id}"}
+          - {name: GENIE_MARKET_SPACE_ID, value: "${resources.genie_spaces.market_ops_genie.id}"}
+          - {name: GENIE_EXEC_SPACE_ID, value: "${resources.genie_spaces.exec_genie.id}"}
+          - {name: SUPERVISOR_ENDPOINT, value: "${var.supervisor_endpoint}"}
+          - {name: KNOWLEDGE_ENDPOINT, value: "${var.knowledge_endpoint}"}
+          - {name: DASHBOARD_MARKET_ID, value: "${resources.dashboards.market_intelligence.id}"}
+      resources:
+        - name: lakebase
+          postgres:
+            branch: ${resources.postgres_projects.board_portal.name}/branches/production
+            database: ${resources.postgres_databases.board_portal_db.name}
+            permission: CAN_CONNECT_AND_CREATE
+        - name: sql-warehouse
+          sql_warehouse: {id: "${var.warehouse_id}", permission: CAN_USE}
+        - name: genie-finance
+          genie_space: {name: "Lochard Finance", space_id: "${resources.genie_spaces.finance_genie.id}", permission: CAN_RUN}
+        - name: genie-hse
+          genie_space: {name: "Lochard HSE", space_id: "${resources.genie_spaces.hse_genie.id}", permission: CAN_RUN}
+        - name: genie-maintenance
+          genie_space: {name: "Lochard Maintenance", space_id: "${resources.genie_spaces.maintenance_genie.id}", permission: CAN_RUN}
+        - name: genie-market
+          genie_space: {name: "Lochard Gas Market & Iona Ops", space_id: "${resources.genie_spaces.market_ops_genie.id}", permission: CAN_RUN}
+        - name: genie-exec
+          genie_space: {name: "Lochard Executive & Board", space_id: "${resources.genie_spaces.exec_genie.id}", permission: CAN_RUN}
+        - name: llm-fallback
+          serving_endpoint: {name: "${var.economy_model}", permission: CAN_QUERY}
+      permissions:
+        - {group_name: users, level: CAN_USE}

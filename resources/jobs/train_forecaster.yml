@@ -1,0 +1,27 @@
+# Custom ML model: VIC gas demand forecaster – train, register (UC, @champion), batch score. Weekly.
+resources:
+  jobs:
+    lochard_train_forecaster:
+      name: lochard-train-vic-demand-forecaster
+      run_as:
+        service_principal_name: ${var.etl_sp}
+      description: Train / register / batch-score the VIC gas demand forecaster (EDD + calendar features)
+      schedule:
+        quartz_cron_expression: "0 0 7 ? * MON"
+        timezone_id: Australia/Melbourne
+        pause_status: PAUSED
+      environments:
+        - environment_key: ml
+          spec:
+            environment_version: "4"
+            dependencies: ["mlflow>=3.1", "scikit-learn", "pandas", "numpy", "joblib"]
+      tasks:
+        - task_key: train_register_score
+          environment_key: ml
+          spark_python_task:
+            python_file: ../../src/ml/train_forecaster.py
+            parameters: [--catalog, "${var.catalog}", --prefix, "${var.prefix}"]
+      email_notifications:
+        on_failure: ["${var.notification_email}"]
+      tags:
+        domain: ai

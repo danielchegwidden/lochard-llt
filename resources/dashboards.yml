@@ -1,0 +1,65 @@
+# AI/BI dashboards – replicas of the Lochard PowerBI (Finance, HSE, Maintenance) and Tableau (INT091) reports.
+# Datasets use unqualified names resolved against dataset_catalog / dataset_schema (lochard_semantic per target).
+# embed_credentials: false -> every viewer queries with their own identity, so ABAC masks / row filters apply.
+# Warehouses: Lakehouse//RT (${var.rt_warehouse_id}) for dashboards over ungoverned data – sub-second, high-concurrency.
+# Finance, HSE and Governance stay on the serverless PRO warehouse: Lakehouse//RT does not evaluate row filters /
+# column masks / ABAC policies (UNSUPPORTED_FEATURE), and those dashboards must enforce them per viewer.
+x-dashboard-common: &common
+  warehouse_id: ${var.warehouse_id}
+  embed_credentials: false
+  dataset_catalog: ${var.catalog}
+  dataset_schema: ${resources.schemas.semantic.name}
+
+resources:
+  dashboards:
+    finance_function_details:
+      <<: *common
+      display_name: "Lochard | Finance – Function Details"
+      file_path: ../src/dashboards/finance_function_details.lvdash.json
+      permissions:
+        - {group_name: users, level: CAN_RUN}
+    hse_observations:
+      <<: *common
+      display_name: "Lochard | HSE Observations"
+      file_path: ../src/dashboards/hse_observations.lvdash.json
+      permissions:
+        - {group_name: users, level: CAN_RUN}
+    maintenance_dashboard:
+      <<: *common
+      warehouse_id: ${var.rt_warehouse_id}      # Lakehouse//RT
+      display_name: "Lochard | Maintenance Dashboard"
+      file_path: ../src/dashboards/maintenance_dashboard.lvdash.json
+      permissions:
+        - {group_name: users, level: CAN_RUN}
+    market_intelligence:
+      <<: *common
+      display_name: "Lochard | Market Intelligence"
+      file_path: ../src/dashboards/market_intelligence.lvdash.json
+      permissions:
+        - {group_name: users, level: CAN_RUN}
+    ops_vic_demand_edd:
+      <<: *common
+      warehouse_id: ${var.rt_warehouse_id}      # Lakehouse//RT
+      display_name: "Lochard | Ops – Cumulative VIC Demand & EDD"
+      file_path: ../src/dashboards/ops_vic_demand_edd.lvdash.json
+      permissions:
+        - {group_name: users, level: CAN_RUN}
+
+    # ---- platform dashboards (read lochard_platform)
+    platform_ai_cost_quality:
+      <<: *common
+      warehouse_id: ${var.rt_warehouse_id}      # Lakehouse//RT
+      dataset_schema: ${resources.schemas.platform.name}
+      display_name: "Lochard | Platform – AI Cost & Quality"
+      file_path: ../src/dashboards/platform_ai_cost_quality.lvdash.json
+    platform_data_quality:
+      <<: *common
+      warehouse_id: ${var.rt_warehouse_id}      # Lakehouse//RT
+      dataset_schema: ${resources.schemas.platform.name}
+      display_name: "Lochard | Platform – Data Quality & Pipelines"
+      file_path: ../src/dashboards/platform_data_quality.lvdash.json
+    platform_governance_audit:
+      <<: *common
+      dataset_schema: ${resources.schemas.platform.name}
+      display_name: "Lochard | Platform – Governance & Audit"
+      file_path: ../src/dashboards/platform_governance_audit.lvdash.json

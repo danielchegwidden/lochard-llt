@@ -1,0 +1,106 @@
+# Unity AI Gateway model services (UC securables in lochard_ai). Tiered for cost management, each with a
+# cross-provider fallback, per-user / per-service rate limits and an inference table for audit + cost analytics.
+# lochard_assistant is the "custom model" the app, agents and notebooks call: a governed, routed endpoint.
+x-pay-per-token: &ppt
+  destination_type: DESTINATION_TYPE_PAY_PER_TOKEN_FOUNDATION_MODEL
+
+resources:
+  model_services:
+    lochard_llm_premium:
+      parent: schemas/${var.catalog}.${resources.schemas.ai.name}
+      model_service_id: lochard_llm_premium
+      grants:
+        - {principal: "${resources.apps.board_portal_app.service_principal_client_id}", privileges: [EXECUTE]}
+        - {principal: "account users", privileges: [EXECUTE]}
+      comment: "Premium reasoning tier (board-grade synthesis). Claude Opus 5.5 -> fallback GPT-6"
+      config:
+        routing:
+          destinations:
+            - {<<: *ppt, name: opus, traffic_percentage: 100, pay_per_token_config: {model: "models/system.ai.${var.premium_model}"}}
+          fallback:
+            destinations:
+              - {<<: *ppt, name: gpt6, pay_per_token_config: {model: "models/system.ai.${var.premium_fallback_model}"}}
+        rate_limits:
+          - {key: RATE_LIMIT_KEY_USER_DEFAULT, renewal_period: RATE_LIMIT_RENEWAL_PERIOD_MINUTE, requests: 30}
+          - {key: RATE_LIMIT_KEY_SERVICE, renewal_period: RATE_LIMIT_RENEWAL_PERIOD_HOUR, tokens: 2000000}
+        inference_table:
+          parent: schemas/${var.catalog}.${resources.schemas.ai.name}
+          table_name_prefix: lochard_llm_premium
+    lochard_llm_standard:
+      parent: schemas/${var.catalog}.${resources.schemas.ai.name}
+      model_service_id: lochard_llm_standard
+      grants:
+        - {principal: "${resources.apps.board_portal_app.service_principal_client_id}", privileges: [EXECUTE]}
+        - {principal: "account users", privileges: [EXECUTE]}
+      comment: "Standard tier – default for agents and Q&A. Claude Sonnet 5 -> fallback GPT-5.5"
+      config:
+        routing:
+          destinations:
+            - {<<: *ppt, name: sonnet, traffic_percentage: 100, pay_per_token_config: {model: "models/system.ai.${var.standard_model}"}}
+          fallback:
+            destinations:
+              - {<<: *ppt, name: gpt55, pay_per_token_config: {model: "models/system.ai.${var.standard_fallback_model}"}}
+        rate_limits:
+          - {key: RATE_LIMIT_KEY_USER_DEFAULT, renewal_period: RATE_LIMIT_RENEWAL_PERIOD_MINUTE, requests: 60}
+        inference_table:
+          parent: schemas/${var.catalog}.${resources.schemas.ai.name}
+          table_name_prefix: lochard_llm_standard
+    lochard_llm_economy:
+      parent: schemas/${var.catalog}.${resources.schemas.ai.name}
+      model_service_id: lochard_llm_economy
+      grants:
+        - {principal: "${resources.apps.board_portal_app.service_principal_client_id}", privileges: [EXECUTE]}
+        - {principal: "account users", privileges: [EXECUTE]}
+      comment: "Economy tier – classification, summaries, AI Functions, drafting. Claude Haiku 4.5 -> fallback Gemini 3.8 Flash"
+      config:
+        routing:
+          destinations:
+            - {<<: *ppt, name: haiku, traffic_percentage: 100, pay_per_token_config: {model: "models/system.ai.${var.economy_model}"}}
+          fallback:
+            destinations:
+              - {<<: *ppt, name: gemini_flash, pay_per_token_config: {model: "models/system.ai.${var.economy_fallback_model}"}}
+        rate_limits:
+          - {key: RATE_LIMIT_KEY_USER_DEFAULT, renewal_period: RATE_LIMIT_RENEWAL_PERIOD_MINUTE, requests: 120}
+        inference_table:
+          parent: schemas/${var.catalog}.${resources.schemas.ai.name}
+          table_name_prefix: lochard_llm_economy
+    lochard_llm_open:
+      parent: schemas/${var.catalog}.${resources.schemas.ai.name}
+      model_service_id: lochard_llm_open
+      grants:
+        - {principal: "${resources.apps.board_portal_app.service_principal_client_id}", privileges: [EXECUTE]}
+        - {principal: "account users", privileges: [EXECUTE]}
+      comment: "Open-weights tier for cost comparison (gpt-oss-120b -> Qwen 3.5 122B)"
+      config:
+        routing:
+          destinations:
+            - {<<: *ppt, name: gpt_oss, traffic_percentage: 100, pay_per_token_config: {model: "models/system.ai.${var.open_model}"}}
+          fallback:
+            destinations:
+              - {<<: *ppt, name: qwen, pay_per_token_config: {model: "models/system.ai.databricks-qwen35-122b-a10b"}}
+        inference_table:
+          parent: schemas/${var.catalog}.${resources.schemas.ai.name}
+          table_name_prefix: lochard_llm_open
+    lochard_assistant:
+      parent: schemas/${var.catalog}.${resources.schemas.ai.name}
+      model_service_id: lochard_assistant
+      grants:
+        - {principal: "${resources.apps.board_portal_app.service_principal_client_id}", privileges: [EXECUTE]}
+        - {principal: "account users", privileges: [EXECUTE]}
+      comment: "Lochard Assistant – governed routed endpoint for the board portal, agents and notebooks. Weighted split across cost tiers (70% standard / 20% economy / 10% premium) with fallback; complexity-based routing is layered on top by lochard_router."
+      config:
+        routing:
+          destinations:
+            - {<<: *ppt, name: standard, traffic_percentage: 70, pay_per_token_config: {model: "models/system.ai.${var.standard_model}"}}
+            - {<<: *ppt, name: economy,  traffic_percentage: 20, pay_per_token_config: {model: "models/system.ai.${var.economy_model}"}}
+            - {<<: *ppt, name: premium,  traffic_percentage: 10, pay_per_token_config: {model: "models/system.ai.${var.premium_model}"}}
+          fallback:
+            destinations:
+              - {<<: *ppt, name: fallback_gpt, pay_per_token_config: {model: "models/system.ai.${var.standard_fallback_model}"}}
+              - {<<: *ppt, name: fallback_gemini, pay_per_token_config: {model: "models/system.ai.${var.economy_fallback_model}"}}
+        rate_limits:
+          - {key: RATE_LIMIT_KEY_USER_DEFAULT, renewal_period: RATE_LIMIT_RENEWAL_PERIOD_MINUTE, requests: 60}
+          - {key: RATE_LIMIT_KEY_SERVICE, renewal_period: RATE_LIMIT_RENEWAL_PERIOD_HOUR, tokens: 5000000}
+        inference_table:
+          parent: schemas/${var.catalog}.${resources.schemas.ai.name}
+          table_name_prefix: lochard_assistant

@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+
+# Node
+node_modules/
+src/app/frontend/.vite/
+
+# Databricks bundle state
+.databricks/
+
+# Local scratch / generated data
+/tmp/
+/out/
+brand-evidence/css/
+.DS_Store
+.isaac/

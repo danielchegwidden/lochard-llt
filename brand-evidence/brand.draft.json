@@ -1,0 +1,34 @@
+{
+  "_source": "https://www.lochardenergy.com.au/",
+  "_reviewed": false,
+  "_note": "Review against evidence.md before theming. A single primary colour is rarely enough; see references/design-fidelity.md.",
+  "customer_name": "Lochard Energy",
+  "app_short": "LE",
+  "app_name_line1": "Lochard Energy",
+  "app_name_line2": "Command Centre",
+  "colors": {
+    "primary": "(unresolved, read evidence.md)"
+  },
+  "font": "(read evidence.md Fonts section)",
+  "palette_from_site": {
+    "--wp--preset--color--black": "#000",
+    "--wp--preset--color--cyan-bluish-gray": "#abb8c3",
+    "--wp--preset--color--white": "#fff",
+    "--wp--preset--color--pale-pink": "#f78da7",
+    "--wp--preset--color--vivid-red": "#cf2e2e",
+    "--wp--preset--color--luminous-vivid-orange": "#ff6900",
+    "--wp--preset--color--luminous-vivid-amber": "#fcb900",
+    "--wp--preset--color--light-green-cyan": "#7bdcb5",
+    "--wp--preset--color--vivid-green-cyan": "#00d084",
+    "--wp--preset--color--pale-cyan-blue": "#8ed1fc",
+    "--wp--preset--color--vivid-cyan-blue": "#0693e3",
+    "--wp--preset--color--vivid-purple": "#9b51e0"
+  },
+  "layout": {
+    "nav_pattern": "hybrid",
+    "header_sticky": false,
+    "has_hero": true,
+    "_confidence": "high",
+    "_evidence": "top-nav (15 links) and sidebar class both found"
+  }
+}

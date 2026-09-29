@@ -1,0 +1,1090 @@
+{
+  "datasets": [
+    {
+      "name": "usage",
+      "displayName": "AI Gateway usage",
+      "queryLines": [
+        "SELECT usage_date, event_time, model_service, destination_model, requester, status_code, latency_ms, input_tokens,\n",
+        "       output_tokens, total_tokens, experiment_arm, app, used_fallback, est_cost_usd,\n",
+        "       CASE WHEN used_fallback THEN 1 ELSE 0 END AS fallback_flag,      -- flags for rate counters (no CASE in widget exprs)\n",
+        "       CASE WHEN status_code >= 400 THEN 1 ELSE 0 END AS error_flag\n",
+        "FROM v_ai_cost WHERE model_service LIKE 'lochard%'\n"
+      ]
+    },
+    {
+      "name": "frontier",
+      "displayName": "Cost vs quality frontier",
+      "queryLines": [
+        "SELECT * FROM v_ai_cost_frontier\n"
+      ]
+    },
+    {
+      "name": "exp",
+      "displayName": "Experiment detail",
+      "queryLines": [
+        "SELECT * FROM v_ai_cost_experiment\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "ai_cost",
+      "displayName": "AI Cost & Quality",
+      "layout": [
+        {
+          "widget": {
+            "name": "92ea98b8",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "c0288799",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## AI Cost & Quality\n\nUnity AI Gateway \u2013 spend, tokens, latency and routing across Lochard model services, plus the cost-vs-quality experiment (same grounded board questions through every tier and the router)."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 5,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "21c47aaf",
+            "queries": [
+              {
+                "name": "f_ai_cost_usage_model_service",
+                "query": {
+                  "datasetName": "usage",
+                  "fields": [
+                    {
+                      "name": "model_service",
+                      "expression": "`model_service`"
+                    },
+                    {
+                      "name": "model_service_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "model_service",
+                    "displayName": "Model service",
+                    "queryName": "f_ai_cost_usage_model_service"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Model service"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "0070d36e",
+            "queries": [
+              {
+                "name": "f_ai_cost_usage_usage_date",
+                "query": {
+                  "datasetName": "usage",
+                  "fields": [
+                    {
+                      "name": "usage_date",
+                      "expression": "`usage_date`"
+                    },
+                    {
+                      "name": "usage_date_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "usage_date",
+                    "displayName": "Date",
+                    "queryName": "f_ai_cost_usage_usage_date"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Date"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "b59f8264",
+            "queries": [
+              {
+                "name": "f_ai_cost_exp_arm",
+                "query": {
+                  "datasetName": "exp",
+                  "fields": [
+                    {
+                      "name": "arm",
+                      "expression": "`arm`"
+                    },
+                    {
+                      "name": "arm_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_ai_cost_frontier_arm",
+                "query": {
+                  "datasetName": "frontier",
+                  "fields": [
+                    {
+                      "name": "arm",
+                      "expression": "`arm`"
+                    },
+                    {
+                      "name": "arm_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "arm",
+                    "displayName": "Experiment arm",
+                    "queryName": "f_ai_cost_exp_arm"
+                  },
+                  {
+                    "fieldName": "arm",
+                    "displayName": "Experiment arm",
+                    "queryName": "f_ai_cost_frontier_arm"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Experiment arm"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "9ccbf226",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "usage",
+                  "fields": [
+                    {
+                      "name": "req",
+                      "expression": "COUNT(*)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "req",
+                  "displayName": "Requests",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Requests"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "4d431a60",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "usage",
+                  "fields": [
+                    {
+                      "name": "tok",
+                      "expression": "SUM(`total_tokens`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "tok",
+                  "displayName": "Tokens",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Tokens"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "41b17d4f",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "usage",
+                  "fields": [
+                    {
+                      "name": "cost",
+                      "expression": "SUM(`est_cost_usd`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "cost",
+                  "displayName": "Est. AI cost (USD)",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "AUD",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Est. AI cost (USD)"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "84a813f0",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "usage",
+                  "fields": [
+                    {
+                      "name": "lat",
+                      "expression": "AVG(`latency_ms`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "lat",
+                  "displayName": "Avg latency (ms)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Avg latency (ms)"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "5ac5e6f8",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "usage",
+                  "fields": [
+                    {
+                      "name": "fb",
+                      "expression": "AVG(`fallback_flag`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "fb",
+                  "displayName": "Fallback rate",
+                  "format": {
+                    "type": "number-percent",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Fallback rate"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "27d9ba6b",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "usage",
+                  "fields": [
+                    {
+                      "name": "err",
+                      "expression": "AVG(`error_flag`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "err",
+                  "displayName": "Error / throttled rate",
+                  "format": {
+                    "type": "number-percent",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Error / throttled rate",
+                "showDescription": true,
+                "description": "HTTP 4xx/5xx share. The 23-Sep spike is the first experiment run, when the reasoning tiers rejected `temperature` (fixed; 100% success since)."
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "bacdd5db",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "frontier",
+                  "fields": [
+                    {
+                      "name": "arm",
+                      "expression": "`arm`"
+                    },
+                    {
+                      "name": "q",
+                      "expression": "AVG(`avg_quality`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "arm",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Arm"
+                },
+                "y": {
+                  "fieldName": "q",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Avg quality (1-5)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Quality by arm (LLM judge, 1-5)"
+              },
+              "mark": {
+                "colors": [
+                  "#52B2E5"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "a6515acd",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "frontier",
+                  "fields": [
+                    {
+                      "name": "arm",
+                      "expression": "`arm`"
+                    },
+                    {
+                      "name": "c",
+                      "expression": "AVG(`cost_per_100_answers_usd`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "arm",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Arm"
+                },
+                "y": {
+                  "fieldName": "c",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "USD per 100 answers",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "AUD",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 3
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Cost per 100 answers by arm"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 6,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "ddad1144",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "frontier",
+                  "fields": [
+                    {
+                      "name": "c2",
+                      "expression": "`cost_per_100_answers_usd`"
+                    },
+                    {
+                      "name": "q2",
+                      "expression": "`avg_quality`"
+                    },
+                    {
+                      "name": "arm",
+                      "expression": "`arm`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "scatter",
+              "encodings": {
+                "x": {
+                  "fieldName": "c2",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "USD per 100 answers"
+                },
+                "y": {
+                  "fieldName": "q2",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Avg quality"
+                },
+                "color": {
+                  "fieldName": "arm",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Arm"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Cost vs quality frontier"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "f4a812c7",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "usage",
+                  "fields": [
+                    {
+                      "name": "daily(usage_date)",
+                      "expression": "DATE_TRUNC(\"DAY\", `usage_date`)"
+                    },
+                    {
+                      "name": "tok2",
+                      "expression": "SUM(`total_tokens`)"
+                    },
+                    {
+                      "name": "model_service",
+                      "expression": "`model_service`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "daily(usage_date)",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Day"
+                },
+                "y": {
+                  "fieldName": "tok2",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Tokens"
+                },
+                "color": {
+                  "fieldName": "model_service",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Model service"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Tokens by day and model service"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ],
+                "layout": "stack"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 12,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "ab187445",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "exp",
+                  "fields": [
+                    {
+                      "name": "category",
+                      "expression": "`category`"
+                    },
+                    {
+                      "name": "arm",
+                      "expression": "`arm`"
+                    },
+                    {
+                      "name": "aq",
+                      "expression": "AVG(`quality_score`)"
+                    },
+                    {
+                      "name": "ac",
+                      "expression": "SUM(`est_cost_usd`)"
+                    },
+                    {
+                      "name": "al",
+                      "expression": "AVG(`latency_ms`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pivot",
+              "encodings": {
+                "rows": [
+                  {
+                    "fieldName": "category",
+                    "displayName": "Question type",
+                    "displayTotal": true
+                  },
+                  {
+                    "fieldName": "arm",
+                    "displayName": "Arm",
+                    "displayTotal": true
+                  }
+                ],
+                "columns": [],
+                "cell": {
+                  "type": "multi-cell",
+                  "displayAs": "columns",
+                  "fields": [
+                    {
+                      "fieldName": "aq",
+                      "cellType": "text",
+                      "displayName": "Quality",
+                      "format": {
+                        "type": "number-plain",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 2
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "ac",
+                      "cellType": "text",
+                      "displayName": "Cost (USD)",
+                      "format": {
+                        "type": "number-currency",
+                        "currencyCode": "AUD",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 4
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "al",
+                      "cellType": "text",
+                      "displayName": "Latency ms",
+                      "format": {
+                        "type": "number-plain",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 0
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Quality, cost and latency by question type"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 18,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "261a9d41",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "exp",
+                  "fields": [
+                    {
+                      "name": "qid",
+                      "expression": "`qid`"
+                    },
+                    {
+                      "name": "category",
+                      "expression": "`category`"
+                    },
+                    {
+                      "name": "arm",
+                      "expression": "`arm`"
+                    },
+                    {
+                      "name": "routed_label",
+                      "expression": "`routed_label`"
+                    },
+                    {
+                      "name": "served_model",
+                      "expression": "`served_model`"
+                    },
+                    {
+                      "name": "quality_score",
+                      "expression": "`quality_score`"
+                    },
+                    {
+                      "name": "est_cost_usd",
+                      "expression": "`est_cost_usd`"
+                    },
+                    {
+                      "name": "latency_ms",
+                      "expression": "`latency_ms`"
+                    },
+                    {
+                      "name": "question",
+                      "expression": "`question`"
+                    },
+                    {
+                      "name": "judge_reason",
+                      "expression": "`judge_reason`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "qid",
+                    "displayName": "Q"
+                  },
+                  {
+                    "fieldName": "category",
+                    "displayName": "Type"
+                  },
+                  {
+                    "fieldName": "arm",
+                    "displayName": "Arm"
+                  },
+                  {
+                    "fieldName": "routed_label",
+                    "displayName": "Router label"
+                  },
+                  {
+                    "fieldName": "served_model",
+                    "displayName": "Served model"
+                  },
+                  {
+                    "fieldName": "quality_score",
+                    "displayName": "Quality"
+                  },
+                  {
+                    "fieldName": "est_cost_usd",
+                    "displayName": "Cost USD"
+                  },
+                  {
+                    "fieldName": "latency_ms",
+                    "displayName": "Latency"
+                  },
+                  {
+                    "fieldName": "question",
+                    "displayName": "Question"
+                  },
+                  {
+                    "fieldName": "judge_reason",
+                    "displayName": "Judge rationale"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Experiment detail"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 26,
+            "width": 6,
+            "height": 8
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#F4F4F4",
+        "dark": "#1E1C1B"
+      },
+      "widgetBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#2A2726"
+      },
+      "widgetBorderColor": {
+        "light": "#E6E1DF",
+        "dark": "#3A3634"
+      },
+      "fontColor": {
+        "light": "#1E1E1E",
+        "dark": "#F4F4F4"
+      },
+      "selectionColor": {
+        "light": "#F47525",
+        "dark": "#F47525"
+      },
+      "visualizationColors": [
+        "#F47525",
+        "#52B2E5",
+        "#A3194E",
+        "#565150",
+        "#FFC000",
+        "#8E4737",
+        "#00AEEF",
+        "#6A2C91",
+        "#BDBDBD"
+      ],
+      "widgetHeaderAlignment": "LEFT"
+    },
+    "genieSpace": {
+      "isEnabled": true
+    }
+  }
+}

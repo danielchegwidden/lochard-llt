@@ -1,0 +1,827 @@
+{
+  "datasets": [
+    {
+      "name": "exp",
+      "displayName": "Expectations",
+      "queryLines": [
+        "SELECT *, concat(table_name, '.', expectation) AS rule_key, passed_records + failed_records AS total_records\n",
+        "FROM v_pipeline_expectations\n"
+      ]
+    },
+    {
+      "name": "upd",
+      "displayName": "Pipeline updates",
+      "queryLines": [
+        "SELECT *, CASE WHEN final_state = 'COMPLETED' THEN 1 ELSE 0 END AS ok_flag,\n",
+        "       -- health KPI = outcome of each pipeline's most recent finished update (history stays in the table below)\n",
+        "       CASE WHEN row_number() OVER (PARTITION BY pipeline, final_state IS NOT NULL ORDER BY started_at DESC) = 1\n",
+        "                 AND final_state IS NOT NULL\n",
+        "            THEN CASE WHEN final_state = 'COMPLETED' THEN 1 ELSE 0 END END AS latest_ok_flag\n",
+        "FROM v_pipeline_updates\n"
+      ]
+    },
+    {
+      "name": "fresh",
+      "displayName": "Freshness",
+      "queryLines": [
+        "SELECT table_name, latest_business_date, sla_days, datediff(current_date(), latest_business_date) AS age_days,\n",
+        "       datediff(current_date(), latest_business_date) <= sla_days AS within_sla,\n",
+        "       CASE WHEN datediff(current_date(), latest_business_date) <= sla_days THEN 1 ELSE 0 END AS sla_flag\n",
+        "FROM v_table_freshness\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "dq",
+      "displayName": "Data Quality & Pipelines",
+      "layout": [
+        {
+          "widget": {
+            "name": "5139362f",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "35011a75",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Data Quality & Pipelines\n\nLakeflow Declarative Pipelines \u2013 expectation results (warn / drop / fail), quarantined rows, update outcomes and data freshness for every Lochard domain."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 5,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "3411b055",
+            "queries": [
+              {
+                "name": "f_dq_exp_pipeline",
+                "query": {
+                  "datasetName": "exp",
+                  "fields": [
+                    {
+                      "name": "pipeline",
+                      "expression": "`pipeline`"
+                    },
+                    {
+                      "name": "pipeline_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_dq_upd_pipeline",
+                "query": {
+                  "datasetName": "upd",
+                  "fields": [
+                    {
+                      "name": "pipeline",
+                      "expression": "`pipeline`"
+                    },
+                    {
+                      "name": "pipeline_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "pipeline",
+                    "displayName": "Pipeline",
+                    "queryName": "f_dq_exp_pipeline"
+                  },
+                  {
+                    "fieldName": "pipeline",
+                    "displayName": "Pipeline",
+                    "queryName": "f_dq_upd_pipeline"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Pipeline"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "eb9f2235",
+            "queries": [
+              {
+                "name": "f_dq_exp_layer",
+                "query": {
+                  "datasetName": "exp",
+                  "fields": [
+                    {
+                      "name": "layer",
+                      "expression": "`layer`"
+                    },
+                    {
+                      "name": "layer_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "layer",
+                    "displayName": "Layer",
+                    "queryName": "f_dq_exp_layer"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Layer"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "a30ac2aa",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "exp",
+                  "fields": [
+                    {
+                      "name": "rules",
+                      "expression": "COUNT(DISTINCT `rule_key`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "rules",
+                  "displayName": "Expectations monitored",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Expectations monitored"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "c057f6da",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "exp",
+                  "fields": [
+                    {
+                      "name": "failed",
+                      "expression": "SUM(`failed_records`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "failed",
+                  "displayName": "Records failing a rule",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Records failing a rule"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "712b4cca",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "exp",
+                  "fields": [
+                    {
+                      "name": "rate",
+                      "expression": "SUM(`failed_records`) / SUM(`total_records`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "rate",
+                  "displayName": "Overall failure rate",
+                  "format": {
+                    "type": "number-percent",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Overall failure rate"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "50b11f68",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "upd",
+                  "fields": [
+                    {
+                      "name": "ok",
+                      "expression": "AVG(`latest_ok_flag`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "ok",
+                  "displayName": "Pipelines healthy (latest update)",
+                  "format": {
+                    "type": "number-percent",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Pipelines healthy (latest update)",
+                "showDescription": true,
+                "description": "Share of pipelines whose most recent update completed. Every update, including failures, is listed in Pipeline updates."
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "189b3df2",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "fresh",
+                  "fields": [
+                    {
+                      "name": "sla",
+                      "expression": "AVG(`sla_flag`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sla",
+                  "displayName": "Tables within SLA",
+                  "format": {
+                    "type": "number-percent",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Tables within SLA",
+                "showDescription": true,
+                "description": "Finance (GL to 31-Aug) and Maintenance (snapshot 4-Aug) are pinned to the August 2026 board period; they refresh when the paused daily orchestrator is resumed."
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 4,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "056d0411",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "exp",
+                  "fields": [
+                    {
+                      "name": "expectation",
+                      "expression": "`expectation`"
+                    },
+                    {
+                      "name": "sum(failed_records)",
+                      "expression": "SUM(`failed_records`)"
+                    },
+                    {
+                      "name": "pipeline",
+                      "expression": "`pipeline`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "expectation",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Expectation"
+                },
+                "y": {
+                  "fieldName": "sum(failed_records)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Failed records"
+                },
+                "color": {
+                  "fieldName": "pipeline",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Pipeline"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Failed records by expectation"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ],
+                "layout": "stack"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 3,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "719903df",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "exp",
+                  "fields": [
+                    {
+                      "name": "pipeline",
+                      "expression": "`pipeline`"
+                    },
+                    {
+                      "name": "table_name",
+                      "expression": "`table_name`"
+                    },
+                    {
+                      "name": "expectation",
+                      "expression": "`expectation`"
+                    },
+                    {
+                      "name": "sum(passed_records)",
+                      "expression": "SUM(`passed_records`)"
+                    },
+                    {
+                      "name": "sum(failed_records)",
+                      "expression": "SUM(`failed_records`)"
+                    },
+                    {
+                      "name": "fr",
+                      "expression": "SUM(`failed_records`) / SUM(`total_records`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pivot",
+              "encodings": {
+                "rows": [
+                  {
+                    "fieldName": "pipeline",
+                    "displayName": "Pipeline",
+                    "displayTotal": true
+                  },
+                  {
+                    "fieldName": "table_name",
+                    "displayName": "Table",
+                    "displayTotal": true
+                  },
+                  {
+                    "fieldName": "expectation",
+                    "displayName": "Expectation",
+                    "displayTotal": true
+                  }
+                ],
+                "columns": [],
+                "cell": {
+                  "type": "multi-cell",
+                  "displayAs": "columns",
+                  "fields": [
+                    {
+                      "fieldName": "sum(passed_records)",
+                      "cellType": "text",
+                      "displayName": "Passed",
+                      "format": {
+                        "type": "number-plain",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 0
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "sum(failed_records)",
+                      "cellType": "text",
+                      "displayName": "Failed",
+                      "format": {
+                        "type": "number-plain",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 0
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "fr",
+                      "cellType": "text",
+                      "displayName": "Failure rate",
+                      "format": {
+                        "type": "number-percent",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 2
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Expectation results"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 6,
+            "width": 3,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "e972c09c",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "upd",
+                  "fields": [
+                    {
+                      "name": "pipeline",
+                      "expression": "`pipeline`"
+                    },
+                    {
+                      "name": "update_id",
+                      "expression": "`update_id`"
+                    },
+                    {
+                      "name": "started_at",
+                      "expression": "`started_at`"
+                    },
+                    {
+                      "name": "duration_s",
+                      "expression": "`duration_s`"
+                    },
+                    {
+                      "name": "final_state",
+                      "expression": "`final_state`"
+                    },
+                    {
+                      "name": "error_events",
+                      "expression": "`error_events`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "pipeline",
+                    "displayName": "Pipeline"
+                  },
+                  {
+                    "fieldName": "update_id",
+                    "displayName": "Update"
+                  },
+                  {
+                    "fieldName": "started_at",
+                    "displayName": "Started"
+                  },
+                  {
+                    "fieldName": "duration_s",
+                    "displayName": "Seconds"
+                  },
+                  {
+                    "fieldName": "final_state",
+                    "displayName": "State"
+                  },
+                  {
+                    "fieldName": "error_events",
+                    "displayName": "Errors"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Pipeline updates"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 13,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "abafff87",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "fresh",
+                  "fields": [
+                    {
+                      "name": "table_name",
+                      "expression": "`table_name`"
+                    },
+                    {
+                      "name": "latest_business_date",
+                      "expression": "`latest_business_date`"
+                    },
+                    {
+                      "name": "age_days",
+                      "expression": "`age_days`"
+                    },
+                    {
+                      "name": "sla_days",
+                      "expression": "`sla_days`"
+                    },
+                    {
+                      "name": "within_sla",
+                      "expression": "`within_sla`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "table_name",
+                    "displayName": "Table"
+                  },
+                  {
+                    "fieldName": "latest_business_date",
+                    "displayName": "Latest data"
+                  },
+                  {
+                    "fieldName": "age_days",
+                    "displayName": "Age (days)"
+                  },
+                  {
+                    "fieldName": "sla_days",
+                    "displayName": "SLA (days)"
+                  },
+                  {
+                    "fieldName": "within_sla",
+                    "displayName": "Within SLA"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Freshness"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 13,
+            "width": 3,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#F4F4F4",
+        "dark": "#1E1C1B"
+      },
+      "widgetBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#2A2726"
+      },
+      "widgetBorderColor": {
+        "light": "#E6E1DF",
+        "dark": "#3A3634"
+      },
+      "fontColor": {
+        "light": "#1E1E1E",
+        "dark": "#F4F4F4"
+      },
+      "selectionColor": {
+        "light": "#F47525",
+        "dark": "#F47525"
+      },
+      "visualizationColors": [
+        "#F47525",
+        "#52B2E5",
+        "#A3194E",
+        "#565150",
+        "#FFC000",
+        "#8E4737",
+        "#00AEEF",
+        "#6A2C91",
+        "#BDBDBD"
+      ],
+      "widgetHeaderAlignment": "LEFT"
+    },
+    "genieSpace": {
+      "isEnabled": true
+    }
+  }
+}

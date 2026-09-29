@@ -1,0 +1,1182 @@
+{
+  "datasets": [
+    {
+      "name": "snap",
+      "displayName": "Latest weekly snapshot",
+      "queryLines": [
+        "SELECT snapshot_date, schedule_week_start, priority_bucket, work_type, wo_class, status, is_open, lead_craft,\n",
+        "       workorder_count, scheduled_count, schedule_compliant_count, est_dur_scheduled, est_dur_compliant,\n",
+        "       overdue_safety_critical_count, backlog_count,\n",
+        "       CASE WHEN priority_bucket = 'P1' AND is_open THEN workorder_count ELSE 0 END AS open_p1_count,\n",
+        "       CASE WHEN priority_bucket = 'P2' AND work_type <> 'PM' AND is_open THEN workorder_count ELSE 0 END AS open_p2_ex_pm_count,\n",
+        "       CASE WHEN work_type <> 'PM' THEN backlog_count ELSE 0 END AS backlog_ex_pm_count\n",
+        "FROM v_workorder_schedule_weekly WHERE is_latest_snapshot\n"
+      ]
+    },
+    {
+      "name": "sched",
+      "displayName": "Scheduled work (13 weeks)",
+      "queryLines": [
+        "SELECT schedule_week_start, priority_bucket, work_type, status, lead_craft, scheduled_count, schedule_compliant_count,\n",
+        "       NULLIF(scheduled_count, 0) AS scheduled_count_nz,             -- ratio denominator: never divides by zero\n",
+        "       CAST(est_dur_scheduled AS DECIMAL(14, 2)) AS est_dur_scheduled,   -- exact sums (no float noise in labels)\n",
+        "       CAST(est_dur_compliant AS DECIMAL(14, 2)) AS est_dur_compliant\n",
+        "FROM v_workorder_schedule_weekly WHERE is_latest_snapshot AND schedule_week_start IS NOT NULL\n"
+      ]
+    },
+    {
+      "name": "snap_curweek",
+      "displayName": "Current schedule week",
+      "queryLines": [
+        "SELECT priority_bucket, work_type, status, schedule_week_start, scheduled_count, schedule_compliant_count,\n",
+        "       NULLIF(scheduled_count, 0) AS scheduled_count_nz\n",
+        "FROM v_workorder_schedule_weekly\n",
+        "WHERE is_latest_snapshot AND schedule_week_start = (SELECT max(schedule_week_start) FROM v_workorder_schedule_weekly\n",
+        "                                                    WHERE is_latest_snapshot)\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "maintenance_dashboard",
+      "displayName": "Maintenance Dashboard",
+      "layout": [
+        {
+          "widget": {
+            "name": "82f3d6ec",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "9a785cee",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Maintenance Dashboard\n\nWeekly maintenance performance reporting. Maximo schedule snapshot and planner schedule-hours files."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "64a160cd",
+            "multilineTextboxSpec": {
+              "lines": [
+                "**Site S3620** \u2013 Iona Gas Storage Facility"
+              ]
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "ea81c9b9",
+            "queries": [
+              {
+                "name": "f_maintenance_dashboard_snap_priority_bucket",
+                "query": {
+                  "datasetName": "snap",
+                  "fields": [
+                    {
+                      "name": "priority_bucket",
+                      "expression": "`priority_bucket`"
+                    },
+                    {
+                      "name": "priority_bucket_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_maintenance_dashboard_snap_curweek_priority_bucket",
+                "query": {
+                  "datasetName": "snap_curweek",
+                  "fields": [
+                    {
+                      "name": "priority_bucket",
+                      "expression": "`priority_bucket`"
+                    },
+                    {
+                      "name": "priority_bucket_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_maintenance_dashboard_sched_priority_bucket",
+                "query": {
+                  "datasetName": "sched",
+                  "fields": [
+                    {
+                      "name": "priority_bucket",
+                      "expression": "`priority_bucket`"
+                    },
+                    {
+                      "name": "priority_bucket_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "priority_bucket",
+                    "displayName": "Priority",
+                    "queryName": "f_maintenance_dashboard_snap_priority_bucket"
+                  },
+                  {
+                    "fieldName": "priority_bucket",
+                    "displayName": "Priority",
+                    "queryName": "f_maintenance_dashboard_snap_curweek_priority_bucket"
+                  },
+                  {
+                    "fieldName": "priority_bucket",
+                    "displayName": "Priority",
+                    "queryName": "f_maintenance_dashboard_sched_priority_bucket"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Priority"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "5010d354",
+            "queries": [
+              {
+                "name": "f_maintenance_dashboard_snap_status",
+                "query": {
+                  "datasetName": "snap",
+                  "fields": [
+                    {
+                      "name": "status",
+                      "expression": "`status`"
+                    },
+                    {
+                      "name": "status_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_maintenance_dashboard_snap_curweek_status",
+                "query": {
+                  "datasetName": "snap_curweek",
+                  "fields": [
+                    {
+                      "name": "status",
+                      "expression": "`status`"
+                    },
+                    {
+                      "name": "status_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_maintenance_dashboard_sched_status",
+                "query": {
+                  "datasetName": "sched",
+                  "fields": [
+                    {
+                      "name": "status",
+                      "expression": "`status`"
+                    },
+                    {
+                      "name": "status_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "status",
+                    "displayName": "Status",
+                    "queryName": "f_maintenance_dashboard_snap_status"
+                  },
+                  {
+                    "fieldName": "status",
+                    "displayName": "Status",
+                    "queryName": "f_maintenance_dashboard_snap_curweek_status"
+                  },
+                  {
+                    "fieldName": "status",
+                    "displayName": "Status",
+                    "queryName": "f_maintenance_dashboard_sched_status"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Status"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "18e7b01a",
+            "queries": [
+              {
+                "name": "f_maintenance_dashboard_snap_work_type",
+                "query": {
+                  "datasetName": "snap",
+                  "fields": [
+                    {
+                      "name": "work_type",
+                      "expression": "`work_type`"
+                    },
+                    {
+                      "name": "work_type_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_maintenance_dashboard_snap_curweek_work_type",
+                "query": {
+                  "datasetName": "snap_curweek",
+                  "fields": [
+                    {
+                      "name": "work_type",
+                      "expression": "`work_type`"
+                    },
+                    {
+                      "name": "work_type_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_maintenance_dashboard_sched_work_type",
+                "query": {
+                  "datasetName": "sched",
+                  "fields": [
+                    {
+                      "name": "work_type",
+                      "expression": "`work_type`"
+                    },
+                    {
+                      "name": "work_type_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "work_type",
+                    "displayName": "Work Order Type",
+                    "queryName": "f_maintenance_dashboard_snap_work_type"
+                  },
+                  {
+                    "fieldName": "work_type",
+                    "displayName": "Work Order Type",
+                    "queryName": "f_maintenance_dashboard_snap_curweek_work_type"
+                  },
+                  {
+                    "fieldName": "work_type",
+                    "displayName": "Work Order Type",
+                    "queryName": "f_maintenance_dashboard_sched_work_type"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Work Order Type"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "581326ce",
+            "queries": [
+              {
+                "name": "f_maintenance_dashboard_snap_schedule_week_start",
+                "query": {
+                  "datasetName": "snap",
+                  "fields": [
+                    {
+                      "name": "schedule_week_start",
+                      "expression": "`schedule_week_start`"
+                    },
+                    {
+                      "name": "schedule_week_start_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_maintenance_dashboard_sched_schedule_week_start",
+                "query": {
+                  "datasetName": "sched",
+                  "fields": [
+                    {
+                      "name": "schedule_week_start",
+                      "expression": "`schedule_week_start`"
+                    },
+                    {
+                      "name": "schedule_week_start_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "schedule_week_start",
+                    "displayName": "Schedule Week",
+                    "queryName": "f_maintenance_dashboard_snap_schedule_week_start"
+                  },
+                  {
+                    "fieldName": "schedule_week_start",
+                    "displayName": "Schedule Week",
+                    "queryName": "f_maintenance_dashboard_sched_schedule_week_start"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Schedule Week"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "10569ba6",
+            "queries": [
+              {
+                "name": "f_maintenance_dashboard_snap_lead_craft",
+                "query": {
+                  "datasetName": "snap",
+                  "fields": [
+                    {
+                      "name": "lead_craft",
+                      "expression": "`lead_craft`"
+                    },
+                    {
+                      "name": "lead_craft_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_maintenance_dashboard_sched_lead_craft",
+                "query": {
+                  "datasetName": "sched",
+                  "fields": [
+                    {
+                      "name": "lead_craft",
+                      "expression": "`lead_craft`"
+                    },
+                    {
+                      "name": "lead_craft_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "lead_craft",
+                    "displayName": "Lead Craft",
+                    "queryName": "f_maintenance_dashboard_snap_lead_craft"
+                  },
+                  {
+                    "fieldName": "lead_craft",
+                    "displayName": "Lead Craft",
+                    "queryName": "f_maintenance_dashboard_sched_lead_craft"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Lead Craft"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "84a85059",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "snap_curweek",
+                  "fields": [
+                    {
+                      "name": "compliance",
+                      "expression": "SUM(`schedule_compliant_count`) / SUM(`scheduled_count_nz`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "compliance",
+                  "displayName": "Current Scheduled Compliance %",
+                  "format": {
+                    "type": "number-percent",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Current Scheduled Compliance %"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "1af349b0",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "snap",
+                  "fields": [
+                    {
+                      "name": "overdue_sc",
+                      "expression": "SUM(`overdue_safety_critical_count`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "overdue_sc",
+                  "displayName": "Overdue Safety Critical WO's",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Overdue Safety Critical WO's"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "d2997ae0",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "snap",
+                  "fields": [
+                    {
+                      "name": "sum(open_p1_count)",
+                      "expression": "SUM(`open_p1_count`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(open_p1_count)",
+                  "displayName": "Open P1 Workorders",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Open P1 Workorders"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "cbadaa7a",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "snap",
+                  "fields": [
+                    {
+                      "name": "sum(open_p2_ex_pm_count)",
+                      "expression": "SUM(`open_p2_ex_pm_count`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(open_p2_ex_pm_count)",
+                  "displayName": "Open P2 Workorders (excluding PMs)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Open P2 Workorders (excluding PMs)"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "cc019583",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "snap",
+                  "fields": [
+                    {
+                      "name": "sum(backlog_ex_pm_count)",
+                      "expression": "SUM(`backlog_ex_pm_count`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(backlog_ex_pm_count)",
+                  "displayName": "Backlog Workorders (excluding PMs)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Backlog Workorders (excluding PMs)"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "d6837771",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "sched",
+                  "fields": [
+                    {
+                      "name": "weekly(schedule_week_start)",
+                      "expression": "DATE_TRUNC(\"WEEK\", `schedule_week_start`)"
+                    },
+                    {
+                      "name": "sum(scheduled_count)",
+                      "expression": "SUM(`scheduled_count`)"
+                    },
+                    {
+                      "name": "sum(schedule_compliant_count)",
+                      "expression": "SUM(`schedule_compliant_count`)"
+                    },
+                    {
+                      "name": "sched_pct",
+                      "expression": "SUM(`schedule_compliant_count`) * 100 / SUM(`scheduled_count_nz`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "combo",
+              "encodings": {
+                "x": {
+                  "fieldName": "weekly(schedule_week_start)",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Schedule Week"
+                },
+                "y": {
+                  "primary": {
+                    "fields": [
+                      {
+                        "fieldName": "sum(scheduled_count)",
+                        "displayName": "Scheduled WO Count"
+                      },
+                      {
+                        "fieldName": "sum(schedule_compliant_count)",
+                        "displayName": "Scheduled Completed WO Count"
+                      }
+                    ],
+                    "scale": {
+                      "type": "quantitative"
+                    }
+                  },
+                  "secondary": {
+                    "fields": [
+                      {
+                        "fieldName": "sched_pct",
+                        "displayName": "Scheduled Completion %",
+                        "format": {
+                          "type": "number-plain",
+                          "abbreviation": "none",
+                          "decimalPlaces": {
+                            "type": "max",
+                            "places": 1
+                          }
+                        }
+                      }
+                    ],
+                    "scale": {
+                      "type": "quantitative"
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Schedule Compliance Trend"
+              },
+              "mark": {
+                "layout": "group"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "7fea2a82",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "sched",
+                  "fields": [
+                    {
+                      "name": "work_type",
+                      "expression": "`work_type`"
+                    },
+                    {
+                      "name": "sum(scheduled_count)",
+                      "expression": "SUM(`scheduled_count`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "sum(scheduled_count)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Scheduled WOs"
+                },
+                "color": {
+                  "fieldName": "work_type",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "PM",
+                        "color": "#ED6D05"
+                      },
+                      {
+                        "value": "GPC",
+                        "color": "#F4A6A6"
+                      },
+                      {
+                        "value": "DM",
+                        "color": "#E8175D"
+                      },
+                      {
+                        "value": "CBM",
+                        "color": "#F7C59F"
+                      },
+                      {
+                        "value": "MOD",
+                        "color": "#FFC000"
+                      },
+                      {
+                        "value": "ADMIN",
+                        "color": "#FFDF96"
+                      },
+                      {
+                        "value": "EM",
+                        "color": "#52B2E5"
+                      },
+                      {
+                        "value": "HSE",
+                        "color": "#B7D9F4"
+                      },
+                      {
+                        "value": "MAINT",
+                        "color": "#1F77B4"
+                      },
+                      {
+                        "value": "OPS",
+                        "color": "#D9A6B9"
+                      },
+                      {
+                        "value": "TRA",
+                        "color": "#2CB9A8"
+                      },
+                      {
+                        "value": "Unknown",
+                        "color": "#565150"
+                      }
+                    ]
+                  },
+                  "displayName": "Work type"
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Scheduled Workorders by type"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 6,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "4557d070",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "sched",
+                  "fields": [
+                    {
+                      "name": "lead_craft",
+                      "expression": "`lead_craft`"
+                    },
+                    {
+                      "name": "sum(scheduled_count)",
+                      "expression": "SUM(`scheduled_count`)"
+                    },
+                    {
+                      "name": "sum(est_dur_scheduled)",
+                      "expression": "SUM(`est_dur_scheduled`)"
+                    },
+                    {
+                      "name": "sum(est_dur_compliant)",
+                      "expression": "SUM(`est_dur_compliant`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pivot",
+              "encodings": {
+                "rows": [
+                  {
+                    "fieldName": "lead_craft",
+                    "displayName": "Lead Craft",
+                    "displayTotal": true
+                  }
+                ],
+                "columns": [],
+                "cell": {
+                  "type": "multi-cell",
+                  "displayAs": "columns",
+                  "fields": [
+                    {
+                      "fieldName": "sum(scheduled_count)",
+                      "cellType": "text",
+                      "displayName": "Scheduled WOs",
+                      "format": {
+                        "type": "number-plain",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 0
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "sum(est_dur_scheduled)",
+                      "cellType": "text",
+                      "displayName": "Total Scheduled Hours",
+                      "format": {
+                        "type": "number-plain",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 1
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "sum(est_dur_compliant)",
+                      "cellType": "text",
+                      "displayName": "Total Completed Hours",
+                      "format": {
+                        "type": "number-plain",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 1
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Scheduled Workorder Hours by Lead Craft"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "120bd1d9",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "sched",
+                  "fields": [
+                    {
+                      "name": "weekly(schedule_week_start)",
+                      "expression": "DATE_TRUNC(\"WEEK\", `schedule_week_start`)"
+                    },
+                    {
+                      "name": "sum(est_dur_scheduled)",
+                      "expression": "SUM(`est_dur_scheduled`)"
+                    },
+                    {
+                      "name": "sum(est_dur_compliant)",
+                      "expression": "SUM(`est_dur_compliant`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "weekly(schedule_week_start)",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Schedule Week"
+                },
+                "y": {
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "fields": [
+                    {
+                      "fieldName": "sum(est_dur_scheduled)",
+                      "displayName": "Total Scheduled Hours",
+                      "format": {
+                        "type": "number-plain",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 0
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "sum(est_dur_compliant)",
+                      "displayName": "Total Completed Hours",
+                      "format": {
+                        "type": "number-plain",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 0
+                        }
+                      }
+                    }
+                  ]
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Total Scheduled Hours and Total Completed Hours by Schedule Week"
+              },
+              "mark": {
+                "colors": [
+                  "#ED6D05",
+                  "#52B2E5"
+                ],
+                "layout": "group"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 12,
+            "width": 3,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#F4F4F4",
+        "dark": "#1E1C1B"
+      },
+      "widgetBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#2A2726"
+      },
+      "widgetBorderColor": {
+        "light": "#E6E1DF",
+        "dark": "#3A3634"
+      },
+      "fontColor": {
+        "light": "#1E1E1E",
+        "dark": "#F4F4F4"
+      },
+      "selectionColor": {
+        "light": "#F47525",
+        "dark": "#F47525"
+      },
+      "visualizationColors": [
+        "#F47525",
+        "#52B2E5",
+        "#A3194E",
+        "#565150",
+        "#FFC000",
+        "#8E4737",
+        "#00AEEF",
+        "#6A2C91",
+        "#BDBDBD"
+      ],
+      "widgetHeaderAlignment": "LEFT"
+    },
+    "genieSpace": {
+      "isEnabled": true
+    }
+  }
+}

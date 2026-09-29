@@ -1,0 +1,4310 @@
+{
+  "fiscal_years": [
+    {
+      "fy_code": "FY26",
+      "start_date": "2025-07-01",
+      "end_date": "2026-06-30",
+      "status": "CLOSED"
+    },
+    {
+      "fy_code": "FY27",
+      "start_date": "2026-07-01",
+      "end_date": "2027-06-30",
+      "status": "ACTIVE"
+    }
+  ],
+  "pillars": [
+    {
+      "fy_code": "FY26",
+      "pillar_no": 1,
+      "name": "HSE & Iona Operations"
+    },
+    {
+      "fy_code": "FY26",
+      "pillar_no": 2,
+      "name": "Growth Delivery"
+    },
+    {
+      "fy_code": "FY26",
+      "pillar_no": 3,
+      "name": "Financial"
+    },
+    {
+      "fy_code": "FY27",
+      "pillar_no": 1,
+      "name": "HSE & Iona Operations"
+    },
+    {
+      "fy_code": "FY27",
+      "pillar_no": 2,
+      "name": "Growth Delivery"
+    },
+    {
+      "fy_code": "FY27",
+      "pillar_no": 3,
+      "name": "Financial"
+    }
+  ],
+  "kpis": [
+    {
+      "kpi_id": "FY26-1.1",
+      "fy_code": "FY26",
+      "pillar": "HSE & Iona Operations",
+      "code": "1.1",
+      "name": "HSE Performance",
+      "owner_initials": "DA",
+      "owner_role": "Chief Operating Officer",
+      "weight_pct": 20,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "fy_code": "FY26",
+      "pillar": "HSE & Iona Operations",
+      "code": "1.2",
+      "name": "Operations & Maintenance Performance",
+      "owner_initials": "DA/BN",
+      "owner_role": "Chief Operating Officer / GM Commercial",
+      "weight_pct": 15,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "fy_code": "FY26",
+      "pillar": "HSE & Iona Operations",
+      "code": "1.3",
+      "name": "Data Utilisation Project \u2013 Phase 1",
+      "owner_initials": "LLT",
+      "owner_role": "Lochard Leadership Team",
+      "weight_pct": 5,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "fy_code": "FY26",
+      "pillar": "Growth Delivery",
+      "code": "2.1",
+      "name": "HUGS Delivery",
+      "owner_initials": "DA/DS",
+      "owner_role": "Chief Operating Officer / GM Project Delivery",
+      "weight_pct": 15,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "fy_code": "FY26",
+      "pillar": "Growth Delivery",
+      "code": "2.2",
+      "name": "Queen FEL1",
+      "owner_initials": "DS/DG",
+      "owner_role": "GM Project Delivery / GM Development",
+      "weight_pct": 15,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "fy_code": "FY26",
+      "pillar": "Growth Delivery",
+      "code": "2.3",
+      "name": "Growth & Commercial Strategy",
+      "owner_initials": "DG/BN",
+      "owner_role": "GM Development / GM Commercial",
+      "weight_pct": 10,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "fy_code": "FY26",
+      "pillar": "Financial",
+      "code": "3.1",
+      "name": "EBITDA excluding non-cash",
+      "owner_initials": "LLT",
+      "owner_role": "Lochard Leadership Team",
+      "weight_pct": 15,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "fy_code": "FY26",
+      "pillar": "Financial",
+      "code": "3.2",
+      "name": "Corporate Model",
+      "owner_initials": "LLT",
+      "owner_role": "Lochard Leadership Team",
+      "weight_pct": 5,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "fy_code": "FY27",
+      "pillar": "HSE & Iona Operations",
+      "code": "1.1",
+      "name": "HSE Performance",
+      "owner_initials": "DA",
+      "owner_role": "Chief Operating Officer",
+      "weight_pct": 20,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "fy_code": "FY27",
+      "pillar": "HSE & Iona Operations",
+      "code": "1.2",
+      "name": "Operations & Maintenance Performance",
+      "owner_initials": "DA/BN",
+      "owner_role": "Chief Operating Officer / GM Commercial",
+      "weight_pct": 10,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "fy_code": "FY27",
+      "pillar": "HSE & Iona Operations",
+      "code": "1.3",
+      "name": "Delivery of key FIT program initiatives",
+      "owner_initials": "LLT",
+      "owner_role": "Lochard Leadership Team",
+      "weight_pct": 5,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "fy_code": "FY27",
+      "pillar": "Growth Delivery",
+      "code": "2.1",
+      "name": "HUGS Delivery",
+      "owner_initials": "DA/DS",
+      "owner_role": "Chief Operating Officer / GM Project Delivery",
+      "weight_pct": 5,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "fy_code": "FY27",
+      "pillar": "Growth Delivery",
+      "code": "2.2",
+      "name": "Queen Delivery",
+      "owner_initials": "DS/DG",
+      "owner_role": "GM Project Delivery / GM Development",
+      "weight_pct": 20,
+      "preamble": "Material progress on the development of:"
+    },
+    {
+      "kpi_id": "FY27-2.3",
+      "fy_code": "FY27",
+      "pillar": "Growth Delivery",
+      "code": "2.3",
+      "name": "Growth & Commercial Strategy",
+      "owner_initials": "DG/BN",
+      "owner_role": "GM Development / GM Commercial",
+      "weight_pct": 10,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY27-3.1",
+      "fy_code": "FY27",
+      "pillar": "Financial",
+      "code": "3.1",
+      "name": "EBITDA excluding non-cash",
+      "owner_initials": "LLT",
+      "owner_role": "Lochard Leadership Team",
+      "weight_pct": 20,
+      "preamble": null
+    },
+    {
+      "kpi_id": "FY27-3.2",
+      "fy_code": "FY27",
+      "pillar": "Financial",
+      "code": "3.2",
+      "name": "TSR per Lochard Corporate Model",
+      "owner_initials": "LLT",
+      "owner_role": "Lochard Leadership Team",
+      "weight_pct": 10,
+      "preamble": null
+    }
+  ],
+  "deliverables": [
+    {
+      "kpi_id": "FY26-1.1",
+      "seq": 1,
+      "text": "HSE Performance \u2013 deliverable 1"
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "seq": 2,
+      "text": "HSE Performance \u2013 deliverable 2"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "seq": 1,
+      "text": "Operations & Maintenance Performance \u2013 deliverable 1"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "seq": 2,
+      "text": "Operations & Maintenance Performance \u2013 deliverable 2"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "seq": 1,
+      "text": "Data Utilisation Project \u2013 Phase 1 \u2013 deliverable 1"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "seq": 2,
+      "text": "Data Utilisation Project \u2013 Phase 1 \u2013 deliverable 2"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "seq": 1,
+      "text": "HUGS Delivery \u2013 deliverable 1"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "seq": 2,
+      "text": "HUGS Delivery \u2013 deliverable 2"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "seq": 1,
+      "text": "Queen FEL1 \u2013 deliverable 1"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "seq": 2,
+      "text": "Queen FEL1 \u2013 deliverable 2"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "seq": 1,
+      "text": "Growth & Commercial Strategy \u2013 deliverable 1"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "seq": 2,
+      "text": "Growth & Commercial Strategy \u2013 deliverable 2"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "seq": 1,
+      "text": "EBITDA excluding non-cash \u2013 deliverable 1"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "seq": 2,
+      "text": "EBITDA excluding non-cash \u2013 deliverable 2"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "seq": 1,
+      "text": "Corporate Model \u2013 deliverable 1"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "seq": 2,
+      "text": "Corporate Model \u2013 deliverable 2"
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "seq": 1,
+      "text": "No Critical or Major Incidents"
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "seq": 2,
+      "text": "No High Potential Events"
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "seq": 3,
+      "text": "Nil recordable injuries"
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "seq": 4,
+      "text": "Roll out the upgrade of the HSE Incident/Observations process"
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "seq": 5,
+      "text": "Deliver a step change in IMS & Process Safety compliance"
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "seq": 1,
+      "text": "100% of customer nominations delivered within the contractual delivery tolerance of \u00b14% (or, if outside that tolerance, without any contractual refunds payable to customers)"
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "seq": 2,
+      "text": "Deliver a step change in maintenance delivery (including SIB)"
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "seq": 1,
+      "text": "Data driven insights \u2013 Implement the next phase of the Data Utilisation Project and roll out the dashboards in line or ahead of the project plan"
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "seq": 2,
+      "text": "Spend Smarter \u2013 Deliver a target of $250k of recurring O&M savings in addition to the budget targets"
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "seq": 3,
+      "text": "Digital & Cyber \u2013 Complete Horizon 1 activities (incl. MSP implementation; Project Flowbridge and address all FY26 AESCSF internal audit findings, with a Board-approved plan to reach SP2"
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "seq": 1,
+      "text": "Project delivered on or under revised P50 budget forecast ($112.4M)"
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "seq": 2,
+      "text": "Project is handed over and RFSU in January 2027"
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "seq": 1,
+      "text": "Phase 1 & 2 of FEL2 in line with budget and schedule agreed post EAA"
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "seq": 2,
+      "text": "Technology selection complete and order ready to be paced for turbines"
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "seq": 3,
+      "text": "Regulatory approvals on track in line with schedule and Approvals Plan as at the FEL2 gate"
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "seq": 4,
+      "text": "The negotiation and finalisation of the AFO and LLI/Project Financing requirements"
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "seq": 5,
+      "text": "Project assurance plan endorsed by the Board"
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "seq": 6,
+      "text": "Approved progression through the end of FEL2 gate by the end of financial year by all key project stakeholders"
+    },
+    {
+      "kpi_id": "FY27-2.3",
+      "seq": 1,
+      "text": "Develop a commercial market model and customer re-contracting strategy, responding to changing market dynamics, (eg SWP expansion and domestic gas reservation), that support material progress on further Pillar 1 expansion opportunities, post 2030. Execute on Board agreed components of the strategy in FY27"
+    },
+    {
+      "kpi_id": "FY27-2.3",
+      "seq": 2,
+      "text": "Develop a growth seriatim of opportunities, with a focus on Pillar 1 & 4, that Lochard has a competitive advantage to deliver with (1) commercial viability and (2) potential for FID within 3-4 years"
+    },
+    {
+      "kpi_id": "FY27-3.1",
+      "seq": 1,
+      "text": "On budget, as per FY27 budget endorsed by Board"
+    },
+    {
+      "kpi_id": "FY27-3.2",
+      "seq": 1,
+      "text": "Model endorsed by Board June '26 as starting point. Model endorsed by Board at end FY27 as end point"
+    }
+  ],
+  "periods": [
+    {
+      "period_code": "FY26-M01",
+      "fy_code": "FY26",
+      "month_start": "2025-07-01",
+      "period_end": "2025-07-31",
+      "board_meeting": "2025-07-01",
+      "label": "Jul 2025",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY26-M02",
+      "fy_code": "FY26",
+      "month_start": "2025-08-01",
+      "period_end": "2025-08-31",
+      "board_meeting": "2025-08-01",
+      "label": "Aug 2025",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY26-M03",
+      "fy_code": "FY26",
+      "month_start": "2025-09-01",
+      "period_end": "2025-09-30",
+      "board_meeting": "2025-09-01",
+      "label": "Sep 2025",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY26-M04",
+      "fy_code": "FY26",
+      "month_start": "2025-10-01",
+      "period_end": "2025-10-31",
+      "board_meeting": "2025-10-01",
+      "label": "Oct 2025",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY26-M05",
+      "fy_code": "FY26",
+      "month_start": "2025-11-01",
+      "period_end": "2025-11-30",
+      "board_meeting": "2025-11-01",
+      "label": "Nov 2025",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY26-M06",
+      "fy_code": "FY26",
+      "month_start": "2025-12-01",
+      "period_end": "2025-12-31",
+      "board_meeting": "2025-12-01",
+      "label": "Dec 2025",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY26-M07",
+      "fy_code": "FY26",
+      "month_start": "2026-01-01",
+      "period_end": "2026-01-31",
+      "board_meeting": "2026-01-01",
+      "label": "Jan 2026",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY26-M08",
+      "fy_code": "FY26",
+      "month_start": "2026-02-01",
+      "period_end": "2026-02-28",
+      "board_meeting": "2026-02-01",
+      "label": "Feb 2026",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY26-M09",
+      "fy_code": "FY26",
+      "month_start": "2026-03-01",
+      "period_end": "2026-03-31",
+      "board_meeting": "2026-03-01",
+      "label": "Mar 2026",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY26-M10",
+      "fy_code": "FY26",
+      "month_start": "2026-04-01",
+      "period_end": "2026-04-30",
+      "board_meeting": "2026-04-01",
+      "label": "Apr 2026",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY26-M11",
+      "fy_code": "FY26",
+      "month_start": "2026-05-01",
+      "period_end": "2026-05-31",
+      "board_meeting": "2026-05-01",
+      "label": "May 2026",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY26-M12",
+      "fy_code": "FY26",
+      "month_start": "2026-06-01",
+      "period_end": "2026-06-30",
+      "board_meeting": "2026-06-01",
+      "label": "Jun 2026",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY27-M01",
+      "fy_code": "FY27",
+      "month_start": "2026-07-01",
+      "period_end": "2026-07-31",
+      "board_meeting": "2026-07-01",
+      "label": "Jul 2026",
+      "state": "LOCKED"
+    },
+    {
+      "period_code": "FY27-M02",
+      "fy_code": "FY27",
+      "month_start": "2026-08-01",
+      "period_end": "2026-08-31",
+      "board_meeting": "2026-08-01",
+      "label": "Aug 2026",
+      "state": "BOARD_ENDORSED"
+    },
+    {
+      "period_code": "FY27-M03",
+      "fy_code": "FY27",
+      "month_start": "2026-09-01",
+      "period_end": "2026-09-30",
+      "board_meeting": "2026-09-01",
+      "label": "Sep 2026",
+      "state": "OPEN"
+    }
+  ],
+  "status_updates": [
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M01",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] Observation close-out backlog above target; corrective action plan in progress with contractors.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M02",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] No recordable injuries or HPEs in the month; observation close-out within target.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M03",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] No recordable injuries or HPEs in the month; observation close-out within target.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M04",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] No recordable injuries or HPEs in the month; observation close-out within target.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M05",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] No recordable injuries or HPEs in the month; observation close-out within target.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M06",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] Observation close-out backlog above target; corrective action plan in progress with contractors.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M07",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] No recordable injuries or HPEs in the month; observation close-out within target.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M08",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] No recordable injuries or HPEs in the month; observation close-out within target.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M09",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] Observation close-out backlog above target; corrective action plan in progress with contractors.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M10",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] No recordable injuries or HPEs in the month; observation close-out within target.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M11",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] Observation close-out backlog above target; corrective action plan in progress with contractors.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M12",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] No recordable injuries or HPEs in the month; observation close-out within target.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M01",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Customer nominations delivered within \u00b14% tolerance; maintenance schedule compliance above 85%.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M02",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Customer nominations delivered within \u00b14% tolerance; maintenance schedule compliance above 85%.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M03",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] Two nominations outside tolerance (no refunds payable); compressor availability below plan.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M04",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] Two nominations outside tolerance (no refunds payable); compressor availability below plan.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M05",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Customer nominations delivered within \u00b14% tolerance; maintenance schedule compliance above 85%.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M06",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Customer nominations delivered within \u00b14% tolerance; maintenance schedule compliance above 85%.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M07",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] Two nominations outside tolerance (no refunds payable); compressor availability below plan.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M08",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] Customer nominations delivered within \u00b14% tolerance; maintenance schedule compliance above 85%.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M09",
+      "status": "OFF_TRACK",
+      "owner_score": 0,
+      "commentary": "[Off Track] Nomination shortfall during an unplanned compressor outage; refund exposure under review.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M10",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Customer nominations delivered within \u00b14% tolerance; maintenance schedule compliance above 85%.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M11",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] Two nominations outside tolerance (no refunds payable); compressor availability below plan.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M12",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] Customer nominations delivered within \u00b14% tolerance; maintenance schedule compliance above 85%.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M01",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] FIT initiatives on plan; Data Utilisation Project phase 1 dashboards live.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M02",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] FIT initiatives on plan; Data Utilisation Project phase 1 dashboards live.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M03",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] FIT initiatives on plan; Data Utilisation Project phase 1 dashboards live.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M04",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] FIT initiatives on plan; Data Utilisation Project phase 1 dashboards live.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M05",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] FIT initiatives on plan; Data Utilisation Project phase 1 dashboards live.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M06",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] FIT initiatives on plan; Data Utilisation Project phase 1 dashboards live.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M07",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] Project Flowbridge MSP transition behind schedule; recovery plan agreed with the vendor.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M08",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] Project Flowbridge MSP transition behind schedule; recovery plan agreed with the vendor.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M09",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] FIT initiatives on plan; Data Utilisation Project phase 1 dashboards live.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M10",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] Project Flowbridge MSP transition behind schedule; recovery plan agreed with the vendor.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M11",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] FIT initiatives on plan; Data Utilisation Project phase 1 dashboards live.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M12",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] FIT initiatives on plan; Data Utilisation Project phase 1 dashboards live.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M01",
+      "status": "OFF_TRACK",
+      "owner_score": 0,
+      "commentary": "[Off Track] HUGS critical-path delay identified; re-baseline to be presented to the Board.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M02",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] HUGS construction progressing to plan; EAC within the approved budget.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M03",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] HUGS construction progressing to plan; EAC within the approved budget.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M04",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] HUGS EAC pressure from drilling and contractor rates; contingency drawdown under review.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M05",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] HUGS EAC pressure from drilling and contractor rates; contingency drawdown under review.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M06",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] HUGS EAC pressure from drilling and contractor rates; contingency drawdown under review.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M07",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] HUGS construction progressing to plan; EAC within the approved budget.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M08",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] HUGS EAC pressure from drilling and contractor rates; contingency drawdown under review.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M09",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] HUGS EAC pressure from drilling and contractor rates; contingency drawdown under review.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M10",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] HUGS construction progressing to plan; EAC within the approved budget.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M11",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] HUGS construction progressing to plan; EAC within the approved budget.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M12",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] HUGS construction progressing to plan; EAC within the approved budget.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M01",
+      "status": "OFF_TRACK",
+      "owner_score": 0,
+      "commentary": "[Off Track] Queen FEL1 gate deferred pending technical review of well concept.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M02",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] Queen FEL1 activities on plan; EAA referral preparation progressing.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M03",
+      "status": "OFF_TRACK",
+      "owner_score": 0,
+      "commentary": "[Off Track] Queen FEL1 gate deferred pending technical review of well concept.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M04",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Queen FEL1 activities on plan; EAA referral preparation progressing.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M05",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Queen FEL1 activities on plan; EAA referral preparation progressing.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M06",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Queen FEL1 activities on plan; EAA referral preparation progressing.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M07",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Queen FEL1 activities on plan; EAA referral preparation progressing.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M08",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Queen FEL1 activities on plan; EAA referral preparation progressing.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M09",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] Queen EAA referral timing at risk; stakeholder engagement intensified.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M10",
+      "status": "OFF_TRACK",
+      "owner_score": 0,
+      "commentary": "[Off Track] Queen FEL1 gate deferred pending technical review of well concept.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M11",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Queen FEL1 activities on plan; EAA referral preparation progressing.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M12",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Queen FEL1 activities on plan; EAA referral preparation progressing.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M01",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Re-contracting strategy on plan; customer term sheets in negotiation.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M02",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Re-contracting strategy on plan; customer term sheets in negotiation.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M03",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Re-contracting strategy on plan; customer term sheets in negotiation.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M04",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] Customer re-contracting slower than plan given market uncertainty.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M05",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Re-contracting strategy on plan; customer term sheets in negotiation.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M06",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Re-contracting strategy on plan; customer term sheets in negotiation.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M07",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] Customer re-contracting slower than plan given market uncertainty.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M08",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Re-contracting strategy on plan; customer term sheets in negotiation.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M09",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Re-contracting strategy on plan; customer term sheets in negotiation.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M10",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Re-contracting strategy on plan; customer term sheets in negotiation.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M11",
+      "status": "OFF_TRACK",
+      "owner_score": 0,
+      "commentary": "[Off Track] Key customer negotiation paused; alternative offtake options being assessed.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M12",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Re-contracting strategy on plan; customer term sheets in negotiation.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M01",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] YTD EBITDA excluding non-cash in line with FY26 budget.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M02",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] YTD EBITDA excluding non-cash in line with FY26 budget.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M03",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] YTD EBITDA excluding non-cash in line with FY26 budget.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M04",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] YTD EBITDA excluding non-cash in line with FY26 budget.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M05",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] YTD EBITDA excluding non-cash in line with FY26 budget.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M06",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] YTD EBITDA excluding non-cash in line with FY26 budget.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M07",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] YTD EBITDA below budget on lower withdrawal volumes; cost actions identified.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M08",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] YTD EBITDA below budget on lower withdrawal volumes; cost actions identified.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M09",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] YTD EBITDA excluding non-cash in line with FY26 budget.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M10",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] YTD EBITDA below budget on lower withdrawal volumes; cost actions identified.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M11",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] YTD EBITDA excluding non-cash in line with FY26 budget.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M12",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] YTD EBITDA excluding non-cash in line with FY26 budget.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M01",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] Corporate model inputs delayed pending the HUGS re-forecast.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M02",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Corporate model refresh on plan for June 2026 endorsement.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M03",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Corporate model refresh on plan for June 2026 endorsement.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M04",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Corporate model refresh on plan for June 2026 endorsement.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M05",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] Corporate model inputs delayed pending the HUGS re-forecast.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M06",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] Corporate model inputs delayed pending the HUGS re-forecast.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M07",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Corporate model refresh on plan for June 2026 endorsement.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M08",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Corporate model refresh on plan for June 2026 endorsement.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M09",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] Corporate model inputs delayed pending the HUGS re-forecast.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M10",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Corporate model refresh on plan for June 2026 endorsement.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M11",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Corporate model refresh on plan for June 2026 endorsement.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M12",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] Corporate model inputs delayed pending the HUGS re-forecast.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "period_code": "FY27-M01",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] HSE observation reporting up post process upgrade; FY27 HPE (Iona-3 wellhead gas release, Aug-26) under ICAM investigation.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "period_code": "FY27-M02",
+      "status": "AT_RISK",
+      "owner_score": 2,
+      "commentary": "[At Risk] HSE observation reporting up post process upgrade; FY27 HPE (Iona-3 wellhead gas release, Aug-26) under ICAM investigation.",
+      "submitted_by": "DA"
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "period_code": "FY27-M01",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] All nominations delivered within \u00b14% tolerance except two minor exceptions with no refunds payable; schedule compliance 84% for w/c 27-Jul.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "period_code": "FY27-M02",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] All nominations delivered within \u00b14% tolerance except two minor exceptions with no refunds payable; schedule compliance 84% for w/c 27-Jul.",
+      "submitted_by": "DA/BN"
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "period_code": "FY27-M01",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Data Utilisation Project phase 2 dashboards migrated to Databricks AI/BI; Spend Smarter savings tracking at $95k recurring YTD.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "period_code": "FY27-M02",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Data Utilisation Project phase 2 dashboards migrated to Databricks AI/BI; Spend Smarter savings tracking at $95k recurring YTD.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "period_code": "FY27-M01",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] HUGS EAC trending above revised P50 ($112.4M); RFSU January 2027 remains achievable with commissioning resource uplift.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "period_code": "FY27-M02",
+      "status": "AT_RISK",
+      "owner_score": 3,
+      "commentary": "[At Risk] HUGS EAC trending above revised P50 ($112.4M); RFSU January 2027 remains achievable with commissioning resource uplift.",
+      "submitted_by": "DA/DS"
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "period_code": "FY27-M01",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] FEL2 phase 1 on budget; turbine technology shortlist complete; EAA conditions register tracking on plan.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "period_code": "FY27-M02",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] FEL2 phase 1 on budget; turbine technology shortlist complete; EAA conditions register tracking on plan.",
+      "submitted_by": "DS/DG"
+    },
+    {
+      "kpi_id": "FY27-2.3",
+      "period_code": "FY27-M01",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Commercial market model drafted; SWP expansion scenarios and domestic gas reservation impacts under review.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY27-2.3",
+      "period_code": "FY27-M02",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Commercial market model drafted; SWP expansion scenarios and domestic gas reservation impacts under review.",
+      "submitted_by": "DG/BN"
+    },
+    {
+      "kpi_id": "FY27-3.1",
+      "period_code": "FY27-M01",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] YTD EBITDA excluding non-cash in line with FY27 budget; Employee Costs YEO phasing under review.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY27-3.1",
+      "period_code": "FY27-M02",
+      "status": "ON_TRACK",
+      "owner_score": 4,
+      "commentary": "[On Track] YTD EBITDA excluding non-cash in line with FY27 budget; Employee Costs YEO phasing under review.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY27-3.2",
+      "period_code": "FY27-M01",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Corporate model baseline endorsed June 2026; mid-year refresh scheduled for February board meeting.",
+      "submitted_by": "LLT"
+    },
+    {
+      "kpi_id": "FY27-3.2",
+      "period_code": "FY27-M02",
+      "status": "ON_TRACK",
+      "owner_score": 5,
+      "commentary": "[On Track] Corporate model baseline endorsed June 2026; mid-year refresh scheduled for February board meeting.",
+      "submitted_by": "LLT"
+    }
+  ],
+  "board_scores": [
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M02",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M02",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M02",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M02",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M02",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M02",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M02",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M04",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M04",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M04",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M04",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M04",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M04",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M04",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M06",
+      "director": "Chair",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M06",
+      "director": "Director A",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M06",
+      "director": "Director B",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M06",
+      "director": "Director C",
+      "score": 0,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M06",
+      "director": "Director D",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M06",
+      "director": "Director E",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M06",
+      "director": "Director F",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M08",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M08",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M08",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M08",
+      "director": "Director C",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M08",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M08",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M08",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M10",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M10",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M10",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M10",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M10",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M10",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M10",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M12",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M12",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M12",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M12",
+      "director": "Director C",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M12",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M12",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.1",
+      "period_code": "FY26-M12",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M02",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M02",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M02",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M02",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M02",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M02",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M02",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M04",
+      "director": "Chair",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M04",
+      "director": "Director A",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M04",
+      "director": "Director B",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M04",
+      "director": "Director C",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M04",
+      "director": "Director D",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M04",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M04",
+      "director": "Director F",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M06",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M06",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M06",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M06",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M06",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M06",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M06",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M08",
+      "director": "Chair",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M08",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M08",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M08",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M08",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M08",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M08",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M10",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M10",
+      "director": "Director A",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M10",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M10",
+      "director": "Director C",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M10",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M10",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M10",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M12",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M12",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M12",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M12",
+      "director": "Director C",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M12",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M12",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.2",
+      "period_code": "FY26-M12",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M02",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M02",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M02",
+      "director": "Director B",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M02",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M02",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M02",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M02",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M04",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M04",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M04",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M04",
+      "director": "Director C",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M04",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M04",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M04",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M06",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M06",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M06",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M06",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M06",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M06",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M06",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M08",
+      "director": "Chair",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M08",
+      "director": "Director A",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M08",
+      "director": "Director B",
+      "score": 1,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M08",
+      "director": "Director C",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M08",
+      "director": "Director D",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M08",
+      "director": "Director E",
+      "score": 1,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M08",
+      "director": "Director F",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M10",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M10",
+      "director": "Director A",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M10",
+      "director": "Director B",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M10",
+      "director": "Director C",
+      "score": 1,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M10",
+      "director": "Director D",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M10",
+      "director": "Director E",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M10",
+      "director": "Director F",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M12",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M12",
+      "director": "Director A",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M12",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M12",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M12",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M12",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-1.3",
+      "period_code": "FY26-M12",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M02",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M02",
+      "director": "Director A",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M02",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M02",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M02",
+      "director": "Director D",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M02",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M02",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M04",
+      "director": "Chair",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M04",
+      "director": "Director A",
+      "score": 1,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M04",
+      "director": "Director B",
+      "score": 1,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M04",
+      "director": "Director C",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M04",
+      "director": "Director D",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M04",
+      "director": "Director E",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M04",
+      "director": "Director F",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M06",
+      "director": "Chair",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M06",
+      "director": "Director A",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M06",
+      "director": "Director B",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M06",
+      "director": "Director C",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M06",
+      "director": "Director D",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M06",
+      "director": "Director E",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M06",
+      "director": "Director F",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M08",
+      "director": "Chair",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M08",
+      "director": "Director A",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M08",
+      "director": "Director B",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M08",
+      "director": "Director C",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M08",
+      "director": "Director D",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M08",
+      "director": "Director E",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M08",
+      "director": "Director F",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M10",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M10",
+      "director": "Director A",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M10",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M10",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M10",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M10",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M10",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M12",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M12",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M12",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M12",
+      "director": "Director C",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M12",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M12",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.1",
+      "period_code": "FY26-M12",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M02",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M02",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M02",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M02",
+      "director": "Director C",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M02",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M02",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M02",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M04",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M04",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M04",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M04",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M04",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M04",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M04",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M06",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M06",
+      "director": "Director A",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M06",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M06",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M06",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M06",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M06",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M08",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M08",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M08",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M08",
+      "director": "Director C",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M08",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M08",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M08",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M10",
+      "director": "Chair",
+      "score": 0,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M10",
+      "director": "Director A",
+      "score": 0,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M10",
+      "director": "Director B",
+      "score": 0,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M10",
+      "director": "Director C",
+      "score": 0,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M10",
+      "director": "Director D",
+      "score": 0,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M10",
+      "director": "Director E",
+      "score": 0,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M10",
+      "director": "Director F",
+      "score": 1,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M12",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M12",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M12",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M12",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M12",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M12",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.2",
+      "period_code": "FY26-M12",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M02",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M02",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M02",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M02",
+      "director": "Director C",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M02",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M02",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M02",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M04",
+      "director": "Chair",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M04",
+      "director": "Director A",
+      "score": 0,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M04",
+      "director": "Director B",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M04",
+      "director": "Director C",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M04",
+      "director": "Director D",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M04",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M04",
+      "director": "Director F",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M06",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M06",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M06",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M06",
+      "director": "Director C",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M06",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M06",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M06",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M08",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M08",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M08",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M08",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M08",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M08",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M08",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M10",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M10",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M10",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M10",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M10",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M10",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M10",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M12",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M12",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M12",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M12",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M12",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M12",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-2.3",
+      "period_code": "FY26-M12",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M02",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M02",
+      "director": "Director A",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M02",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M02",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M02",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M02",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M02",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M04",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M04",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M04",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M04",
+      "director": "Director C",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M04",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M04",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M04",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M06",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M06",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M06",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M06",
+      "director": "Director C",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M06",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M06",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M06",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M08",
+      "director": "Chair",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M08",
+      "director": "Director A",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M08",
+      "director": "Director B",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M08",
+      "director": "Director C",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M08",
+      "director": "Director D",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M08",
+      "director": "Director E",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M08",
+      "director": "Director F",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M10",
+      "director": "Chair",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M10",
+      "director": "Director A",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M10",
+      "director": "Director B",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M10",
+      "director": "Director C",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M10",
+      "director": "Director D",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M10",
+      "director": "Director E",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M10",
+      "director": "Director F",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M12",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M12",
+      "director": "Director A",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M12",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M12",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M12",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M12",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.1",
+      "period_code": "FY26-M12",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M02",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M02",
+      "director": "Director A",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M02",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M02",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M02",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M02",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M02",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M04",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M04",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M04",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M04",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M04",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M04",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M04",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M06",
+      "director": "Chair",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M06",
+      "director": "Director A",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M06",
+      "director": "Director B",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M06",
+      "director": "Director C",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M06",
+      "director": "Director D",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M06",
+      "director": "Director E",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M06",
+      "director": "Director F",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M08",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M08",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M08",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M08",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M08",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M08",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M08",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M10",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M10",
+      "director": "Director A",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M10",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M10",
+      "director": "Director C",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M10",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M10",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M10",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M12",
+      "director": "Chair",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M12",
+      "director": "Director A",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M12",
+      "director": "Director B",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M12",
+      "director": "Director C",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M12",
+      "director": "Director D",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M12",
+      "director": "Director E",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY26-3.2",
+      "period_code": "FY26-M12",
+      "director": "Director F",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "period_code": "FY27-M02",
+      "director": "Chair",
+      "score": 1,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "period_code": "FY27-M02",
+      "director": "Director A",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "period_code": "FY27-M02",
+      "director": "Director B",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "period_code": "FY27-M02",
+      "director": "Director C",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "period_code": "FY27-M02",
+      "director": "Director D",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "period_code": "FY27-M02",
+      "director": "Director E",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "period_code": "FY27-M02",
+      "director": "Director F",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "period_code": "FY27-M02",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "period_code": "FY27-M02",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "period_code": "FY27-M02",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "period_code": "FY27-M02",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "period_code": "FY27-M02",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "period_code": "FY27-M02",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "period_code": "FY27-M02",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "period_code": "FY27-M02",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "period_code": "FY27-M02",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "period_code": "FY27-M02",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "period_code": "FY27-M02",
+      "director": "Director C",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "period_code": "FY27-M02",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "period_code": "FY27-M02",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-1.3",
+      "period_code": "FY27-M02",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "period_code": "FY27-M02",
+      "director": "Chair",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "period_code": "FY27-M02",
+      "director": "Director A",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "period_code": "FY27-M02",
+      "director": "Director B",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "period_code": "FY27-M02",
+      "director": "Director C",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "period_code": "FY27-M02",
+      "director": "Director D",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "period_code": "FY27-M02",
+      "director": "Director E",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "period_code": "FY27-M02",
+      "director": "Director F",
+      "score": 2,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "period_code": "FY27-M02",
+      "director": "Chair",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "period_code": "FY27-M02",
+      "director": "Director A",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "period_code": "FY27-M02",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "period_code": "FY27-M02",
+      "director": "Director C",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "period_code": "FY27-M02",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "period_code": "FY27-M02",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "period_code": "FY27-M02",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.3",
+      "period_code": "FY27-M02",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.3",
+      "period_code": "FY27-M02",
+      "director": "Director A",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.3",
+      "period_code": "FY27-M02",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.3",
+      "period_code": "FY27-M02",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.3",
+      "period_code": "FY27-M02",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.3",
+      "period_code": "FY27-M02",
+      "director": "Director E",
+      "score": 3,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-2.3",
+      "period_code": "FY27-M02",
+      "director": "Director F",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.1",
+      "period_code": "FY27-M02",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.1",
+      "period_code": "FY27-M02",
+      "director": "Director A",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.1",
+      "period_code": "FY27-M02",
+      "director": "Director B",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.1",
+      "period_code": "FY27-M02",
+      "director": "Director C",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.1",
+      "period_code": "FY27-M02",
+      "director": "Director D",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.1",
+      "period_code": "FY27-M02",
+      "director": "Director E",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.1",
+      "period_code": "FY27-M02",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.2",
+      "period_code": "FY27-M02",
+      "director": "Chair",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.2",
+      "period_code": "FY27-M02",
+      "director": "Director A",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.2",
+      "period_code": "FY27-M02",
+      "director": "Director B",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.2",
+      "period_code": "FY27-M02",
+      "director": "Director C",
+      "score": 4,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.2",
+      "period_code": "FY27-M02",
+      "director": "Director D",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.2",
+      "period_code": "FY27-M02",
+      "director": "Director E",
+      "score": 5,
+      "rationale": null
+    },
+    {
+      "kpi_id": "FY27-3.2",
+      "period_code": "FY27-M02",
+      "director": "Director F",
+      "score": 5,
+      "rationale": null
+    }
+  ],
+  "comments": [
+    {
+      "kpi_id": "FY27-1.1",
+      "period_code": "FY27-M02",
+      "author": "Director C",
+      "author_role": "BOARD",
+      "visibility": "ALL",
+      "body": "HPE in August at Iona-3 wellhead needs a clear line of sight to the corrective actions \u2013 please bring the ICAM findings to the next meeting."
+    },
+    {
+      "kpi_id": "FY27-1.1",
+      "period_code": "FY27-M02",
+      "author": "Director C",
+      "author_role": "BOARD",
+      "visibility": "ALL",
+      "body": "Observation reporting is well up since the process upgrade; good leading indicator."
+    },
+    {
+      "kpi_id": "FY27-1.2",
+      "period_code": "FY27-M02",
+      "author": "Chair",
+      "author_role": "BOARD",
+      "visibility": "ALL",
+      "body": "Nominations within \u00b14% tolerance \u2013 two FY27 exceptions noted, no refunds payable."
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "period_code": "FY27-M02",
+      "author": "Director E",
+      "author_role": "BOARD",
+      "visibility": "BOARD_ONLY",
+      "body": "EAC trending above the revised P50 of $112.4M. What are the levers to recover before RFSU?"
+    },
+    {
+      "kpi_id": "FY27-2.1",
+      "period_code": "FY27-M02",
+      "author": "Director B",
+      "author_role": "BOARD",
+      "visibility": "ALL",
+      "body": "Please show the RFSU critical path and the commissioning resourcing risk."
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "period_code": "FY27-M02",
+      "author": "Director C",
+      "author_role": "BOARD",
+      "visibility": "ALL",
+      "body": "Turbine technology selection timing looks tight against the FEL2 gate."
+    },
+    {
+      "kpi_id": "FY27-2.2",
+      "period_code": "FY27-M02",
+      "author": "Director E",
+      "author_role": "BOARD",
+      "visibility": "ALL",
+      "body": "Support the approvals plan \u2013 ask management to keep the EAA conditions register visible."
+    },
+    {
+      "kpi_id": "FY27-3.1",
+      "period_code": "FY27-M02",
+      "author": "Director E",
+      "author_role": "BOARD",
+      "visibility": "ALL",
+      "body": "EBITDA on budget YTD; keep an eye on Employee Costs YEO phasing."
+    }
+  ],
+  "directors": [
+    {
+      "name": "Chair",
+      "title": "Board Chair",
+      "email": "chair@board.example-lochard.com.au"
+    },
+    {
+      "name": "Director A",
+      "title": "Non-executive Director",
+      "email": "director.a@board.example-lochard.com.au"
+    },
+    {
+      "name": "Director B",
+      "title": "Non-executive Director",
+      "email": "director.b@board.example-lochard.com.au"
+    },
+    {
+      "name": "Director C",
+      "title": "Non-executive Director",
+      "email": "director.c@board.example-lochard.com.au"
+    },
+    {
+      "name": "Director D",
+      "title": "Non-executive Director",
+      "email": "director.d@board.example-lochard.com.au"
+    },
+    {
+      "name": "Director E",
+      "title": "Shareholder Nominee",
+      "email": "director.e@board.example-lochard.com.au"
+    },
+    {
+      "name": "Director F",
+      "title": "Shareholder Nominee",
+      "email": "director.f@board.example-lochard.com.au"
+    }
+  ],
+  "owner_roles": {
+    "DA": "Chief Operating Officer",
+    "BN": "GM Commercial",
+    "DS": "GM Project Delivery",
+    "DG": "GM Development",
+    "LLT": "Lochard Leadership Team"
+  },
+  "footnote": "The Board retains full discretion to amend the KPIs and/or FY27 outcome for material events during the year"
+}

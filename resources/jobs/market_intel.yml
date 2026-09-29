@@ -1,0 +1,74 @@
+# Market intelligence, daily 07:00 AEST: collect public sources -> parse + enrich (pipeline) -> weekly brief (analyst agent).
+# mode=daily looks at this week and last week; mode=backfill with weeks=N rebuilds history (collector is idempotent).
+resources:
+  jobs:
+    lochard_market_intel:
+      name: lochard-market-intel
+      run_as:
+        service_principal_name: ${var.etl_sp}
+      description: Collects public news, web research and ASX announcements on Lochard, customers, competitors and the gas market; parses and enriches them with AI; the Market Intelligence Analyst agent writes the weekly brief
+      schedule:
+        quartz_cron_expression: "0 0 7 * * ?"
+        timezone_id: Australia/Melbourne
+        pause_status: UNPAUSED
+      max_concurrent_runs: 1
+      queue:
+        enabled: true
+      parameters:
+        - name: mode
+          default: daily
+        - name: weeks
+          default: "26"
+      environments:
+        - environment_key: collect
+          spec:
+            environment_version: "4"
+            dependencies: ["requests", "pyyaml", "databricks-sdk>=0.60"]
+        - environment_key: agent
+          spec:
+            environment_version: "4"
+            dependencies: ["requests", "databricks-sdk>=0.60", "mlflow>=3.1"]
+      tasks:
+        - task_key: collect
+          environment_key: collect
+          spark_python_task:
+            python_file: ../../src/market_intel/collect.py
+            parameters:
+              - --root
+              - /Volumes/${var.catalog}/${resources.schemas.landing.name}/${resources.volumes.market_intel.name}
+              - --mode
+              - "{{job.parameters.mode}}"
+              - --weeks
+              - "{{job.parameters.weeks}}"
+              - --research-model
+              - ${var.research_model}
+              - --watchlist
+              - ${workspace.file_path}/src/market_intel/watchlist.yml
+          max_retries: 1
+          min_retry_interval_millis: 120000
+        - task_key: parse_and_enrich
+          depends_on: [{task_key: collect}]
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.lochard_market_intel_medallion.id}
+        - task_key: weekly_brief
+          depends_on: [{task_key: parse_and_enrich}]
+          environment_key: agent
+          spark_python_task:
+            python_file: ../../src/market_intel/analyst_agent.py
+            parameters:
+              - --catalog
+              - ${var.catalog}
+              - --prefix
+              - ${var.prefix}
+              - --mode
+              - "{{job.parameters.mode}}"
+              - --weeks
+              - "{{job.parameters.weeks}}"
+              - --model
+              - ${var.standard_model}
+              - --experiment
+              - /Shared/lochard/lochard-market-intel-agent
+      email_notifications:
+        on_failure: ["${var.notification_email}"]
+      tags:
+        domain: market_intel

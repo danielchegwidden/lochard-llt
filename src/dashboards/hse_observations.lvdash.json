@@ -1,0 +1,1484 @@
+{
+  "datasets": [
+    {
+      "name": "obs",
+      "displayName": "Observations",
+      "queryLines": [
+        "SELECT observation_id, classification, observation_type, incident_category, status, is_open,\n",
+        "       potential_risk_rank, actual_risk_rank, reported_date, financial_year, financial_quarter,\n",
+        "       date_format(reported_date, 'MMM') AS month, plant_area, actionee, description, days_open,\n",
+        "       -- severity order for charts (AI/BI sorts categories alphabetically; leading spaces sort first and render invisibly)\n",
+        "       CASE actual_risk_rank WHEN 'HIGH' THEN '   HIGH' WHEN 'MEDIUM' THEN '  MEDIUM' WHEN 'LOW' THEN ' LOW'\n",
+        "            ELSE actual_risk_rank END AS risk_rank_ordered FROM v_observation_detail\n"
+      ]
+    },
+    {
+      "name": "inv",
+      "displayName": "Investigations",
+      "queryLines": [
+        "SELECT observation_id, status, is_open, potential_risk_rank, actual_risk_rank, reported_date, financial_year,\n",
+        "       financial_quarter, date_format(reported_date, 'MMM') AS month\n",
+        "FROM v_observation_detail WHERE classification = 'INVESTIGATION'\n"
+      ]
+    },
+    {
+      "name": "obs_cum",
+      "displayName": "Observations cumulative by month",
+      "queryLines": [
+        "SELECT o.observation_type, o.classification, o.incident_category, o.potential_risk_rank, o.actual_risk_rank,\n",
+        "       o.financial_year, m.month_start AS as_of_month\n",
+        "FROM v_observation_detail o\n",
+        "JOIN (SELECT explode(sequence(DATE'2025-05-01', trunc(current_date(), 'MM'), INTERVAL 1 MONTH)) AS month_start) m\n",
+        "  ON o.reported_date < add_months(m.month_start, 1)\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "hse_observations",
+      "displayName": "HSE Observations",
+      "layout": [
+        {
+          "widget": {
+            "name": "b7813c52",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "32675316",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## HSE Observations\n\nDaily Report To drive timely close-out of hazards and incidents before they escalate"
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 5,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "ce43e54c",
+            "queries": [
+              {
+                "name": "f_hse_observations_obs_potential_risk_rank",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "potential_risk_rank",
+                      "expression": "`potential_risk_rank`"
+                    },
+                    {
+                      "name": "potential_risk_rank_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_hse_observations_obs_cum_potential_risk_rank",
+                "query": {
+                  "datasetName": "obs_cum",
+                  "fields": [
+                    {
+                      "name": "potential_risk_rank",
+                      "expression": "`potential_risk_rank`"
+                    },
+                    {
+                      "name": "potential_risk_rank_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_hse_observations_inv_potential_risk_rank",
+                "query": {
+                  "datasetName": "inv",
+                  "fields": [
+                    {
+                      "name": "potential_risk_rank",
+                      "expression": "`potential_risk_rank`"
+                    },
+                    {
+                      "name": "potential_risk_rank_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "potential_risk_rank",
+                    "displayName": "Potential Risk Rank",
+                    "queryName": "f_hse_observations_obs_potential_risk_rank"
+                  },
+                  {
+                    "fieldName": "potential_risk_rank",
+                    "displayName": "Potential Risk Rank",
+                    "queryName": "f_hse_observations_obs_cum_potential_risk_rank"
+                  },
+                  {
+                    "fieldName": "potential_risk_rank",
+                    "displayName": "Potential Risk Rank",
+                    "queryName": "f_hse_observations_inv_potential_risk_rank"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Potential Risk Rank"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "b91844fd",
+            "queries": [
+              {
+                "name": "f_hse_observations_obs_actual_risk_rank",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "actual_risk_rank",
+                      "expression": "`actual_risk_rank`"
+                    },
+                    {
+                      "name": "actual_risk_rank_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_hse_observations_obs_cum_actual_risk_rank",
+                "query": {
+                  "datasetName": "obs_cum",
+                  "fields": [
+                    {
+                      "name": "actual_risk_rank",
+                      "expression": "`actual_risk_rank`"
+                    },
+                    {
+                      "name": "actual_risk_rank_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_hse_observations_inv_actual_risk_rank",
+                "query": {
+                  "datasetName": "inv",
+                  "fields": [
+                    {
+                      "name": "actual_risk_rank",
+                      "expression": "`actual_risk_rank`"
+                    },
+                    {
+                      "name": "actual_risk_rank_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "actual_risk_rank",
+                    "displayName": "Actual Risk Rank",
+                    "queryName": "f_hse_observations_obs_actual_risk_rank"
+                  },
+                  {
+                    "fieldName": "actual_risk_rank",
+                    "displayName": "Actual Risk Rank",
+                    "queryName": "f_hse_observations_obs_cum_actual_risk_rank"
+                  },
+                  {
+                    "fieldName": "actual_risk_rank",
+                    "displayName": "Actual Risk Rank",
+                    "queryName": "f_hse_observations_inv_actual_risk_rank"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Actual Risk Rank"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "1ec0abc1",
+            "queries": [
+              {
+                "name": "f_hse_observations_obs_classification",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "classification",
+                      "expression": "`classification`"
+                    },
+                    {
+                      "name": "classification_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_hse_observations_obs_cum_classification",
+                "query": {
+                  "datasetName": "obs_cum",
+                  "fields": [
+                    {
+                      "name": "classification",
+                      "expression": "`classification`"
+                    },
+                    {
+                      "name": "classification_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "classification",
+                    "displayName": "Class",
+                    "queryName": "f_hse_observations_obs_classification"
+                  },
+                  {
+                    "fieldName": "classification",
+                    "displayName": "Class",
+                    "queryName": "f_hse_observations_obs_cum_classification"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Class"
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "INCIDENT"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "d1826eec",
+            "queries": [
+              {
+                "name": "f_hse_observations_obs_observation_type",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "observation_type",
+                      "expression": "`observation_type`"
+                    },
+                    {
+                      "name": "observation_type_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_hse_observations_obs_cum_observation_type",
+                "query": {
+                  "datasetName": "obs_cum",
+                  "fields": [
+                    {
+                      "name": "observation_type",
+                      "expression": "`observation_type`"
+                    },
+                    {
+                      "name": "observation_type_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "observation_type",
+                    "displayName": "Observation Type",
+                    "queryName": "f_hse_observations_obs_observation_type"
+                  },
+                  {
+                    "fieldName": "observation_type",
+                    "displayName": "Observation Type",
+                    "queryName": "f_hse_observations_obs_cum_observation_type"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Observation Type"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "940c9fc4",
+            "queries": [
+              {
+                "name": "f_hse_observations_obs_financial_year",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "financial_year",
+                      "expression": "`financial_year`"
+                    },
+                    {
+                      "name": "financial_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_hse_observations_obs_cum_financial_year",
+                "query": {
+                  "datasetName": "obs_cum",
+                  "fields": [
+                    {
+                      "name": "financial_year",
+                      "expression": "`financial_year`"
+                    },
+                    {
+                      "name": "financial_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_hse_observations_inv_financial_year",
+                "query": {
+                  "datasetName": "inv",
+                  "fields": [
+                    {
+                      "name": "financial_year",
+                      "expression": "`financial_year`"
+                    },
+                    {
+                      "name": "financial_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "financial_year",
+                    "displayName": "FY",
+                    "queryName": "f_hse_observations_obs_financial_year"
+                  },
+                  {
+                    "fieldName": "financial_year",
+                    "displayName": "FY",
+                    "queryName": "f_hse_observations_obs_cum_financial_year"
+                  },
+                  {
+                    "fieldName": "financial_year",
+                    "displayName": "FY",
+                    "queryName": "f_hse_observations_inv_financial_year"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "FY"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "88a02851",
+            "queries": [
+              {
+                "name": "f_hse_observations_obs_financial_quarter",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "financial_quarter",
+                      "expression": "`financial_quarter`"
+                    },
+                    {
+                      "name": "financial_quarter_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_hse_observations_inv_financial_quarter",
+                "query": {
+                  "datasetName": "inv",
+                  "fields": [
+                    {
+                      "name": "financial_quarter",
+                      "expression": "`financial_quarter`"
+                    },
+                    {
+                      "name": "financial_quarter_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "financial_quarter",
+                    "displayName": "Quarter",
+                    "queryName": "f_hse_observations_obs_financial_quarter"
+                  },
+                  {
+                    "fieldName": "financial_quarter",
+                    "displayName": "Quarter",
+                    "queryName": "f_hse_observations_inv_financial_quarter"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Quarter"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "98d55cfa",
+            "queries": [
+              {
+                "name": "f_hse_observations_obs_reported_date",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "reported_date",
+                      "expression": "`reported_date`"
+                    },
+                    {
+                      "name": "reported_date_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_hse_observations_inv_reported_date",
+                "query": {
+                  "datasetName": "inv",
+                  "fields": [
+                    {
+                      "name": "reported_date",
+                      "expression": "`reported_date`"
+                    },
+                    {
+                      "name": "reported_date_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "reported_date",
+                    "displayName": "Date Filter",
+                    "queryName": "f_hse_observations_obs_reported_date"
+                  },
+                  {
+                    "fieldName": "reported_date",
+                    "displayName": "Date Filter",
+                    "queryName": "f_hse_observations_inv_reported_date"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Date Filter"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "ec8dccb7",
+            "queries": [
+              {
+                "name": "f_hse_observations_obs_month",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "month",
+                      "expression": "`month`"
+                    },
+                    {
+                      "name": "month_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_hse_observations_inv_month",
+                "query": {
+                  "datasetName": "inv",
+                  "fields": [
+                    {
+                      "name": "month",
+                      "expression": "`month`"
+                    },
+                    {
+                      "name": "month_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "month",
+                    "displayName": "Month",
+                    "queryName": "f_hse_observations_obs_month"
+                  },
+                  {
+                    "fieldName": "month",
+                    "displayName": "Month",
+                    "queryName": "f_hse_observations_inv_month"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Month"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 4,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "80c6b530",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "inv",
+                  "fields": [
+                    {
+                      "name": "open_inv",
+                      "expression": "COUNT_IF(`is_open`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "open_inv",
+                  "displayName": "Open Investigations",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Open Investigations"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "f2efd5e6",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "inv",
+                  "fields": [
+                    {
+                      "name": "closed_inv",
+                      "expression": "COUNT_IF(NOT `is_open`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "closed_inv",
+                  "displayName": "Closed Investigations",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Closed Investigations"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 6,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "b2fb1f19",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "inv",
+                  "fields": [
+                    {
+                      "name": "total_inv",
+                      "expression": "COUNT(`observation_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "total_inv",
+                  "displayName": "Total Investigations",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Total Investigations"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 6,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "7216cd8e",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "open_obs",
+                      "expression": "COUNT_IF(`is_open`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "open_obs",
+                  "displayName": "Open Observations",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Open Observations"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 6,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "0e75a720",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "closed_obs",
+                      "expression": "COUNT_IF(NOT `is_open`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "closed_obs",
+                  "displayName": "Closed Observations",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Closed Observations"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 6,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "16358f95",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "total_obs",
+                      "expression": "COUNT(`observation_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "total_obs",
+                  "displayName": "Total Observations",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Total Observations"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 6,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "115754d5",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "obs_cum",
+                  "fields": [
+                    {
+                      "name": "monthly(as_of_month)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `as_of_month`)"
+                    },
+                    {
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
+                    },
+                    {
+                      "name": "observation_type",
+                      "expression": "`observation_type`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(as_of_month)",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Month"
+                },
+                "y": {
+                  "fieldName": "count(*)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Observations (cumulative)"
+                },
+                "color": {
+                  "fieldName": "observation_type",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "HAZARD",
+                        "color": "#6E6E6E"
+                      },
+                      {
+                        "value": "HAZARD_REPORT",
+                        "color": "#BDBDBD"
+                      },
+                      {
+                        "value": "INCIDENT",
+                        "color": "#E8175D"
+                      },
+                      {
+                        "value": "NEARMISS",
+                        "color": "#6A2C91"
+                      },
+                      {
+                        "value": "Other",
+                        "color": "#ED6D05"
+                      },
+                      {
+                        "value": "SAFEACT",
+                        "color": "#52B2E5"
+                      }
+                    ]
+                  },
+                  "displayName": "Observation type"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Total Observations Monthly Trend"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "3fa95ab4",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "incident_category",
+                      "expression": "`incident_category`"
+                    },
+                    {
+                      "name": "count(observation_id)",
+                      "expression": "COUNT(`observation_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "count(observation_id)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Observations"
+                },
+                "color": {
+                  "fieldName": "incident_category",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "GENERAL SAFETY",
+                        "color": "#BDBDBD"
+                      },
+                      {
+                        "value": "PROCESS SAFETY",
+                        "color": "#E8175D"
+                      },
+                      {
+                        "value": "PRODUCTION",
+                        "color": "#6A2C91"
+                      },
+                      {
+                        "value": "ENVIRONMENTAL",
+                        "color": "#00AEEF"
+                      },
+                      {
+                        "value": "Other",
+                        "color": "#ED6D05"
+                      }
+                    ]
+                  },
+                  "displayName": "Incident Category"
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Total Observations by Incident Category"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 8,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "bcfc8a46",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "risk_rank_ordered",
+                      "expression": "`risk_rank_ordered`"
+                    },
+                    {
+                      "name": "status",
+                      "expression": "`status`"
+                    },
+                    {
+                      "name": "count(observation_id)",
+                      "expression": "COUNT(`observation_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pivot",
+              "encodings": {
+                "rows": [
+                  {
+                    "fieldName": "risk_rank_ordered",
+                    "displayName": "Risk Rank",
+                    "displayTotal": true
+                  }
+                ],
+                "columns": [
+                  {
+                    "fieldName": "status",
+                    "displayName": "Status"
+                  }
+                ],
+                "cell": {
+                  "type": "multi-cell",
+                  "displayAs": "columns",
+                  "fields": [
+                    {
+                      "fieldName": "count(observation_id)",
+                      "cellType": "text",
+                      "displayName": "Count",
+                      "style": {
+                        "type": "color-scale",
+                        "backgroundColor": {
+                          "scale": {
+                            "type": "quantitative",
+                            "colorRamp": {
+                              "mode": "scheme",
+                              "scheme": "orangered"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Observations By Risk Rank and Reported To"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 14,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "1881c0ec",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "risk_rank_ordered",
+                      "expression": "`risk_rank_ordered`"
+                    },
+                    {
+                      "name": "open_obs2",
+                      "expression": "COUNT_IF(`is_open`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "risk_rank_ordered",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Actual risk rank"
+                },
+                "y": {
+                  "fieldName": "open_obs2",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Open observations",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Open Observations By Risk Rank"
+              },
+              "mark": {
+                "colors": [
+                  "#ED6D05"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 14,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "d0b3775d",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "obs",
+                  "fields": [
+                    {
+                      "name": "observation_id",
+                      "expression": "`observation_id`"
+                    },
+                    {
+                      "name": "reported_date",
+                      "expression": "`reported_date`"
+                    },
+                    {
+                      "name": "observation_type",
+                      "expression": "`observation_type`"
+                    },
+                    {
+                      "name": "incident_category",
+                      "expression": "`incident_category`"
+                    },
+                    {
+                      "name": "status",
+                      "expression": "`status`"
+                    },
+                    {
+                      "name": "actual_risk_rank",
+                      "expression": "`actual_risk_rank`"
+                    },
+                    {
+                      "name": "plant_area",
+                      "expression": "`plant_area`"
+                    },
+                    {
+                      "name": "actionee",
+                      "expression": "`actionee`"
+                    },
+                    {
+                      "name": "days_open",
+                      "expression": "`days_open`"
+                    },
+                    {
+                      "name": "description",
+                      "expression": "`description`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "observation_id",
+                    "displayName": "Observation"
+                  },
+                  {
+                    "fieldName": "reported_date",
+                    "displayName": "Reported"
+                  },
+                  {
+                    "fieldName": "observation_type",
+                    "displayName": "Type"
+                  },
+                  {
+                    "fieldName": "incident_category",
+                    "displayName": "Category"
+                  },
+                  {
+                    "fieldName": "status",
+                    "displayName": "Status"
+                  },
+                  {
+                    "fieldName": "actual_risk_rank",
+                    "displayName": "Risk rank"
+                  },
+                  {
+                    "fieldName": "plant_area",
+                    "displayName": "Area"
+                  },
+                  {
+                    "fieldName": "actionee",
+                    "displayName": "Actionee"
+                  },
+                  {
+                    "fieldName": "days_open",
+                    "displayName": "Days open"
+                  },
+                  {
+                    "fieldName": "description",
+                    "displayName": "Description"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Observation register"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 20,
+            "width": 6,
+            "height": 8
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#F4F4F4",
+        "dark": "#1E1C1B"
+      },
+      "widgetBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#2A2726"
+      },
+      "widgetBorderColor": {
+        "light": "#E6E1DF",
+        "dark": "#3A3634"
+      },
+      "fontColor": {
+        "light": "#1E1E1E",
+        "dark": "#F4F4F4"
+      },
+      "selectionColor": {
+        "light": "#F47525",
+        "dark": "#F47525"
+      },
+      "visualizationColors": [
+        "#F47525",
+        "#52B2E5",
+        "#A3194E",
+        "#565150",
+        "#FFC000",
+        "#8E4737",
+        "#00AEEF",
+        "#6A2C91",
+        "#BDBDBD"
+      ],
+      "widgetHeaderAlignment": "LEFT"
+    },
+    "genieSpace": {
+      "isEnabled": true
+    }
+  }
+}

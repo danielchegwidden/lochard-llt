@@ -1,0 +1,47 @@
+# Source-system simulator: lands ERP / Maximo / HSE / historian / AEMO-format / document extracts into the
+# landing volumes. mode=backfill (one-off history) or mode=incremental (daily drop, used by the orchestrator).
+resources:
+  jobs:
+    lochard_generate_data:
+      name: lochard-generate-source-data
+      run_as:
+        service_principal_name: ${var.etl_sp}
+      description: Simulated Lochard source-system extracts (Business Central, Maximo, HSE, historian, documents)
+      parameters:
+        - name: mode
+          default: backfill
+        - name: business_date
+          default: "{{job.start_time.iso_date}}"
+      environments:
+        - environment_key: gen
+          spec:
+            environment_version: "4"
+            dependencies:
+              - numpy
+              - pandas
+              - pyarrow
+              - openpyxl
+              - reportlab
+              - python-docx
+      tasks:
+        - task_key: generate
+          environment_key: gen
+          spark_python_task:
+            python_file: ../../src/data_generation/main.py
+            parameters:
+              - --mode
+              - "{{job.parameters.mode}}"
+              - --date
+              - "{{job.parameters.business_date}}"
+              - --out
+              - /Volumes/${var.catalog}/${resources.schemas.landing.name}/raw
+              - --docs
+              - /Volumes/${var.catalog}/${resources.schemas.landing.name}/documents
+              - --sample-xlsx
+              - ${workspace.file_path}/docs/Sample Data.xlsx
+              - --code-dir
+              - ${workspace.file_path}/src/data_generation
+      email_notifications:
+        on_failure: ["${var.notification_email}"]
+      tags:
+        domain: platform

@@ -1,0 +1,1754 @@
+{
+  "datasets": [
+    {
+      "name": "cum",
+      "displayName": "Cumulative VIC demand & EDD",
+      "queryLines": [
+        "SELECT gas_date, cast(gas_year AS STRING) AS gas_year, gas_month, concat(lpad(cast(gas_month AS STRING), 2, '0'), ' ',\n",
+        "       gas_month_name) AS month_label, date_without_year, total_gas_used_pj, cumulative_pj, edd_value, cumulative_edd,\n",
+        "       demand_source\n",
+        "FROM v_cumulative_vic_demand\n"
+      ]
+    },
+    {
+      "name": "daily",
+      "displayName": "Daily VIC demand vs EDD",
+      "queryLines": [
+        "SELECT gas_date, cast(gas_year AS STRING) AS gas_year, gas_month, day_name, CASE WHEN is_weekend THEN 'Weekend'\n",
+        "       ELSE 'Weekday' END AS day_type, edd_value, total_gas_used_tj, total_gas_used_pj, demand_source\n",
+        "FROM v_vic_gas_demand_daily WHERE edd_value IS NOT NULL\n",
+        "ORDER BY gas_date DESC\n"
+      ]
+    },
+    {
+      "name": "r2_segments",
+      "displayName": "R\u00b2 by year and day type",
+      "queryLines": [
+        "SELECT cast(gas_year AS STRING) AS gas_year, coalesce(day_type, 'All days') AS day_type,\n",
+        "       power(corr(edd_value, total_gas_used_tj), 2) AS r2, count(*) AS n_days\n",
+        "FROM (SELECT gas_year, CASE WHEN is_weekend THEN 'Weekend' ELSE 'Weekday' END AS day_type, edd_value, total_gas_used_tj\n",
+        "      FROM v_vic_gas_demand_daily WHERE edd_value IS NOT NULL)\n",
+        "GROUP BY GROUPING SETS ((gas_year, day_type), (gas_year))\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "cum_demand",
+      "displayName": "Cumulative VIC demand",
+      "layout": [
+        {
+          "widget": {
+            "name": "7c60a16a",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "5c196771",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Cumulative VIC demand\n\nAEMO INT287 total gas used (VIC, GJ/day) \u2013 real nemweb data for recent days, history in the same format. Replaces Tableau *INT091 Actual EDD vs VIC demand*."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 5,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "cc165084",
+            "queries": [
+              {
+                "name": "f_cum_demand_cum_gas_year",
+                "query": {
+                  "datasetName": "cum",
+                  "fields": [
+                    {
+                      "name": "gas_year",
+                      "expression": "`gas_year`"
+                    },
+                    {
+                      "name": "gas_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "gas_year",
+                    "displayName": "Year of Gas Date",
+                    "queryName": "f_cum_demand_cum_gas_year"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Year of Gas Date"
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "2021"
+                      },
+                      {
+                        "value": "2022"
+                      },
+                      {
+                        "value": "2023"
+                      },
+                      {
+                        "value": "2024"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "27a35657",
+            "queries": [
+              {
+                "name": "f_cum_demand_cum_gas_month",
+                "query": {
+                  "datasetName": "cum",
+                  "fields": [
+                    {
+                      "name": "gas_month",
+                      "expression": "`gas_month`"
+                    },
+                    {
+                      "name": "gas_month_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "gas_month",
+                    "displayName": "Month of Gas Date",
+                    "queryName": "f_cum_demand_cum_gas_month"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Month of Gas Date"
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "1"
+                      },
+                      {
+                        "value": "2"
+                      },
+                      {
+                        "value": "3"
+                      },
+                      {
+                        "value": "4"
+                      },
+                      {
+                        "value": "5"
+                      },
+                      {
+                        "value": "6"
+                      },
+                      {
+                        "value": "7"
+                      },
+                      {
+                        "value": "8"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "adf40c8d",
+            "queries": [
+              {
+                "name": "f_cum_demand_cum_demand_source",
+                "query": {
+                  "datasetName": "cum",
+                  "fields": [
+                    {
+                      "name": "demand_source",
+                      "expression": "`demand_source`"
+                    },
+                    {
+                      "name": "demand_source_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "demand_source",
+                    "displayName": "Data source (AEMO real / history)",
+                    "queryName": "f_cum_demand_cum_demand_source"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Data source (AEMO real / history)"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "1bbfd7e6",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "cum",
+                  "fields": [
+                    {
+                      "name": "date_without_year",
+                      "expression": "`date_without_year`"
+                    },
+                    {
+                      "name": "max(cumulative_pj)",
+                      "expression": "MAX(`cumulative_pj`)"
+                    },
+                    {
+                      "name": "gas_year",
+                      "expression": "`gas_year`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "date_without_year",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Day of Date without Year"
+                },
+                "y": {
+                  "fieldName": "max(cumulative_pj)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Cumulative of total gas consumption (PJ)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "gas_year",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "2021",
+                        "color": "#B5BD2A"
+                      },
+                      {
+                        "value": "2022",
+                        "color": "#8C564B"
+                      },
+                      {
+                        "value": "2023",
+                        "color": "#FF7F0E"
+                      },
+                      {
+                        "value": "2024",
+                        "color": "#1F77B4"
+                      },
+                      {
+                        "value": "2025",
+                        "color": "#A3194E"
+                      },
+                      {
+                        "value": "2026",
+                        "color": "#565150"
+                      }
+                    ]
+                  },
+                  "displayName": "Year of Gas Date"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Cumulative VIC demand"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "263c7aec",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "cum",
+                  "fields": [
+                    {
+                      "name": "month_label",
+                      "expression": "`month_label`"
+                    },
+                    {
+                      "name": "gas_year",
+                      "expression": "`gas_year`"
+                    },
+                    {
+                      "name": "sum(total_gas_used_pj)",
+                      "expression": "SUM(`total_gas_used_pj`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pivot",
+              "encodings": {
+                "rows": [
+                  {
+                    "fieldName": "month_label",
+                    "displayName": "Month of Gas Date",
+                    "displayTotal": true
+                  }
+                ],
+                "columns": [
+                  {
+                    "fieldName": "gas_year",
+                    "displayName": "Year"
+                  }
+                ],
+                "cell": {
+                  "type": "multi-cell",
+                  "displayAs": "columns",
+                  "fields": [
+                    {
+                      "fieldName": "sum(total_gas_used_pj)",
+                      "cellType": "text",
+                      "displayName": "PJ",
+                      "format": {
+                        "type": "number-plain",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 1
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Cumulative VIC demand (Table)"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 11,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "cum_edd",
+      "displayName": "Cumulative EDD",
+      "layout": [
+        {
+          "widget": {
+            "name": "86ee34f7",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "e1bfad20",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Cumulative EDD\n\nAEMO INT091 actual effective degree days \u2013 the weather driver of VIC heating demand."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 5,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "51d23dd1",
+            "queries": [
+              {
+                "name": "f_cum_edd_cum_gas_year",
+                "query": {
+                  "datasetName": "cum",
+                  "fields": [
+                    {
+                      "name": "gas_year",
+                      "expression": "`gas_year`"
+                    },
+                    {
+                      "name": "gas_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "gas_year",
+                    "displayName": "Year",
+                    "queryName": "f_cum_edd_cum_gas_year"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Year"
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "2021"
+                      },
+                      {
+                        "value": "2022"
+                      },
+                      {
+                        "value": "2023"
+                      },
+                      {
+                        "value": "2024"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "f194872f",
+            "queries": [
+              {
+                "name": "f_cum_edd_cum_gas_month",
+                "query": {
+                  "datasetName": "cum",
+                  "fields": [
+                    {
+                      "name": "gas_month",
+                      "expression": "`gas_month`"
+                    },
+                    {
+                      "name": "gas_month_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "gas_month",
+                    "displayName": "Month",
+                    "queryName": "f_cum_edd_cum_gas_month"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Month"
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "1"
+                      },
+                      {
+                        "value": "2"
+                      },
+                      {
+                        "value": "3"
+                      },
+                      {
+                        "value": "4"
+                      },
+                      {
+                        "value": "5"
+                      },
+                      {
+                        "value": "6"
+                      },
+                      {
+                        "value": "7"
+                      },
+                      {
+                        "value": "8"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "5b693a6b",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "cum",
+                  "fields": [
+                    {
+                      "name": "date_without_year",
+                      "expression": "`date_without_year`"
+                    },
+                    {
+                      "name": "max(cumulative_edd)",
+                      "expression": "MAX(`cumulative_edd`)"
+                    },
+                    {
+                      "name": "gas_year",
+                      "expression": "`gas_year`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "date_without_year",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Day of year"
+                },
+                "y": {
+                  "fieldName": "max(cumulative_edd)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Cumulative EDD",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "gas_year",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "2021",
+                        "color": "#B5BD2A"
+                      },
+                      {
+                        "value": "2022",
+                        "color": "#8C564B"
+                      },
+                      {
+                        "value": "2023",
+                        "color": "#FF7F0E"
+                      },
+                      {
+                        "value": "2024",
+                        "color": "#1F77B4"
+                      },
+                      {
+                        "value": "2025",
+                        "color": "#A3194E"
+                      },
+                      {
+                        "value": "2026",
+                        "color": "#565150"
+                      }
+                    ]
+                  },
+                  "displayName": "Year"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Cumulative EDD"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "6fa9fd59",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "cum",
+                  "fields": [
+                    {
+                      "name": "month_label",
+                      "expression": "`month_label`"
+                    },
+                    {
+                      "name": "gas_year",
+                      "expression": "`gas_year`"
+                    },
+                    {
+                      "name": "sum(edd_value)",
+                      "expression": "SUM(`edd_value`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pivot",
+              "encodings": {
+                "rows": [
+                  {
+                    "fieldName": "month_label",
+                    "displayName": "Month",
+                    "displayTotal": true
+                  }
+                ],
+                "columns": [
+                  {
+                    "fieldName": "gas_year",
+                    "displayName": "Year"
+                  }
+                ],
+                "cell": {
+                  "type": "multi-cell",
+                  "displayAs": "columns",
+                  "fields": [
+                    {
+                      "fieldName": "sum(edd_value)",
+                      "cellType": "text",
+                      "displayName": "EDD",
+                      "format": {
+                        "type": "number-plain",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 0
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Cumulative EDD (Table)"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 11,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "edd_vs_demand",
+      "displayName": "Actual EDD \u2013 VIC demand (R\u00b2)",
+      "layout": [
+        {
+          "widget": {
+            "name": "ccd77559",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "101a3193",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Actual EDD vs VIC demand\n\nDaily demand against effective degree days. R\u00b2 by weekday / weekend (Tableau R2 \u2013 Wk day Wk end / Any days / Consolidated)."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 5,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "fef00835",
+            "queries": [
+              {
+                "name": "f_edd_vs_demand_daily_gas_year",
+                "query": {
+                  "datasetName": "daily",
+                  "fields": [
+                    {
+                      "name": "gas_year",
+                      "expression": "`gas_year`"
+                    },
+                    {
+                      "name": "gas_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_edd_vs_demand_r2_segments_gas_year",
+                "query": {
+                  "datasetName": "r2_segments",
+                  "fields": [
+                    {
+                      "name": "gas_year",
+                      "expression": "`gas_year`"
+                    },
+                    {
+                      "name": "gas_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "gas_year",
+                    "displayName": "Year",
+                    "queryName": "f_edd_vs_demand_daily_gas_year"
+                  },
+                  {
+                    "fieldName": "gas_year",
+                    "displayName": "Year",
+                    "queryName": "f_edd_vs_demand_r2_segments_gas_year"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Year"
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "2021"
+                      },
+                      {
+                        "value": "2022"
+                      },
+                      {
+                        "value": "2023"
+                      },
+                      {
+                        "value": "2024"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "b690d70d",
+            "queries": [
+              {
+                "name": "f_edd_vs_demand_daily_gas_month",
+                "query": {
+                  "datasetName": "daily",
+                  "fields": [
+                    {
+                      "name": "gas_month",
+                      "expression": "`gas_month`"
+                    },
+                    {
+                      "name": "gas_month_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "gas_month",
+                    "displayName": "Month",
+                    "queryName": "f_edd_vs_demand_daily_gas_month"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Month"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "eebc7f8b",
+            "queries": [
+              {
+                "name": "f_edd_vs_demand_daily_day_name",
+                "query": {
+                  "datasetName": "daily",
+                  "fields": [
+                    {
+                      "name": "day_name",
+                      "expression": "`day_name`"
+                    },
+                    {
+                      "name": "day_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "day_name",
+                    "displayName": "Days of the week",
+                    "queryName": "f_edd_vs_demand_daily_day_name"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Days of the week"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "63e01977",
+            "queries": [
+              {
+                "name": "f_edd_vs_demand_daily_day_type",
+                "query": {
+                  "datasetName": "daily",
+                  "fields": [
+                    {
+                      "name": "day_type",
+                      "expression": "`day_type`"
+                    },
+                    {
+                      "name": "day_type_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "day_type",
+                    "displayName": "Weekday / Weekend",
+                    "queryName": "f_edd_vs_demand_daily_day_type"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Weekday / Weekend"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "7a67adf2",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "r2_segments",
+                  "fields": [
+                    {
+                      "name": "day_type",
+                      "expression": "`day_type`"
+                    },
+                    {
+                      "name": "gas_year",
+                      "expression": "`gas_year`"
+                    },
+                    {
+                      "name": "max(r2)",
+                      "expression": "MAX(`r2`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pivot",
+              "encodings": {
+                "rows": [
+                  {
+                    "fieldName": "day_type",
+                    "displayName": "Days"
+                  }
+                ],
+                "columns": [
+                  {
+                    "fieldName": "gas_year",
+                    "displayName": "Year"
+                  }
+                ],
+                "cell": {
+                  "type": "multi-cell",
+                  "displayAs": "columns",
+                  "fields": [
+                    {
+                      "fieldName": "max(r2)",
+                      "cellType": "text",
+                      "displayName": "R\u00b2",
+                      "format": {
+                        "type": "number-plain",
+                        "abbreviation": "none",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 3
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "R\u00b2 \u2013 EDD vs demand"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "7d66aaa2",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "daily",
+                  "fields": [
+                    {
+                      "name": "avg_tj",
+                      "expression": "AVG(`total_gas_used_tj`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg_tj",
+                  "displayName": "Avg daily demand (TJ)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Avg daily demand (TJ)"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 4,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "46a61e78",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "daily",
+                  "fields": [
+                    {
+                      "name": "avg_edd",
+                      "expression": "AVG(`edd_value`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "avg_edd",
+                  "displayName": "Avg EDD",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Avg EDD"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 4,
+            "width": 2,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "4d55e390",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "daily",
+                  "fields": [
+                    {
+                      "name": "edd_value",
+                      "expression": "`edd_value`"
+                    },
+                    {
+                      "name": "total_gas_used_tj",
+                      "expression": "`total_gas_used_tj`"
+                    },
+                    {
+                      "name": "day_type",
+                      "expression": "`day_type`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "scatter",
+              "encodings": {
+                "x": {
+                  "fieldName": "edd_value",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "EDD"
+                },
+                "y": {
+                  "fieldName": "total_gas_used_tj",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "VIC demand (TJ)"
+                },
+                "color": {
+                  "fieldName": "day_type",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "Weekday",
+                        "color": "#52B2E5"
+                      },
+                      {
+                        "value": "Weekend",
+                        "color": "#F47525"
+                      }
+                    ]
+                  },
+                  "displayName": "Day type"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Actual EDD \u2013 VIC demand"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 7,
+            "width": 6,
+            "height": 7
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "actual_demand",
+      "displayName": "Actual VIC demand",
+      "layout": [
+        {
+          "widget": {
+            "name": "b6f38532",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "483a0b71",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Actual VIC demand\n\nMonthly VIC demand (PJ) by year and daily detail (TJ)."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 5,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "7d922ca3",
+            "queries": [
+              {
+                "name": "f_actual_demand_daily_gas_year",
+                "query": {
+                  "datasetName": "daily",
+                  "fields": [
+                    {
+                      "name": "gas_year",
+                      "expression": "`gas_year`"
+                    },
+                    {
+                      "name": "gas_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "gas_year",
+                    "displayName": "Year",
+                    "queryName": "f_actual_demand_daily_gas_year"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Year"
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "2023"
+                      },
+                      {
+                        "value": "2024"
+                      },
+                      {
+                        "value": "2025"
+                      },
+                      {
+                        "value": "2026"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "d13ade13",
+            "queries": [
+              {
+                "name": "f_actual_demand_daily_gas_month",
+                "query": {
+                  "datasetName": "daily",
+                  "fields": [
+                    {
+                      "name": "gas_month",
+                      "expression": "`gas_month`"
+                    },
+                    {
+                      "name": "gas_month_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "gas_month",
+                    "displayName": "Month",
+                    "queryName": "f_actual_demand_daily_gas_month"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Month"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "b1504b74",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "daily",
+                  "fields": [
+                    {
+                      "name": "gas_month",
+                      "expression": "`gas_month`"
+                    },
+                    {
+                      "name": "sum(total_gas_used_pj)",
+                      "expression": "SUM(`total_gas_used_pj`)"
+                    },
+                    {
+                      "name": "gas_year",
+                      "expression": "`gas_year`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "gas_month",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Month"
+                },
+                "y": {
+                  "fieldName": "sum(total_gas_used_pj)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "PJ",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "gas_year",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "2021",
+                        "color": "#B5BD2A"
+                      },
+                      {
+                        "value": "2022",
+                        "color": "#8C564B"
+                      },
+                      {
+                        "value": "2023",
+                        "color": "#FF7F0E"
+                      },
+                      {
+                        "value": "2024",
+                        "color": "#1F77B4"
+                      },
+                      {
+                        "value": "2025",
+                        "color": "#A3194E"
+                      },
+                      {
+                        "value": "2026",
+                        "color": "#565150"
+                      }
+                    ]
+                  },
+                  "displayName": "Year"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Actual VIC demand"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "a6b52e64",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "daily",
+                  "fields": [
+                    {
+                      "name": "gas_date",
+                      "expression": "`gas_date`"
+                    },
+                    {
+                      "name": "day_name",
+                      "expression": "`day_name`"
+                    },
+                    {
+                      "name": "edd_value",
+                      "expression": "`edd_value`"
+                    },
+                    {
+                      "name": "total_gas_used_tj",
+                      "expression": "`total_gas_used_tj`"
+                    },
+                    {
+                      "name": "demand_source",
+                      "expression": "`demand_source`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "gas_date",
+                    "displayName": "Gas date"
+                  },
+                  {
+                    "fieldName": "day_name",
+                    "displayName": "Day"
+                  },
+                  {
+                    "fieldName": "edd_value",
+                    "displayName": "EDD"
+                  },
+                  {
+                    "fieldName": "total_gas_used_tj",
+                    "displayName": "Demand (TJ)"
+                  },
+                  {
+                    "fieldName": "demand_source",
+                    "displayName": "Source"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Daily detail"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 10,
+            "width": 6,
+            "height": 8
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#F4F4F4",
+        "dark": "#1E1C1B"
+      },
+      "widgetBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#2A2726"
+      },
+      "widgetBorderColor": {
+        "light": "#E6E1DF",
+        "dark": "#3A3634"
+      },
+      "fontColor": {
+        "light": "#1E1E1E",
+        "dark": "#F4F4F4"
+      },
+      "selectionColor": {
+        "light": "#F47525",
+        "dark": "#F47525"
+      },
+      "visualizationColors": [
+        "#F47525",
+        "#52B2E5",
+        "#A3194E",
+        "#565150",
+        "#FFC000",
+        "#8E4737",
+        "#00AEEF",
+        "#6A2C91",
+        "#BDBDBD"
+      ],
+      "widgetHeaderAlignment": "LEFT"
+    },
+    "genieSpace": {
+      "isEnabled": true
+    }
+  }
+}

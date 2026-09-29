@@ -1,0 +1,35 @@
+# Lakeflow Spark Declarative Pipeline – HSE (observations, investigations, TRIFR). Serverless, triggered by the daily orchestrator.
+# Publishes across lochard_bronze / lochard_silver / lochard_gold using fully-qualified names.
+resources:
+  pipelines:
+    lochard_hse:
+      name: lochard-hse-medallion
+      run_as:
+        service_principal_name: ${var.etl_sp}
+      catalog: ${var.catalog}
+      schema: ${resources.schemas.bronze.name}
+      serverless: true
+      continuous: false
+      channel: CURRENT
+      photon: true
+      root_path: ../../src/pipelines/hse
+      libraries:
+        - glob:
+            include: ../../src/pipelines/hse/transformations/**
+      configuration:
+        lochard.catalog: ${var.catalog}
+        lochard.landing: /Volumes/${var.catalog}/${resources.schemas.landing.name}/raw
+        lochard.documents: /Volumes/${var.catalog}/${resources.schemas.landing.name}/documents
+        lochard.bronze: ${var.catalog}.${resources.schemas.bronze.name}
+        lochard.silver: ${var.catalog}.${resources.schemas.silver.name}
+        lochard.gold: ${var.catalog}.${resources.schemas.gold.name}
+        lochard.ai: ${var.catalog}.${resources.schemas.ai.name}
+      event_log:
+        catalog: ${var.catalog}
+        schema: ${resources.schemas.platform.name}
+        name: event_log_hse
+      notifications:
+        - email_recipients: ["${var.notification_email}"]
+          alerts: [on-update-failure, on-update-fatal-failure, on-flow-failure]
+      tags:
+        domain: hse

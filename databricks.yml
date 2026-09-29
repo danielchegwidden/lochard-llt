@@ -1,0 +1,97 @@
+# Lochard Energy – Data Intelligence Platform
+# One bundle deploys every Databricks asset: schemas, volumes, warehouse, pipelines,
+# jobs, dashboards, Genie Agents, AI Gateway model services, serving, Lakebase and the app.
+bundle:
+  name: lochard-data-platform
+
+include:
+  - resources/*.yml
+  - resources/**/*.yml
+
+variables:
+  catalog:
+    description: Unity Catalog catalog that holds every Lochard schema
+    default: dc_demo_workspace_02_catalog
+  prefix:
+    description: Schema prefix (all schemas must start with lochard_)
+    default: lochard_dev_
+  warehouse_id:
+    description: Serverless SQL warehouse used by dashboards, Genie and the app
+    default: ${resources.sql_warehouses.lochard_wh.id}
+  rt_warehouse_id:
+    description: Lakehouse//RT (real-time) warehouse for dashboards on ungoverned data (created by scripts/create_rt_warehouse.sh)
+    lookup:
+      warehouse: lochard-rt-wh
+  premium_model:
+    default: databricks-claude-opus-5-5
+  premium_fallback_model:
+    default: databricks-gpt-6-sol
+  standard_model:
+    default: databricks-claude-sonnet-5
+  standard_fallback_model:
+    default: databricks-gpt-5-5
+  economy_model:
+    default: databricks-claude-haiku-4-5
+  economy_fallback_model:
+    default: databricks-gemini-3-8-flash
+  open_model:
+    default: gpt-oss-120b            # system.ai model name (serving endpoint: databricks-gpt-oss-120b)
+  embedding_model:
+    default: databricks-gte-large-en
+  workspace_id:
+    description: Numeric workspace id (AI Gateway host, embed URLs, system-table filters)
+    default: "7474659469579329"
+  supervisor_endpoint:
+    description: Agent Bricks Supervisor Agent endpoint ("Lochard Leadership Analyst"), created by src/ai/agent_bricks/apply.sh
+    default: mas-14e8875b-endpoint
+  knowledge_endpoint:
+    description: Agent Bricks Knowledge Assistant endpoint ("Iona Knowledge"), created by src/ai/agent_bricks/apply.sh
+    default: ka-5d8cb9b9-endpoint
+  research_model:
+    description: Model with the hosted web_search tool (Responses API) used by the market intelligence collector
+    default: databricks-gpt-5-5
+  nemweb_base_url:
+    default: https://nemweb.com.au/Reports/Current/VicGas
+  notification_email:
+    default: daniel.chegwidden@databricks.com
+  etl_sp:
+    description: Application ID of sp-lochard-etl (runs every pipeline / job; excluded from ABAC policies)
+    default: 96d74e8e-856f-400f-9f26-c6a49cbd9131
+  platform_admin:
+    default: daniel.chegwidden@databricks.com
+
+targets:
+  # dev uses explicit presets instead of mode: development, which would re-prefix UC schema names
+  dev:
+    default: true
+    workspace:
+      profile: fevm-dc-demo-workspace-02
+      root_path: /Workspace/Users/daniel.chegwidden@databricks.com/.bundle/${bundle.name}/dev
+    variables:
+      prefix: lochard_dev_
+    presets:
+      name_prefix: "[dev] "
+      pipelines_development: true
+      trigger_pause_status: PAUSED
+      tags:
+        project: lochard
+        env: dev
+
+  # "prod" is the demo instance Lochard sees: clean names, lochard_* schemas.
+  prod:
+    mode: production
+    workspace:
+      profile: fevm-dc-demo-workspace-02
+      root_path: /Workspace/Users/daniel.chegwidden@databricks.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      prefix: lochard_
+    # run_as is set per job / pipeline (apps do not support a target-level run_as)
+    permissions:
+      - user_name: daniel.chegwidden@databricks.com
+        level: CAN_MANAGE
+      - service_principal_name: ${var.etl_sp}
+        level: CAN_MANAGE
+    presets:
+      tags:
+        project: lochard
+        env: prod

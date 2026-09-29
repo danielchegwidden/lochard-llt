@@ -1,0 +1,21 @@
+# AI cost vs quality experiment across Unity AI Gateway tiers + intelligent routing (on demand / monthly).
+resources:
+  jobs:
+    lochard_ai_cost_experiment:
+      name: lochard-ai-cost-quality-experiment
+      run_as:                       # exploration job – runs as the platform admin (AI developer persona)
+        user_name: ${var.platform_admin}
+      description: Runs grounded board questions through each model tier and the complexity router; LLM-judge quality; cost from tokens
+      environments:
+        - environment_key: ai
+          spec:
+            environment_version: "4"
+            dependencies: ["databricks-sdk>=0.60", "requests"]
+      tasks:
+        - task_key: run_experiment
+          environment_key: ai
+          spark_python_task:
+            python_file: ../../src/ai/cost_explorer.py
+            parameters: [--catalog, "${var.catalog}", --prefix, "${var.prefix}", --workspace-id, "${var.workspace_id}"]
+      tags:
+        domain: ai

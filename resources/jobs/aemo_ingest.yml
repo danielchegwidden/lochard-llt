@@ -1,0 +1,32 @@
+# Public AEMO DWGM MIBB reports (nemweb) -> raw volume. INT091 publishes ~14:00 AEST, INT287 ~09:00 AEST.
+resources:
+  jobs:
+    lochard_aemo_ingest:
+      name: lochard-aemo-nemweb-ingest
+      run_as:
+        service_principal_name: ${var.etl_sp}
+      description: Lands AEMO INT091 (EDD), INT287 (VIC gas used), INT313 (Iona flows), INT037b (price), INT153 (forecast)
+      schedule:
+        quartz_cron_expression: "0 30 15 * * ?"
+        timezone_id: Australia/Melbourne
+        pause_status: UNPAUSED
+      environments:
+        - environment_key: ingest
+          spec:
+            environment_version: "4"
+      tasks:
+        - task_key: download_nemweb
+          environment_key: ingest
+          spark_python_task:
+            python_file: ../../src/ingest/aemo_nemweb.py
+            parameters:
+              - --base-url
+              - ${var.nemweb_base_url}
+              - --out
+              - /Volumes/${var.catalog}/${resources.schemas.landing.name}/raw
+          max_retries: 2
+          min_retry_interval_millis: 300000
+      email_notifications:
+        on_failure: ["${var.notification_email}"]
+      tags:
+        domain: market

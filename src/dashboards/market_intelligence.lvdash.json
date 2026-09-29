@@ -1,0 +1,2401 @@
+{
+  "datasets": [
+    {
+      "name": "items",
+      "displayName": "Market intelligence items",
+      "queryLines": [
+        "SELECT item_id, week_start, published_date, title, source_name, source_type, entity_group, primary_entity, topic, signal,\n",
+        "       sentiment, importance, relevance, summary, why_it_matters, url\n",
+        "FROM v_market_intel_items\n"
+      ]
+    },
+    {
+      "name": "mentions",
+      "displayName": "Entity mentions",
+      "queryLines": [
+        "SELECT i.week_start, i.published_date, i.entity, coalesce(e.entity_group, i.entity_group) AS entity_group, i.signal,\n",
+        "       i.sentiment, i.importance, i.title, i.source_name, i.url\n",
+        "FROM (SELECT v.*, x.entity FROM v_market_intel_items v LATERAL VIEW explode(v.entities) x AS entity) i\n",
+        "LEFT JOIN v_market_intel_entities e ON e.entity = i.entity\n"
+      ]
+    },
+    {
+      "name": "briefs",
+      "displayName": "Weekly briefs",
+      "queryLines": [
+        "SELECT week_start, week_end, headline, summary_md, n_items, n_sources, generated_at FROM v_market_intel_briefs\n"
+      ]
+    },
+    {
+      "name": "watch",
+      "displayName": "Watchlist",
+      "queryLines": [
+        "SELECT entity, entity_group, relationship, description, asx_code, website FROM v_market_intel_entities\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "overview",
+      "displayName": "Overview",
+      "layout": [
+        {
+          "widget": {
+            "name": "d0bc1831",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "8e328a81",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Market Intelligence\n\nPublic news, web research and ASX announcements about Lochard, customers, competitors, suppliers, regulators and the east-coast gas market \u2013 classified by AI and summarised weekly by the Market Intelligence Analyst agent."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "c50094d0",
+            "multilineTextboxSpec": {
+              "lines": [
+                "**Updated daily 07:00 AEST**  \nWeeks run Monday\u2013Sunday"
+              ]
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "d30036f1",
+            "queries": [
+              {
+                "name": "f_overview_items_week_start",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "week_start",
+                      "expression": "`week_start`"
+                    },
+                    {
+                      "name": "week_start_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_overview_mentions_week_start",
+                "query": {
+                  "datasetName": "mentions",
+                  "fields": [
+                    {
+                      "name": "week_start",
+                      "expression": "`week_start`"
+                    },
+                    {
+                      "name": "week_start_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "week_start",
+                    "displayName": "Weeks",
+                    "queryName": "f_overview_items_week_start"
+                  },
+                  {
+                    "fieldName": "week_start",
+                    "displayName": "Weeks",
+                    "queryName": "f_overview_mentions_week_start"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Weeks"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "e2e4ae6c",
+            "queries": [
+              {
+                "name": "f_overview_items_entity_group",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "entity_group",
+                      "expression": "`entity_group`"
+                    },
+                    {
+                      "name": "entity_group_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_overview_mentions_entity_group",
+                "query": {
+                  "datasetName": "mentions",
+                  "fields": [
+                    {
+                      "name": "entity_group",
+                      "expression": "`entity_group`"
+                    },
+                    {
+                      "name": "entity_group_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "entity_group",
+                    "displayName": "Entity group",
+                    "queryName": "f_overview_items_entity_group"
+                  },
+                  {
+                    "fieldName": "entity_group",
+                    "displayName": "Entity group",
+                    "queryName": "f_overview_mentions_entity_group"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Entity group"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "c0cb705b",
+            "queries": [
+              {
+                "name": "f_overview_items_topic",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "topic",
+                      "expression": "`topic`"
+                    },
+                    {
+                      "name": "topic_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "topic",
+                    "displayName": "Topic",
+                    "queryName": "f_overview_items_topic"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Topic"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "af95d1ca",
+            "queries": [
+              {
+                "name": "f_overview_items_signal",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "signal",
+                      "expression": "`signal`"
+                    },
+                    {
+                      "name": "signal_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_overview_mentions_signal",
+                "query": {
+                  "datasetName": "mentions",
+                  "fields": [
+                    {
+                      "name": "signal",
+                      "expression": "`signal`"
+                    },
+                    {
+                      "name": "signal_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "signal",
+                    "displayName": "Signal",
+                    "queryName": "f_overview_items_signal"
+                  },
+                  {
+                    "fieldName": "signal",
+                    "displayName": "Signal",
+                    "queryName": "f_overview_mentions_signal"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Signal"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "30d764f6",
+            "queries": [
+              {
+                "name": "f_overview_items_source_type",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "source_type",
+                      "expression": "`source_type`"
+                    },
+                    {
+                      "name": "source_type_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "source_type",
+                    "displayName": "Source type",
+                    "queryName": "f_overview_items_source_type"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Source type"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "cf3544ba",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "n",
+                      "expression": "COUNT(*)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "n",
+                  "displayName": "Relevant items",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Relevant items"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "649c910a",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "thr",
+                      "expression": "COUNT_IF(`signal` = 'Threat')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "thr",
+                  "displayName": "Threats",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Threats"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "a50d4e80",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "opp",
+                      "expression": "COUNT_IF(`signal` = 'Opportunity')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "opp",
+                  "displayName": "Opportunities",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Opportunities"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "6a0fe303",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "hi",
+                      "expression": "COUNT_IF(`importance` >= 4)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "hi",
+                  "displayName": "High importance (4\u20135)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "High importance (4\u20135)"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "0b4464b7",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "sent",
+                      "expression": "AVG(`sentiment`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sent",
+                  "displayName": "Average sentiment",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Average sentiment",
+                "showDescription": true,
+                "description": "-1 (negative for Lochard) to +1 (positive)"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "b7e52d96",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "src",
+                      "expression": "COUNT(DISTINCT `source_name`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "src",
+                  "displayName": "Publishers",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Publishers"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "ca8311ca",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "week_start",
+                      "expression": "`week_start`"
+                    },
+                    {
+                      "name": "n",
+                      "expression": "COUNT(*)"
+                    },
+                    {
+                      "name": "entity_group",
+                      "expression": "`entity_group`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "week_start",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Week"
+                },
+                "y": {
+                  "fieldName": "n",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Items",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "entity_group",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Entity group"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Items per week by entity group"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ],
+                "layout": "stack"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 4,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "334a9fa1",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "week_start",
+                      "expression": "`week_start`"
+                    },
+                    {
+                      "name": "s",
+                      "expression": "AVG(`sentiment`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "week_start",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Week"
+                },
+                "y": {
+                  "fieldName": "s",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Average sentiment",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Average sentiment by week"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 6,
+            "width": 2,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "e0832382",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "topic",
+                      "expression": "`topic`"
+                    },
+                    {
+                      "name": "n",
+                      "expression": "COUNT(*)"
+                    },
+                    {
+                      "name": "signal",
+                      "expression": "`signal`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "topic",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Topic"
+                },
+                "y": {
+                  "fieldName": "n",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Items",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "signal",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "Opportunity",
+                        "color": "#6BBF59"
+                      },
+                      {
+                        "value": "Threat",
+                        "color": "#D64545"
+                      },
+                      {
+                        "value": "Watch",
+                        "color": "#FFC000"
+                      },
+                      {
+                        "value": "Neutral",
+                        "color": "#BDBDBD"
+                      }
+                    ]
+                  },
+                  "displayName": "Signal"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Items by topic and signal"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ],
+                "layout": "stack"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "586ad156",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "mentions",
+                  "fields": [
+                    {
+                      "name": "entity",
+                      "expression": "`entity`"
+                    },
+                    {
+                      "name": "m",
+                      "expression": "COUNT(*)"
+                    },
+                    {
+                      "name": "entity_group",
+                      "expression": "`entity_group`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "entity",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Entity"
+                },
+                "y": {
+                  "fieldName": "m",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Mentions",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "entity_group",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Entity group"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Most-mentioned entities"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ],
+                "layout": "stack"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 12,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "eb47abb0",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "published_date",
+                      "expression": "`published_date`"
+                    },
+                    {
+                      "name": "importance",
+                      "expression": "`importance`"
+                    },
+                    {
+                      "name": "signal",
+                      "expression": "`signal`"
+                    },
+                    {
+                      "name": "entity_group",
+                      "expression": "`entity_group`"
+                    },
+                    {
+                      "name": "title",
+                      "expression": "`title`"
+                    },
+                    {
+                      "name": "why_it_matters",
+                      "expression": "`why_it_matters`"
+                    },
+                    {
+                      "name": "source_name",
+                      "expression": "`source_name`"
+                    },
+                    {
+                      "name": "url",
+                      "expression": "`url`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "published_date",
+                    "displayName": "Date"
+                  },
+                  {
+                    "fieldName": "importance",
+                    "displayName": "Importance"
+                  },
+                  {
+                    "fieldName": "signal",
+                    "displayName": "Signal"
+                  },
+                  {
+                    "fieldName": "entity_group",
+                    "displayName": "Group"
+                  },
+                  {
+                    "fieldName": "title",
+                    "displayName": "Title"
+                  },
+                  {
+                    "fieldName": "why_it_matters",
+                    "displayName": "Why it matters"
+                  },
+                  {
+                    "fieldName": "source_name",
+                    "displayName": "Publisher"
+                  },
+                  {
+                    "fieldName": "url",
+                    "displayName": "Link"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Items (most recent first)"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 18,
+            "width": 6,
+            "height": 9
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "explorer",
+      "displayName": "Item explorer",
+      "layout": [
+        {
+          "widget": {
+            "name": "9c4107b5",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "4f6dce8e",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Item explorer\n\nEvery relevant item with its AI summary. Filter, then open the original source."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 5,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "f6015b45",
+            "queries": [
+              {
+                "name": "f_explorer_items_published_date",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "published_date",
+                      "expression": "`published_date`"
+                    },
+                    {
+                      "name": "published_date_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "published_date",
+                    "displayName": "Published",
+                    "queryName": "f_explorer_items_published_date"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Published"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "afb86b39",
+            "queries": [
+              {
+                "name": "f_explorer_items_entity_group",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "entity_group",
+                      "expression": "`entity_group`"
+                    },
+                    {
+                      "name": "entity_group_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "entity_group",
+                    "displayName": "Entity group",
+                    "queryName": "f_explorer_items_entity_group"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Entity group"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "1e0a3cf1",
+            "queries": [
+              {
+                "name": "f_explorer_items_primary_entity",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "primary_entity",
+                      "expression": "`primary_entity`"
+                    },
+                    {
+                      "name": "primary_entity_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "primary_entity",
+                    "displayName": "Entity",
+                    "queryName": "f_explorer_items_primary_entity"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Entity"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "acbf6881",
+            "queries": [
+              {
+                "name": "f_explorer_items_topic",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "topic",
+                      "expression": "`topic`"
+                    },
+                    {
+                      "name": "topic_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "topic",
+                    "displayName": "Topic",
+                    "queryName": "f_explorer_items_topic"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Topic"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "bde7cb15",
+            "queries": [
+              {
+                "name": "f_explorer_items_signal",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "signal",
+                      "expression": "`signal`"
+                    },
+                    {
+                      "name": "signal_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "signal",
+                    "displayName": "Signal",
+                    "queryName": "f_explorer_items_signal"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Signal"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "71f2f82a",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "items",
+                  "fields": [
+                    {
+                      "name": "published_date",
+                      "expression": "`published_date`"
+                    },
+                    {
+                      "name": "title",
+                      "expression": "`title`"
+                    },
+                    {
+                      "name": "source_name",
+                      "expression": "`source_name`"
+                    },
+                    {
+                      "name": "source_type",
+                      "expression": "`source_type`"
+                    },
+                    {
+                      "name": "primary_entity",
+                      "expression": "`primary_entity`"
+                    },
+                    {
+                      "name": "entity_group",
+                      "expression": "`entity_group`"
+                    },
+                    {
+                      "name": "topic",
+                      "expression": "`topic`"
+                    },
+                    {
+                      "name": "signal",
+                      "expression": "`signal`"
+                    },
+                    {
+                      "name": "importance",
+                      "expression": "`importance`"
+                    },
+                    {
+                      "name": "sentiment",
+                      "expression": "`sentiment`"
+                    },
+                    {
+                      "name": "summary",
+                      "expression": "`summary`"
+                    },
+                    {
+                      "name": "url",
+                      "expression": "`url`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "published_date",
+                    "displayName": "Date"
+                  },
+                  {
+                    "fieldName": "title",
+                    "displayName": "Title"
+                  },
+                  {
+                    "fieldName": "source_name",
+                    "displayName": "Publisher"
+                  },
+                  {
+                    "fieldName": "source_type",
+                    "displayName": "Source type"
+                  },
+                  {
+                    "fieldName": "primary_entity",
+                    "displayName": "Entity"
+                  },
+                  {
+                    "fieldName": "entity_group",
+                    "displayName": "Group"
+                  },
+                  {
+                    "fieldName": "topic",
+                    "displayName": "Topic"
+                  },
+                  {
+                    "fieldName": "signal",
+                    "displayName": "Signal"
+                  },
+                  {
+                    "fieldName": "importance",
+                    "displayName": "Importance"
+                  },
+                  {
+                    "fieldName": "sentiment",
+                    "displayName": "Sentiment"
+                  },
+                  {
+                    "fieldName": "summary",
+                    "displayName": "Summary"
+                  },
+                  {
+                    "fieldName": "url",
+                    "displayName": "Link"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Market intelligence items"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 14
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "entities",
+      "displayName": "Entities",
+      "layout": [
+        {
+          "widget": {
+            "name": "f6b36041",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "e660c48a",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Entities\n\nHow often each watchlist entity featured, and with what signal, week by week."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 5,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "edfb4b63",
+            "queries": [
+              {
+                "name": "f_entities_mentions_entity",
+                "query": {
+                  "datasetName": "mentions",
+                  "fields": [
+                    {
+                      "name": "entity",
+                      "expression": "`entity`"
+                    },
+                    {
+                      "name": "entity_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "entity",
+                    "displayName": "Entity",
+                    "queryName": "f_entities_mentions_entity"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Entity"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "63ba0291",
+            "queries": [
+              {
+                "name": "f_entities_mentions_entity_group",
+                "query": {
+                  "datasetName": "mentions",
+                  "fields": [
+                    {
+                      "name": "entity_group",
+                      "expression": "`entity_group`"
+                    },
+                    {
+                      "name": "entity_group_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_entities_watch_entity_group",
+                "query": {
+                  "datasetName": "watch",
+                  "fields": [
+                    {
+                      "name": "entity_group",
+                      "expression": "`entity_group`"
+                    },
+                    {
+                      "name": "entity_group_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "entity_group",
+                    "displayName": "Entity group",
+                    "queryName": "f_entities_mentions_entity_group"
+                  },
+                  {
+                    "fieldName": "entity_group",
+                    "displayName": "Entity group",
+                    "queryName": "f_entities_watch_entity_group"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Entity group"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "21ac8232",
+            "queries": [
+              {
+                "name": "f_entities_mentions_week_start",
+                "query": {
+                  "datasetName": "mentions",
+                  "fields": [
+                    {
+                      "name": "week_start",
+                      "expression": "`week_start`"
+                    },
+                    {
+                      "name": "week_start_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "week_start",
+                    "displayName": "Weeks",
+                    "queryName": "f_entities_mentions_week_start"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Weeks"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "4f4d1b01",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "mentions",
+                  "fields": [
+                    {
+                      "name": "week_start",
+                      "expression": "`week_start`"
+                    },
+                    {
+                      "name": "m",
+                      "expression": "COUNT(*)"
+                    },
+                    {
+                      "name": "signal",
+                      "expression": "`signal`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "week_start",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Week"
+                },
+                "y": {
+                  "fieldName": "m",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Mentions",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "signal",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "Opportunity",
+                        "color": "#6BBF59"
+                      },
+                      {
+                        "value": "Threat",
+                        "color": "#D64545"
+                      },
+                      {
+                        "value": "Watch",
+                        "color": "#FFC000"
+                      },
+                      {
+                        "value": "Neutral",
+                        "color": "#BDBDBD"
+                      }
+                    ]
+                  },
+                  "displayName": "Signal"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Mentions per week by signal"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ],
+                "layout": "stack"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 4,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "066e04cf",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "mentions",
+                  "fields": [
+                    {
+                      "name": "week_start",
+                      "expression": "`week_start`"
+                    },
+                    {
+                      "name": "s",
+                      "expression": "AVG(`sentiment`)"
+                    },
+                    {
+                      "name": "entity_group",
+                      "expression": "`entity_group`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "week_start",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Week"
+                },
+                "y": {
+                  "fieldName": "s",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Average sentiment",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                },
+                "color": {
+                  "fieldName": "entity_group",
+                  "scale": {
+                    "type": "categorical"
+                  },
+                  "displayName": "Entity group"
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Sentiment by week"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 4,
+            "width": 2,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "f8968a37",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "mentions",
+                  "fields": [
+                    {
+                      "name": "published_date",
+                      "expression": "`published_date`"
+                    },
+                    {
+                      "name": "entity",
+                      "expression": "`entity`"
+                    },
+                    {
+                      "name": "signal",
+                      "expression": "`signal`"
+                    },
+                    {
+                      "name": "importance",
+                      "expression": "`importance`"
+                    },
+                    {
+                      "name": "title",
+                      "expression": "`title`"
+                    },
+                    {
+                      "name": "source_name",
+                      "expression": "`source_name`"
+                    },
+                    {
+                      "name": "url",
+                      "expression": "`url`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "published_date",
+                    "displayName": "Date"
+                  },
+                  {
+                    "fieldName": "entity",
+                    "displayName": "Entity"
+                  },
+                  {
+                    "fieldName": "signal",
+                    "displayName": "Signal"
+                  },
+                  {
+                    "fieldName": "importance",
+                    "displayName": "Importance"
+                  },
+                  {
+                    "fieldName": "title",
+                    "displayName": "Title"
+                  },
+                  {
+                    "fieldName": "source_name",
+                    "displayName": "Publisher"
+                  },
+                  {
+                    "fieldName": "url",
+                    "displayName": "Link"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Mentions"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 10,
+            "width": 6,
+            "height": 8
+          }
+        },
+        {
+          "widget": {
+            "name": "3abb160e",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "watch",
+                  "fields": [
+                    {
+                      "name": "entity",
+                      "expression": "`entity`"
+                    },
+                    {
+                      "name": "entity_group",
+                      "expression": "`entity_group`"
+                    },
+                    {
+                      "name": "relationship",
+                      "expression": "`relationship`"
+                    },
+                    {
+                      "name": "asx_code",
+                      "expression": "`asx_code`"
+                    },
+                    {
+                      "name": "website",
+                      "expression": "`website`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "entity",
+                    "displayName": "Entity"
+                  },
+                  {
+                    "fieldName": "entity_group",
+                    "displayName": "Group"
+                  },
+                  {
+                    "fieldName": "relationship",
+                    "displayName": "Relationship to Lochard"
+                  },
+                  {
+                    "fieldName": "asx_code",
+                    "displayName": "ASX"
+                  },
+                  {
+                    "fieldName": "website",
+                    "displayName": "Website"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Watchlist"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 18,
+            "width": 6,
+            "height": 7
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "briefs",
+      "displayName": "Weekly briefs",
+      "layout": [
+        {
+          "widget": {
+            "name": "03e7c1a2",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "66ad3f01",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Weekly briefs\n\nThe Market Intelligence Analyst agent's brief for each week. The portal's Market Intelligence page shows the full brief with cited items and the analyst's commentary."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 5,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "be771b1e",
+            "queries": [
+              {
+                "name": "f_briefs_briefs_week_start",
+                "query": {
+                  "datasetName": "briefs",
+                  "fields": [
+                    {
+                      "name": "week_start",
+                      "expression": "`week_start`"
+                    },
+                    {
+                      "name": "week_start_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "week_start",
+                    "displayName": "Weeks",
+                    "queryName": "f_briefs_briefs_week_start"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Weeks"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "f74b3fda",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "briefs",
+                  "fields": [
+                    {
+                      "name": "week_start",
+                      "expression": "`week_start`"
+                    },
+                    {
+                      "name": "sum(n_items)",
+                      "expression": "SUM(`n_items`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "week_start",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Week"
+                },
+                "y": {
+                  "fieldName": "sum(n_items)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Items",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 0
+                    }
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Relevant items per brief"
+              },
+              "mark": {
+                "colors": [
+                  "#F47525",
+                  "#52B2E5",
+                  "#A3194E",
+                  "#565150",
+                  "#FFC000",
+                  "#8E4737",
+                  "#00AEEF",
+                  "#6A2C91",
+                  "#BDBDBD"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "2fbbe4db",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "briefs",
+                  "fields": [
+                    {
+                      "name": "week_start",
+                      "expression": "`week_start`"
+                    },
+                    {
+                      "name": "headline",
+                      "expression": "`headline`"
+                    },
+                    {
+                      "name": "summary_md",
+                      "expression": "`summary_md`"
+                    },
+                    {
+                      "name": "n_items",
+                      "expression": "`n_items`"
+                    },
+                    {
+                      "name": "n_sources",
+                      "expression": "`n_sources`"
+                    },
+                    {
+                      "name": "generated_at",
+                      "expression": "`generated_at`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "week_start",
+                    "displayName": "Week starting"
+                  },
+                  {
+                    "fieldName": "headline",
+                    "displayName": "Headline"
+                  },
+                  {
+                    "fieldName": "summary_md",
+                    "displayName": "Summary"
+                  },
+                  {
+                    "fieldName": "n_items",
+                    "displayName": "Items"
+                  },
+                  {
+                    "fieldName": "n_sources",
+                    "displayName": "Publishers"
+                  },
+                  {
+                    "fieldName": "generated_at",
+                    "displayName": "Generated"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Briefs"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 6,
+            "height": 10
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#F4F4F4",
+        "dark": "#1E1C1B"
+      },
+      "widgetBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#2A2726"
+      },
+      "widgetBorderColor": {
+        "light": "#E6E1DF",
+        "dark": "#3A3634"
+      },
+      "fontColor": {
+        "light": "#1E1E1E",
+        "dark": "#F4F4F4"
+      },
+      "selectionColor": {
+        "light": "#F47525",
+        "dark": "#F47525"
+      },
+      "visualizationColors": [
+        "#F47525",
+        "#52B2E5",
+        "#A3194E",
+        "#565150",
+        "#FFC000",
+        "#8E4737",
+        "#00AEEF",
+        "#6A2C91",
+        "#BDBDBD"
+      ],
+      "widgetHeaderAlignment": "LEFT"
+    },
+    "genieSpace": {
+      "isEnabled": true
+    }
+  }
+}

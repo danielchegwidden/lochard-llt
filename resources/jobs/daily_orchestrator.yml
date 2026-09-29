@@ -1,0 +1,81 @@
+# Daily production run (06:00 AEST): source drops -> medallion pipelines -> semantic layer -> governance -> DQ gate.
+resources:
+  jobs:
+    lochard_daily_orchestrator:
+      name: lochard-daily-orchestrator
+      run_as:
+        service_principal_name: ${var.etl_sp}
+      description: End-to-end daily refresh of the Lochard data platform (serverless only)
+      schedule:
+        quartz_cron_expression: "0 0 6 * * ?"
+        timezone_id: Australia/Melbourne
+        pause_status: PAUSED          # unpause after demo sign-off
+      max_concurrent_runs: 1
+      queue:
+        enabled: true
+      parameters:
+        - name: generate_incremental
+          default: "false"
+        - name: business_date
+          default: "{{job.start_time.iso_date}}"
+      environments:
+        - environment_key: py
+          spec:
+            environment_version: "4"
+            dependencies: [numpy, pandas, pyarrow, openpyxl, reportlab, python-docx]
+      tasks:
+        - task_key: aemo_ingest
+          run_job_task:
+            job_id: ${resources.jobs.lochard_aemo_ingest.id}
+        - task_key: incremental_switch
+          condition_task:
+            op: EQUAL_TO
+            left: "{{job.parameters.generate_incremental}}"
+            right: "true"
+        - task_key: source_drops
+          depends_on: [{task_key: incremental_switch, outcome: "true"}]
+          run_job_task:
+            job_id: ${resources.jobs.lochard_generate_data.id}
+            job_parameters:
+              mode: incremental
+              business_date: "{{job.parameters.business_date}}"
+        - task_key: shared_dimensions
+          depends_on:
+            - {task_key: aemo_ingest}
+            - {task_key: source_drops}
+          run_if: AT_LEAST_ONE_SUCCESS
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.lochard_shared.id}
+        - task_key: finance
+          depends_on: [{task_key: shared_dimensions}]
+          pipeline_task: {pipeline_id: "${resources.pipelines.lochard_finance.id}"}
+        - task_key: hse
+          depends_on: [{task_key: shared_dimensions}]
+          pipeline_task: {pipeline_id: "${resources.pipelines.lochard_hse.id}"}
+        - task_key: maintenance
+          depends_on: [{task_key: shared_dimensions}]
+          pipeline_task: {pipeline_id: "${resources.pipelines.lochard_maintenance.id}"}
+        - task_key: market_ops
+          depends_on: [{task_key: shared_dimensions}]
+          pipeline_task: {pipeline_id: "${resources.pipelines.lochard_market_ops.id}"}
+        - task_key: documents_ai
+          depends_on: [{task_key: finance}, {task_key: hse}]
+          pipeline_task: {pipeline_id: "${resources.pipelines.lochard_documents.id}"}
+        - task_key: scorecard_sync
+          depends_on: [{task_key: shared_dimensions}]
+          run_job_task:
+            job_id: ${resources.jobs.lochard_scorecard_sync.id}
+        - task_key: semantic_and_governance
+          depends_on:
+            - {task_key: scorecard_sync}
+            - {task_key: finance}
+            - {task_key: hse}
+            - {task_key: maintenance}
+            - {task_key: market_ops}
+            - {task_key: documents_ai}
+          run_job_task:
+            job_id: ${resources.jobs.lochard_semantic_governance.id}
+      email_notifications:
+        on_failure: ["${var.notification_email}"]
+      tags:
+        domain: platform

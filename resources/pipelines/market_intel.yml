@@ -1,0 +1,34 @@
+# Lakeflow Spark Declarative Pipeline – Market intelligence (public sources). Serverless, triggered by lochard-market-intel.
+# Auto Loader bronze -> ai_parse_document + ai_query enrichment (silver, streaming: each item billed once) -> gold.
+resources:
+  pipelines:
+    lochard_market_intel_medallion:
+      name: lochard-market-intel-medallion
+      run_as:
+        service_principal_name: ${var.etl_sp}
+      catalog: ${var.catalog}
+      schema: ${resources.schemas.bronze.name}
+      serverless: true
+      continuous: false
+      channel: CURRENT
+      photon: true
+      root_path: ../../src/pipelines/market_intel
+      libraries:
+        - glob:
+            include: ../../src/pipelines/market_intel/transformations/**
+      configuration:
+        lochard.catalog: ${var.catalog}
+        lochard.mi: /Volumes/${var.catalog}/${resources.schemas.landing.name}/${resources.volumes.market_intel.name}
+        lochard.bronze: ${var.catalog}.${resources.schemas.bronze.name}
+        lochard.silver: ${var.catalog}.${resources.schemas.silver.name}
+        lochard.gold: ${var.catalog}.${resources.schemas.gold.name}
+        lochard.enrich_model: ${var.economy_model}
+      event_log:
+        catalog: ${var.catalog}
+        schema: ${resources.schemas.platform.name}
+        name: event_log_market_intel
+      notifications:
+        - email_recipients: ["${var.notification_email}"]
+          alerts: [on-update-failure, on-update-fatal-failure, on-flow-failure]
+      tags:
+        domain: market_intel

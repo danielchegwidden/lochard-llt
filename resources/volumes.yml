@@ -1,0 +1,26 @@
+resources:
+  volumes:
+    raw:
+      catalog_name: ${var.catalog}
+      schema_name: ${resources.schemas.landing.name}
+      name: raw
+      volume_type: MANAGED
+      comment: Source-system extracts landed as files (erp/, maximo/, hse/, aemo/, ops/)
+    documents:
+      catalog_name: ${var.catalog}
+      schema_name: ${resources.schemas.landing.name}
+      name: documents
+      volume_type: MANAGED
+      comment: Unstructured documents for AI Functions (incident reports, invoices, manuals, board papers)
+    checkpoints:
+      catalog_name: ${var.catalog}
+      schema_name: ${resources.schemas.landing.name}
+      name: checkpoints
+      volume_type: MANAGED
+      comment: Checkpoints / scratch for non-pipeline jobs
+    market_intel:
+      catalog_name: ${var.catalog}
+      schema_name: ${resources.schemas.landing.name}
+      name: market_intel
+      volume_type: MANAGED
+      comment: Market intelligence landing – collector items (JSON lines), ASX announcement PDFs, watchlist, collector state

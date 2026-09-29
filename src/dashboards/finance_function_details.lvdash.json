@@ -1,0 +1,2707 @@
+{
+  "datasets": [
+    {
+      "name": "fin",
+      "displayName": "Finance cube",
+      "queryLines": [
+        "SELECT financial_year, financial_quarter, month_start, month_label, fy_month_num, function, team, cc_short_name,\n",
+        "       cost_centre_key, cost_type, coalesce(project_name, '(No project)') AS project_name, account_name,\n",
+        "       budget_amount, actual_amount, yeo_amount, committed_amount\n",
+        "FROM v_finance_monthly\n"
+      ]
+    },
+    {
+      "name": "fin_cum",
+      "displayName": "Finance cumulative (as-of month)",
+      "queryLines": [
+        "SELECT f.financial_year, f.financial_quarter, f.function, f.team, f.cc_short_name, f.cost_type, f.month_start,\n",
+        "       m.month_start AS as_of_month, f.budget_amount, f.yeo_amount\n",
+        "FROM v_finance_monthly f\n",
+        "JOIN (SELECT DISTINCT financial_year, month_start FROM v_finance_monthly) m\n",
+        "  ON f.financial_year = m.financial_year AND f.month_start <= m.month_start\n"
+      ]
+    },
+    {
+      "name": "gl",
+      "displayName": "GL transactions",
+      "queryLines": [
+        "SELECT financial_year, financial_quarter, month_start, month_label, function, team, cc_short_name, cost_centre_key,\n",
+        "       cost_type, coalesce(project_name, '(No project)') AS project_name, account_name, account_key, wo_number, po_number,\n",
+        "       document_no, posting_date, description, vendor_name, amount, spend_classification\n",
+        "FROM v_gl_transaction_detail\n"
+      ]
+    },
+    {
+      "name": "po",
+      "displayName": "PO lines",
+      "queryLines": [
+        "SELECT po_number, po_line, vendor_name, function, team, cc_short_name, cost_centre_key, cost_type, account_name,\n",
+        "       wo_number, description, line_cost, invoiced_amount, committed_amount, order_date, need_by_date,\n",
+        "       need_by_financial_year AS financial_year, need_by_month, po_status, spend_classification\n",
+        "FROM v_po_transaction_detail\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "function_details",
+      "displayName": "Function Details",
+      "layout": [
+        {
+          "widget": {
+            "name": "2a61704e",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "f1124f37",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Function Details\n\nDetailed financial breakdown by Team and Cost Centre. Drill into variances, committed costs and cumulative forecast by Function. *Right-click the table or a chart \u2192 Drill to transaction pages.*"
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "c7f12274",
+            "multilineTextboxSpec": {
+              "lines": [
+                "**Iona Ops Trust**  \nAUD, excl. GST"
+              ]
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "d0fc272d",
+            "queries": [
+              {
+                "name": "f_function_details_fin_function",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "function",
+                      "expression": "`function`"
+                    },
+                    {
+                      "name": "function_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_fin_cum_function",
+                "query": {
+                  "datasetName": "fin_cum",
+                  "fields": [
+                    {
+                      "name": "function",
+                      "expression": "`function`"
+                    },
+                    {
+                      "name": "function_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_gl_function",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "function",
+                      "expression": "`function`"
+                    },
+                    {
+                      "name": "function_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "function",
+                    "displayName": "Function",
+                    "queryName": "f_function_details_fin_function"
+                  },
+                  {
+                    "fieldName": "function",
+                    "displayName": "Function",
+                    "queryName": "f_function_details_fin_cum_function"
+                  },
+                  {
+                    "fieldName": "function",
+                    "displayName": "Function",
+                    "queryName": "f_function_details_gl_function"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Function"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "6c2990a9",
+            "queries": [
+              {
+                "name": "f_function_details_fin_team",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "team_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_fin_cum_team",
+                "query": {
+                  "datasetName": "fin_cum",
+                  "fields": [
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "team_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_gl_team",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "team_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "team",
+                    "displayName": "Team",
+                    "queryName": "f_function_details_fin_team"
+                  },
+                  {
+                    "fieldName": "team",
+                    "displayName": "Team",
+                    "queryName": "f_function_details_fin_cum_team"
+                  },
+                  {
+                    "fieldName": "team",
+                    "displayName": "Team",
+                    "queryName": "f_function_details_gl_team"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Team"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "d7520208",
+            "queries": [
+              {
+                "name": "f_function_details_fin_cc_short_name",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "cc_short_name",
+                      "expression": "`cc_short_name`"
+                    },
+                    {
+                      "name": "cc_short_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_fin_cum_cc_short_name",
+                "query": {
+                  "datasetName": "fin_cum",
+                  "fields": [
+                    {
+                      "name": "cc_short_name",
+                      "expression": "`cc_short_name`"
+                    },
+                    {
+                      "name": "cc_short_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_gl_cc_short_name",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "cc_short_name",
+                      "expression": "`cc_short_name`"
+                    },
+                    {
+                      "name": "cc_short_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "cc_short_name",
+                    "displayName": "CC Short Name",
+                    "queryName": "f_function_details_fin_cc_short_name"
+                  },
+                  {
+                    "fieldName": "cc_short_name",
+                    "displayName": "CC Short Name",
+                    "queryName": "f_function_details_fin_cum_cc_short_name"
+                  },
+                  {
+                    "fieldName": "cc_short_name",
+                    "displayName": "CC Short Name",
+                    "queryName": "f_function_details_gl_cc_short_name"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "CC Short Name"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "173234b6",
+            "queries": [
+              {
+                "name": "f_function_details_fin_cost_type",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "cost_type",
+                      "expression": "`cost_type`"
+                    },
+                    {
+                      "name": "cost_type_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_fin_cum_cost_type",
+                "query": {
+                  "datasetName": "fin_cum",
+                  "fields": [
+                    {
+                      "name": "cost_type",
+                      "expression": "`cost_type`"
+                    },
+                    {
+                      "name": "cost_type_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_gl_cost_type",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "cost_type",
+                      "expression": "`cost_type`"
+                    },
+                    {
+                      "name": "cost_type_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "cost_type",
+                    "displayName": "Cost Type",
+                    "queryName": "f_function_details_fin_cost_type"
+                  },
+                  {
+                    "fieldName": "cost_type",
+                    "displayName": "Cost Type",
+                    "queryName": "f_function_details_fin_cum_cost_type"
+                  },
+                  {
+                    "fieldName": "cost_type",
+                    "displayName": "Cost Type",
+                    "queryName": "f_function_details_gl_cost_type"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Cost Type"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "74a59334",
+            "queries": [
+              {
+                "name": "f_function_details_fin_financial_year",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "financial_year",
+                      "expression": "`financial_year`"
+                    },
+                    {
+                      "name": "financial_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_fin_cum_financial_year",
+                "query": {
+                  "datasetName": "fin_cum",
+                  "fields": [
+                    {
+                      "name": "financial_year",
+                      "expression": "`financial_year`"
+                    },
+                    {
+                      "name": "financial_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_gl_financial_year",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "financial_year",
+                      "expression": "`financial_year`"
+                    },
+                    {
+                      "name": "financial_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "financial_year",
+                    "displayName": "Financial Year",
+                    "queryName": "f_function_details_fin_financial_year"
+                  },
+                  {
+                    "fieldName": "financial_year",
+                    "displayName": "Financial Year",
+                    "queryName": "f_function_details_fin_cum_financial_year"
+                  },
+                  {
+                    "fieldName": "financial_year",
+                    "displayName": "Financial Year",
+                    "queryName": "f_function_details_gl_financial_year"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Financial Year"
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "FY2027"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "2a8fcf48",
+            "queries": [
+              {
+                "name": "f_function_details_fin_financial_quarter",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "financial_quarter",
+                      "expression": "`financial_quarter`"
+                    },
+                    {
+                      "name": "financial_quarter_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_fin_cum_financial_quarter",
+                "query": {
+                  "datasetName": "fin_cum",
+                  "fields": [
+                    {
+                      "name": "financial_quarter",
+                      "expression": "`financial_quarter`"
+                    },
+                    {
+                      "name": "financial_quarter_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_gl_financial_quarter",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "financial_quarter",
+                      "expression": "`financial_quarter`"
+                    },
+                    {
+                      "name": "financial_quarter_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "financial_quarter",
+                    "displayName": "Financial Quarter",
+                    "queryName": "f_function_details_fin_financial_quarter"
+                  },
+                  {
+                    "fieldName": "financial_quarter",
+                    "displayName": "Financial Quarter",
+                    "queryName": "f_function_details_fin_cum_financial_quarter"
+                  },
+                  {
+                    "fieldName": "financial_quarter",
+                    "displayName": "Financial Quarter",
+                    "queryName": "f_function_details_gl_financial_quarter"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Financial Quarter"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "9026516a",
+            "queries": [
+              {
+                "name": "f_function_details_fin_month_start",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "month_start",
+                      "expression": "`month_start`"
+                    },
+                    {
+                      "name": "month_start_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_function_details_gl_month_start",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "month_start",
+                      "expression": "`month_start`"
+                    },
+                    {
+                      "name": "month_start_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "month_start",
+                    "displayName": "Date Range",
+                    "queryName": "f_function_details_fin_month_start"
+                  },
+                  {
+                    "fieldName": "month_start",
+                    "displayName": "Date Range",
+                    "queryName": "f_function_details_gl_month_start"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Date Range"
+              },
+              "selection": {
+                "defaultSelection": {
+                  "range": {
+                    "dataType": "DATE",
+                    "min": {
+                      "value": "2026-07-01"
+                    },
+                    "max": {
+                      "value": "2027-06-30"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "690ced99",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "sum(budget_amount)",
+                      "expression": "SUM(`budget_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(budget_amount)",
+                  "displayName": "Budget (FY)",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "AUD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Budget (FY)"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "9e4ebae2",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "sum(actual_amount)",
+                      "expression": "SUM(`actual_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(actual_amount)",
+                  "displayName": "Actuals (YTD)",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "AUD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Actuals (YTD)"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "5f69a08a",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "sum(yeo_amount)",
+                      "expression": "SUM(`yeo_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(yeo_amount)",
+                  "displayName": "YEO (latest)",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "AUD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "YEO (latest)"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "a88f94f1",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "sum(committed_amount)",
+                      "expression": "SUM(`committed_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(committed_amount)",
+                  "displayName": "Committed Cost",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "AUD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Committed Cost"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "74d93db3",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "spend_classification",
+                      "expression": "`spend_classification`"
+                    },
+                    {
+                      "name": "sum(amount)",
+                      "expression": "SUM(`amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "sum(amount)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Actuals"
+                },
+                "color": {
+                  "fieldName": "spend_classification",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "(Blank)",
+                        "color": "#A3194E"
+                      },
+                      {
+                        "value": "Budgeted",
+                        "color": "#565150"
+                      },
+                      {
+                        "value": "Emergent",
+                        "color": "#BDBDBD"
+                      }
+                    ]
+                  },
+                  "displayName": "Spend type"
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Budgeted vs Emergent"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 2,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "8f5ac240",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "fin_cum",
+                  "fields": [
+                    {
+                      "name": "monthly(as_of_month)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `as_of_month`)"
+                    },
+                    {
+                      "name": "sum(yeo_amount)",
+                      "expression": "SUM(`yeo_amount`)"
+                    },
+                    {
+                      "name": "sum(budget_amount)",
+                      "expression": "SUM(`budget_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "combo",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(as_of_month)",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Month"
+                },
+                "y": {
+                  "primary": {
+                    "fields": [
+                      {
+                        "fieldName": "sum(yeo_amount)",
+                        "displayName": "Cumulative YEO",
+                        "format": {
+                          "type": "number-currency",
+                          "currencyCode": "AUD",
+                          "abbreviation": "compact",
+                          "decimalPlaces": {
+                            "type": "max",
+                            "places": 1
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "secondary": {
+                    "fields": [
+                      {
+                        "fieldName": "sum(budget_amount)",
+                        "displayName": "Cumulative Budget",
+                        "format": {
+                          "type": "number-currency",
+                          "currencyCode": "AUD",
+                          "abbreviation": "compact",
+                          "decimalPlaces": {
+                            "type": "max",
+                            "places": 1
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Cumulative YEO vs Cumulative Budget"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 6,
+            "width": 2,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "d9d299a7",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "monthly(month_start)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `month_start`)"
+                    },
+                    {
+                      "name": "sum(actual_amount)",
+                      "expression": "SUM(`actual_amount`)"
+                    },
+                    {
+                      "name": "sum(committed_amount)",
+                      "expression": "SUM(`committed_amount`)"
+                    },
+                    {
+                      "name": "sum(yeo_amount)",
+                      "expression": "SUM(`yeo_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "combo",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(month_start)",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Month"
+                },
+                "y": {
+                  "primary": {
+                    "fields": [
+                      {
+                        "fieldName": "sum(actual_amount)",
+                        "displayName": "Actuals",
+                        "format": {
+                          "type": "number-currency",
+                          "currencyCode": "AUD",
+                          "abbreviation": "compact",
+                          "decimalPlaces": {
+                            "type": "max",
+                            "places": 1
+                          }
+                        }
+                      },
+                      {
+                        "fieldName": "sum(committed_amount)",
+                        "displayName": "Committed Cost",
+                        "format": {
+                          "type": "number-currency",
+                          "currencyCode": "AUD",
+                          "abbreviation": "compact",
+                          "decimalPlaces": {
+                            "type": "max",
+                            "places": 1
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "secondary": {
+                    "fields": [
+                      {
+                        "fieldName": "sum(yeo_amount)",
+                        "displayName": "YEO",
+                        "format": {
+                          "type": "number-currency",
+                          "currencyCode": "AUD",
+                          "abbreviation": "compact",
+                          "decimalPlaces": {
+                            "type": "max",
+                            "places": 1
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "YTD (ACT + Committed Costs) vs YEO"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 6,
+            "width": 2,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "140065fc",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "cc_short_name",
+                      "expression": "`cc_short_name`"
+                    },
+                    {
+                      "name": "project_name",
+                      "expression": "`project_name`"
+                    },
+                    {
+                      "name": "account_name",
+                      "expression": "`account_name`"
+                    },
+                    {
+                      "name": "sum(budget_amount)",
+                      "expression": "SUM(`budget_amount`)"
+                    },
+                    {
+                      "name": "sum(actual_amount)",
+                      "expression": "SUM(`actual_amount`)"
+                    },
+                    {
+                      "name": "var_act_bud",
+                      "expression": "SUM(`actual_amount`) - SUM(`budget_amount`)"
+                    },
+                    {
+                      "name": "sum(yeo_amount)",
+                      "expression": "SUM(`yeo_amount`)"
+                    },
+                    {
+                      "name": "var_yeo_bud",
+                      "expression": "SUM(`yeo_amount`) - SUM(`budget_amount`)"
+                    },
+                    {
+                      "name": "sum(committed_amount)",
+                      "expression": "SUM(`committed_amount`)"
+                    },
+                    {
+                      "name": "act_plus_com",
+                      "expression": "SUM(`actual_amount`) + SUM(`committed_amount`)"
+                    },
+                    {
+                      "name": "var_actc_bud",
+                      "expression": "SUM(`actual_amount`) + SUM(`committed_amount`) - SUM(`budget_amount`)"
+                    },
+                    {
+                      "name": "var_actc_yeo",
+                      "expression": "SUM(`actual_amount`) + SUM(`committed_amount`) - SUM(`yeo_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "pivot",
+              "encodings": {
+                "rows": [
+                  {
+                    "fieldName": "team",
+                    "displayName": "Team",
+                    "displayTotal": true
+                  },
+                  {
+                    "fieldName": "cc_short_name",
+                    "displayName": "CC Short Name",
+                    "displayTotal": true
+                  },
+                  {
+                    "fieldName": "project_name",
+                    "displayName": "Project Name",
+                    "displayTotal": true
+                  },
+                  {
+                    "fieldName": "account_name",
+                    "displayName": "Account Name",
+                    "displayTotal": true
+                  }
+                ],
+                "columns": [],
+                "cell": {
+                  "type": "multi-cell",
+                  "displayAs": "columns",
+                  "fields": [
+                    {
+                      "fieldName": "sum(budget_amount)",
+                      "cellType": "text",
+                      "displayName": "Budget",
+                      "format": {
+                        "type": "number-currency",
+                        "currencyCode": "AUD",
+                        "abbreviation": "compact",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 1
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "sum(actual_amount)",
+                      "cellType": "text",
+                      "displayName": "Actuals",
+                      "format": {
+                        "type": "number-currency",
+                        "currencyCode": "AUD",
+                        "abbreviation": "compact",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 1
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "var_act_bud",
+                      "cellType": "text",
+                      "displayName": "Variance (ACT vs BUD)",
+                      "format": {
+                        "type": "number-currency",
+                        "currencyCode": "AUD",
+                        "abbreviation": "compact",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 1
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "sum(yeo_amount)",
+                      "cellType": "text",
+                      "displayName": "YEO",
+                      "format": {
+                        "type": "number-currency",
+                        "currencyCode": "AUD",
+                        "abbreviation": "compact",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 1
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "var_yeo_bud",
+                      "cellType": "text",
+                      "displayName": "Variance (YEO vs BUD)",
+                      "format": {
+                        "type": "number-currency",
+                        "currencyCode": "AUD",
+                        "abbreviation": "compact",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 1
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "sum(committed_amount)",
+                      "cellType": "text",
+                      "displayName": "Committed Cost",
+                      "format": {
+                        "type": "number-currency",
+                        "currencyCode": "AUD",
+                        "abbreviation": "compact",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 1
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "act_plus_com",
+                      "cellType": "text",
+                      "displayName": "Actuals + Committed Costs",
+                      "format": {
+                        "type": "number-currency",
+                        "currencyCode": "AUD",
+                        "abbreviation": "compact",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 1
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "var_actc_bud",
+                      "cellType": "text",
+                      "displayName": "Variance (ACT incl committed vs BUD)",
+                      "format": {
+                        "type": "number-currency",
+                        "currencyCode": "AUD",
+                        "abbreviation": "compact",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 1
+                        }
+                      }
+                    },
+                    {
+                      "fieldName": "var_actc_yeo",
+                      "cellType": "text",
+                      "displayName": "Variance (ACT incl committed cost vs YEO)",
+                      "format": {
+                        "type": "number-currency",
+                        "currencyCode": "AUD",
+                        "abbreviation": "compact",
+                        "decimalPlaces": {
+                          "type": "max",
+                          "places": 1
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Budget, Actuals, YEO and Committed by Team"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 6,
+            "height": 10
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "actuals_transactions",
+      "displayName": "Actuals \u2013 Transaction Details",
+      "layout": [
+        {
+          "widget": {
+            "name": "9ae89608",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "5b5ae0d5",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Actuals \u2013 Transaction Details\n\nTransaction-level GL entries for the selected cost centre or function. Verify individual entry numbers and amounts for audit and reconciliation purposes."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 5,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "503faaf1",
+            "queries": [
+              {
+                "name": "f_actuals_transactions_fin_team",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "team_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_actuals_transactions_gl_team",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "team_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "team",
+                    "displayName": "Team",
+                    "queryName": "f_actuals_transactions_fin_team"
+                  },
+                  {
+                    "fieldName": "team",
+                    "displayName": "Team",
+                    "queryName": "f_actuals_transactions_gl_team"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Team"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "dd6bd588",
+            "queries": [
+              {
+                "name": "f_actuals_transactions_fin_cc_short_name",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "cc_short_name",
+                      "expression": "`cc_short_name`"
+                    },
+                    {
+                      "name": "cc_short_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_actuals_transactions_gl_cc_short_name",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "cc_short_name",
+                      "expression": "`cc_short_name`"
+                    },
+                    {
+                      "name": "cc_short_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "cc_short_name",
+                    "displayName": "CC Short Name",
+                    "queryName": "f_actuals_transactions_fin_cc_short_name"
+                  },
+                  {
+                    "fieldName": "cc_short_name",
+                    "displayName": "CC Short Name",
+                    "queryName": "f_actuals_transactions_gl_cc_short_name"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "CC Short Name"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "ae66fc46",
+            "queries": [
+              {
+                "name": "f_actuals_transactions_fin_project_name",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "project_name",
+                      "expression": "`project_name`"
+                    },
+                    {
+                      "name": "project_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_actuals_transactions_gl_project_name",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "project_name",
+                      "expression": "`project_name`"
+                    },
+                    {
+                      "name": "project_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "project_name",
+                    "displayName": "Project Name",
+                    "queryName": "f_actuals_transactions_fin_project_name"
+                  },
+                  {
+                    "fieldName": "project_name",
+                    "displayName": "Project Name",
+                    "queryName": "f_actuals_transactions_gl_project_name"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Project Name"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "f8d6a344",
+            "queries": [
+              {
+                "name": "f_actuals_transactions_fin_account_name",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "account_name",
+                      "expression": "`account_name`"
+                    },
+                    {
+                      "name": "account_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_actuals_transactions_gl_account_name",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "account_name",
+                      "expression": "`account_name`"
+                    },
+                    {
+                      "name": "account_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "account_name",
+                    "displayName": "Account Name",
+                    "queryName": "f_actuals_transactions_fin_account_name"
+                  },
+                  {
+                    "fieldName": "account_name",
+                    "displayName": "Account Name",
+                    "queryName": "f_actuals_transactions_gl_account_name"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Account Name"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "cb9c7d9f",
+            "queries": [
+              {
+                "name": "f_actuals_transactions_fin_financial_year",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "financial_year",
+                      "expression": "`financial_year`"
+                    },
+                    {
+                      "name": "financial_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_actuals_transactions_gl_financial_year",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "financial_year",
+                      "expression": "`financial_year`"
+                    },
+                    {
+                      "name": "financial_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "financial_year",
+                    "displayName": "Financial Year",
+                    "queryName": "f_actuals_transactions_fin_financial_year"
+                  },
+                  {
+                    "fieldName": "financial_year",
+                    "displayName": "Financial Year",
+                    "queryName": "f_actuals_transactions_gl_financial_year"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Financial Year"
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "FY2027"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "ee257ddc",
+            "queries": [
+              {
+                "name": "f_actuals_transactions_fin_cost_centre_key",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "cost_centre_key",
+                      "expression": "`cost_centre_key`"
+                    },
+                    {
+                      "name": "cost_centre_key_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_actuals_transactions_gl_cost_centre_key",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "cost_centre_key",
+                      "expression": "`cost_centre_key`"
+                    },
+                    {
+                      "name": "cost_centre_key_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "cost_centre_key",
+                    "displayName": "Cost Centre Code",
+                    "queryName": "f_actuals_transactions_fin_cost_centre_key"
+                  },
+                  {
+                    "fieldName": "cost_centre_key",
+                    "displayName": "Cost Centre Code",
+                    "queryName": "f_actuals_transactions_gl_cost_centre_key"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Cost Centre Code"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "63087052",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "monthly(month_start)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `month_start`)"
+                    },
+                    {
+                      "name": "sum(amount)",
+                      "expression": "SUM(`amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(month_start)",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Month"
+                },
+                "y": {
+                  "fieldName": "sum(amount)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Actuals",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "AUD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                },
+                "label": {
+                  "show": true
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "YTD ACT by Month"
+              },
+              "mark": {
+                "colors": [
+                  "#565150"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "5a72a25f",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "gl",
+                  "fields": [
+                    {
+                      "name": "cost_centre_key",
+                      "expression": "`cost_centre_key`"
+                    },
+                    {
+                      "name": "wo_number",
+                      "expression": "`wo_number`"
+                    },
+                    {
+                      "name": "po_number",
+                      "expression": "`po_number`"
+                    },
+                    {
+                      "name": "account_name",
+                      "expression": "`account_name`"
+                    },
+                    {
+                      "name": "account_key",
+                      "expression": "`account_key`"
+                    },
+                    {
+                      "name": "posting_date",
+                      "expression": "`posting_date`"
+                    },
+                    {
+                      "name": "description",
+                      "expression": "`description`"
+                    },
+                    {
+                      "name": "vendor_name",
+                      "expression": "`vendor_name`"
+                    },
+                    {
+                      "name": "amount",
+                      "expression": "`amount`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "cost_centre_key",
+                    "displayName": "Cost Centre Code"
+                  },
+                  {
+                    "fieldName": "wo_number",
+                    "displayName": "WO num"
+                  },
+                  {
+                    "fieldName": "po_number",
+                    "displayName": "PO num"
+                  },
+                  {
+                    "fieldName": "account_name",
+                    "displayName": "GL Account Name"
+                  },
+                  {
+                    "fieldName": "account_key",
+                    "displayName": "GL Account No"
+                  },
+                  {
+                    "fieldName": "posting_date",
+                    "displayName": "Posting Date"
+                  },
+                  {
+                    "fieldName": "description",
+                    "displayName": "Description"
+                  },
+                  {
+                    "fieldName": "vendor_name",
+                    "displayName": "Vendor"
+                  },
+                  {
+                    "fieldName": "amount",
+                    "displayName": "Amount"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "GL transactions"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 6,
+            "height": 10
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "po_transactions",
+      "displayName": "PO Transaction Details",
+      "layout": [
+        {
+          "widget": {
+            "name": "4c8f4ec4",
+            "multilineTextboxSpec": {
+              "lines": [
+                "![Lochard Energy](https://www.lochardenergy.com.au/wp-content/uploads/2020/09/LE_Logo-reworked.svg)"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "064dee83",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## PO Transaction Details\n\nMaximo purchase-order lines linked to the spend: line cost, invoiced to date and open commitment by need-by month."
+              ]
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 0,
+            "width": 5,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "98135cda",
+            "queries": [
+              {
+                "name": "f_po_transactions_fin_team",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "team_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_po_transactions_po_team",
+                "query": {
+                  "datasetName": "po",
+                  "fields": [
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "team_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "team",
+                    "displayName": "Team",
+                    "queryName": "f_po_transactions_fin_team"
+                  },
+                  {
+                    "fieldName": "team",
+                    "displayName": "Team",
+                    "queryName": "f_po_transactions_po_team"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Team"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "004381da",
+            "queries": [
+              {
+                "name": "f_po_transactions_fin_cc_short_name",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "cc_short_name",
+                      "expression": "`cc_short_name`"
+                    },
+                    {
+                      "name": "cc_short_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_po_transactions_po_cc_short_name",
+                "query": {
+                  "datasetName": "po",
+                  "fields": [
+                    {
+                      "name": "cc_short_name",
+                      "expression": "`cc_short_name`"
+                    },
+                    {
+                      "name": "cc_short_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "cc_short_name",
+                    "displayName": "CC Short Name",
+                    "queryName": "f_po_transactions_fin_cc_short_name"
+                  },
+                  {
+                    "fieldName": "cc_short_name",
+                    "displayName": "CC Short Name",
+                    "queryName": "f_po_transactions_po_cc_short_name"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "CC Short Name"
+              }
+            }
+          },
+          "position": {
+            "x": 1,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "01ead27c",
+            "queries": [
+              {
+                "name": "f_po_transactions_fin_cost_centre_key",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "cost_centre_key",
+                      "expression": "`cost_centre_key`"
+                    },
+                    {
+                      "name": "cost_centre_key_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_po_transactions_po_cost_centre_key",
+                "query": {
+                  "datasetName": "po",
+                  "fields": [
+                    {
+                      "name": "cost_centre_key",
+                      "expression": "`cost_centre_key`"
+                    },
+                    {
+                      "name": "cost_centre_key_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "cost_centre_key",
+                    "displayName": "Cost Centre Code",
+                    "queryName": "f_po_transactions_fin_cost_centre_key"
+                  },
+                  {
+                    "fieldName": "cost_centre_key",
+                    "displayName": "Cost Centre Code",
+                    "queryName": "f_po_transactions_po_cost_centre_key"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Cost Centre Code"
+              }
+            }
+          },
+          "position": {
+            "x": 2,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "7d9112d9",
+            "queries": [
+              {
+                "name": "f_po_transactions_fin_financial_year",
+                "query": {
+                  "datasetName": "fin",
+                  "fields": [
+                    {
+                      "name": "financial_year",
+                      "expression": "`financial_year`"
+                    },
+                    {
+                      "name": "financial_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "f_po_transactions_po_financial_year",
+                "query": {
+                  "datasetName": "po",
+                  "fields": [
+                    {
+                      "name": "financial_year",
+                      "expression": "`financial_year`"
+                    },
+                    {
+                      "name": "financial_year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "financial_year",
+                    "displayName": "Financial Year",
+                    "queryName": "f_po_transactions_fin_financial_year"
+                  },
+                  {
+                    "fieldName": "financial_year",
+                    "displayName": "Financial Year",
+                    "queryName": "f_po_transactions_po_financial_year"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Financial Year"
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "STRING",
+                    "values": [
+                      {
+                        "value": "FY2027"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "aa271579",
+            "queries": [
+              {
+                "name": "f_po_transactions_po_po_status",
+                "query": {
+                  "datasetName": "po",
+                  "fields": [
+                    {
+                      "name": "po_status",
+                      "expression": "`po_status`"
+                    },
+                    {
+                      "name": "po_status_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "po_status",
+                    "displayName": "PO Status",
+                    "queryName": "f_po_transactions_po_po_status"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "PO Status"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "b767e5ae",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "po",
+                  "fields": [
+                    {
+                      "name": "monthly(need_by_month)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `need_by_month`)"
+                    },
+                    {
+                      "name": "sum(committed_amount)",
+                      "expression": "SUM(`committed_amount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(need_by_month)",
+                  "scale": {
+                    "type": "temporal"
+                  },
+                  "displayName": "Need-by month"
+                },
+                "y": {
+                  "fieldName": "sum(committed_amount)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "Committed",
+                  "format": {
+                    "type": "number-currency",
+                    "currencyCode": "AUD",
+                    "abbreviation": "compact",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Open commitments by need-by month"
+              },
+              "mark": {
+                "colors": [
+                  "#FFC000"
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "6d8227c5",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "po",
+                  "fields": [
+                    {
+                      "name": "po_number",
+                      "expression": "`po_number`"
+                    },
+                    {
+                      "name": "po_line",
+                      "expression": "`po_line`"
+                    },
+                    {
+                      "name": "vendor_name",
+                      "expression": "`vendor_name`"
+                    },
+                    {
+                      "name": "cost_centre_key",
+                      "expression": "`cost_centre_key`"
+                    },
+                    {
+                      "name": "wo_number",
+                      "expression": "`wo_number`"
+                    },
+                    {
+                      "name": "description",
+                      "expression": "`description`"
+                    },
+                    {
+                      "name": "line_cost",
+                      "expression": "`line_cost`"
+                    },
+                    {
+                      "name": "invoiced_amount",
+                      "expression": "`invoiced_amount`"
+                    },
+                    {
+                      "name": "committed_amount",
+                      "expression": "`committed_amount`"
+                    },
+                    {
+                      "name": "need_by_date",
+                      "expression": "`need_by_date`"
+                    },
+                    {
+                      "name": "po_status",
+                      "expression": "`po_status`"
+                    },
+                    {
+                      "name": "spend_classification",
+                      "expression": "`spend_classification`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "po_number",
+                    "displayName": "PO num"
+                  },
+                  {
+                    "fieldName": "po_line",
+                    "displayName": "Line"
+                  },
+                  {
+                    "fieldName": "vendor_name",
+                    "displayName": "Vendor"
+                  },
+                  {
+                    "fieldName": "cost_centre_key",
+                    "displayName": "Cost Centre"
+                  },
+                  {
+                    "fieldName": "wo_number",
+                    "displayName": "WO num"
+                  },
+                  {
+                    "fieldName": "description",
+                    "displayName": "Description"
+                  },
+                  {
+                    "fieldName": "line_cost",
+                    "displayName": "Line cost"
+                  },
+                  {
+                    "fieldName": "invoiced_amount",
+                    "displayName": "Invoiced"
+                  },
+                  {
+                    "fieldName": "committed_amount",
+                    "displayName": "Committed"
+                  },
+                  {
+                    "fieldName": "need_by_date",
+                    "displayName": "Need by"
+                  },
+                  {
+                    "fieldName": "po_status",
+                    "displayName": "Status"
+                  },
+                  {
+                    "fieldName": "spend_classification",
+                    "displayName": "Budgeted / Emergent"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "PO lines"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 6,
+            "height": 10
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "canvasBackgroundColor": {
+        "light": "#F4F4F4",
+        "dark": "#1E1C1B"
+      },
+      "widgetBackgroundColor": {
+        "light": "#FFFFFF",
+        "dark": "#2A2726"
+      },
+      "widgetBorderColor": {
+        "light": "#E6E1DF",
+        "dark": "#3A3634"
+      },
+      "fontColor": {
+        "light": "#1E1E1E",
+        "dark": "#F4F4F4"
+      },
+      "selectionColor": {
+        "light": "#F47525",
+        "dark": "#F47525"
+      },
+      "visualizationColors": [
+        "#F47525",
+        "#52B2E5",
+        "#A3194E",
+        "#565150",
+        "#FFC000",
+        "#8E4737",
+        "#00AEEF",
+        "#6A2C91",
+        "#BDBDBD"
+      ],
+      "widgetHeaderAlignment": "LEFT"
+    },
+    "genieSpace": {
+      "isEnabled": true
+    }
+  }
+}
